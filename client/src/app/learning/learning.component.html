@@ -1,0 +1,12 @@
+<input id="topic-choice" type="text" list="topics" placeholder="Enter topic" [(ngModel)]="topic">
+<datalist id="topics">
+    <option *ngFor="let topic of topics" value="{{topic}}"></option>
+</datalist>
+<textarea [(ngModel)]="description"></textarea>
+<button (click)="add()">Add</button>
+<section *ngFor="let item of data">
+    <h2>{{ item.topic }}</h2>
+    <ul>
+        <li *ngFor="let note of item.notes">{{ note }}</li>
+    </ul>
+</section>
