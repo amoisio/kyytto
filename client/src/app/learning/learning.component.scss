@@ -5,8 +5,19 @@ input, textarea {
     margin-bottom: 4px;
     width: 100%;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    color:black;
 }
 
 textarea {
     resize: none;
+}
+
+button {
+    border-radius: 0;
+    width: 100%;
+    border: 1px, #cccccc, solid;
+    box-shadow: none;
+    text-shadow: none;
 }
