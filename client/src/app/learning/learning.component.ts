@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-learning',
@@ -7,39 +8,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LearningComponent implements OnInit {
 
-  topic?: string = undefined;
-  description?: string = undefined;
   data: { topic: string, notes: string[]}[] = [];
 
-  constructor() { }
+  noteForm = this.formBuilder.group({
+    topic: undefined,
+    description: undefined
+  });
 
-  ngOnInit(): void {
-    
-  }
+  constructor(private readonly formBuilder: FormBuilder) 
+  { }
+  
+  ngOnInit(): void { }
 
   get topics(): string[] {
     return this.data.map(item => item.topic);
   }
 
-  add(): void {
-    let key = this.topic;
-    let value = this.description;
-    console.log(key, value); 
-    if (!key || !value)
-      return;
-
-    let vals = this.data.find(item => item.topic === key);
-    if (vals) {
-      vals.notes.push(value);  
-    } else {
-      this.data.push({ topic: key, notes: [value]});
-    } 
-
-    this.clearFields();
+  onSubmit(): void {
+    let {topic, description} = this.noteForm.value;
+    this.add(topic, description);
+    this.noteForm.reset();
   }
 
-  clearFields(): void {
-    this.topic = undefined;
-    this.description = undefined;
+  add(topic: string, description: string): void {
+    console.log(topic, description); 
+    if (!topic || !description)
+      return;
+
+    let vals = this.data.find(item => item.topic === topic);
+    if (vals) {
+      vals.notes.push(description);  
+    } else {
+      this.data.push({ topic: topic, notes: [description]});
+    } 
   }
 }

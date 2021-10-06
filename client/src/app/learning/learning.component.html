@@ -1,9 +1,23 @@
-<input id="topic-choice" type="text" list="topics" placeholder="Enter topic" [(ngModel)]="topic">
-<datalist id="topics">
-    <option *ngFor="let topic of topics" value="{{topic}}"></option>
-</datalist>
-<textarea [(ngModel)]="description"></textarea>
-<button (click)="add()">Add</button>
+<form [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+    <input 
+        id="topic-choice" 
+        type="text" 
+        list="topics" 
+        placeholder="Enter topic" 
+        formControlName="topic">
+
+    <datalist id="topics">
+        <option *ngFor="let topic of topics" value="{{topic}}"></option>
+    </datalist>
+
+    <textarea 
+        id="description"
+        rows="3"
+        formControlName="description"></textarea>
+
+    <button class="submit-button" type="submit">Add</button>
+</form>
+
 <section *ngFor="let item of data">
     <h2>{{ item.topic }}</h2>
     <ul>

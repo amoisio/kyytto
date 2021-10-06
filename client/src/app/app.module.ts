@@ -7,7 +7,7 @@ import { SideBarComponent } from './side-bar/side-bar.component';
 import { LearningComponent } from './learning/learning.component';
 import { HoursComponent } from './hours/hours.component';
 import { TodosComponent } from './todos/todos.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
