@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router} from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { LearningNote } from '../learning-note';
+import { LocalStore } from '../local-store';
 
 @Component({
   selector: 'app-learning',
@@ -10,24 +12,30 @@ import { filter } from 'rxjs/operators';
 })
 export class LearningComponent implements OnInit {
 
-  data: { topic: string, notes: string[]}[] = [];
+  private readonly store: LocalStore<LearningNote>;
+  data: LearningNote[] = [];
 
   noteForm = this.formBuilder.group({
     topic: undefined,
     description: undefined
   });
 
-  constructor(private readonly formBuilder: FormBuilder, private router: Router)
-  { }
+  constructor(private readonly formBuilder: FormBuilder, private router: Router) { 
+    this.store = new LocalStore("learning");
+  }
   
   ngOnInit(): void { 
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
+
+    this.data = this.store.get(); 
   }
 
   get topics(): string[] {
-    return this.data.map(item => item.topic);
+    let tops = this.data.map(item => item.topic!);
+    console.log(tops);
+    return tops;
   }
 
   onSubmit(): void {
@@ -43,16 +51,17 @@ export class LearningComponent implements OnInit {
 
     let vals = this.data.find(item => item.topic === topic);
     if (vals) {
-      vals.notes.push(description);  
+      vals.details!.push(description);  
     } else {
-      this.data.push({ topic: topic, notes: [description]});
+      this.data.push({ topic: topic, details: [description]});
     }
     
+    this.store.set(this.data);
     this.focusOnMain();
   }
 
   focusOnMain() {
-    const mainHeader = document.querySelector('#topic-choice') as HTMLElement;
+    const mainHeader = document.querySelector('#add-note-form > input') as HTMLElement;
     if (mainHeader) {
       mainHeader.focus();
     }

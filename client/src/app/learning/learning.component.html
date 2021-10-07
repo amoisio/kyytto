@@ -1,6 +1,5 @@
 <form id="add-note-form" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
     <input 
-        id="topic-choice" 
         type="text" 
         list="topics" 
         placeholder="Enter topic" 
@@ -25,6 +24,6 @@
 <section class="note" *ngFor="let item of data">
     <h2>{{ item.topic }}</h2>
     <ul>
-        <li *ngFor="let note of item.notes">{{ note }}</li>
+        <li *ngFor="let detail of item.details">{{ detail }}</li>
     </ul>
 </section>
