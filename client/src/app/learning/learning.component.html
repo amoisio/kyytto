@@ -1,10 +1,11 @@
-<form [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+<form id="add-note-form" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
     <input 
         id="topic-choice" 
         type="text" 
         list="topics" 
         placeholder="Enter topic" 
-        formControlName="topic">
+        formControlName="topic" 
+        autofocus>
 
     <datalist id="topics">
         <option *ngFor="let topic of topics" value="{{topic}}"></option>
@@ -16,10 +17,12 @@
         formControlName="description"
         placeholder="Enter notes"></textarea>
 
-    <button class="submit-button" type="submit">Add</button>
+    <button class="submit-button" type="submit">
+        Add
+    </button>
 </form>
 
-<section *ngFor="let item of data">
+<section class="note" *ngFor="let item of data">
     <h2>{{ item.topic }}</h2>
     <ul>
         <li *ngFor="let note of item.notes">{{ note }}</li>

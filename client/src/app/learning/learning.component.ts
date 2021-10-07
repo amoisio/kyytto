@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { NavigationEnd, Router} from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-learning',
@@ -15,10 +17,14 @@ export class LearningComponent implements OnInit {
     description: undefined
   });
 
-  constructor(private readonly formBuilder: FormBuilder) 
+  constructor(private readonly formBuilder: FormBuilder, private router: Router)
   { }
   
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(this.focusOnMain);
+  }
 
   get topics(): string[] {
     return this.data.map(item => item.topic);
@@ -40,6 +46,15 @@ export class LearningComponent implements OnInit {
       vals.notes.push(description);  
     } else {
       this.data.push({ topic: topic, notes: [description]});
-    } 
+    }
+    
+    this.focusOnMain();
+  }
+
+  focusOnMain() {
+    const mainHeader = document.querySelector('#topic-choice') as HTMLElement;
+    if (mainHeader) {
+      mainHeader.focus();
+    }
   }
 }
