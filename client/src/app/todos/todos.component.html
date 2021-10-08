@@ -1,1 +1,14 @@
-<p>todos works!</p>
+<form id="add-note-form" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="Enter topic" formControlName="topic" autofocus>
+    <button class="submit-button" type="submit">
+        Add
+    </button>
+</form>
+
+<section class="note">
+    <h2>Todos</h2>
+    <div *ngFor="let item of data">
+        <input type="checkbox" [id]="item.topic" ([ngModel])="item.done">
+        <label [for]="item.topic">{{ item.topic }}</label>
+    </div>
+</section>
