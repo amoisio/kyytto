@@ -2,16 +2,15 @@
     <span class="logo">K</span>
 </div>
 <nav>
-    <a class="note-button" routerLink="/learning">
-        <span class="fas fa-graduation-cap fa-fw fa-2x" alt="Learning"></span>
-        <span>learn</span>
-    </a>
-    <a class="note-button" routerLink="/hours">
-        <span class="far fa-calendar-alt fa-fw fa-2x" alt="Hours"></span>
-        <span>hours</span>
-    </a>
-    <a class="note-button" routerLink="/todos">
-        <span class="fas fa-clipboard-list fa-fw fa-2x" alt="Todos"></span>
-        <span>todos</span>
-    </a>
+    <app-note-button routerLink="/learning" className="fas fa-graduation-cap fa-fw fa-2x">
+        learn
+    </app-note-button>
+
+    <app-note-button routerLink="/hours" className="fas fa-calendar-alt fa-fw fa-2x">
+        hours
+    </app-note-button>
+
+    <app-note-button routerLink="/todos" className="fas fa-clipboard-list fa-fw fa-2x">
+        todos
+    </app-note-button>
 </nav>

@@ -8,6 +8,7 @@ import { LearningComponent } from './learning/learning.component';
 import { HoursComponent } from './hours/hours.component';
 import { TodosComponent } from './todos/todos.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NoteButtonComponent } from './note-button/note-button.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SideBarComponent,
     LearningComponent,
     HoursComponent,
-    TodosComponent
+    TodosComponent,
+    NoteButtonComponent
   ],
   imports: [
     BrowserModule,
