@@ -1,17 +1,17 @@
-export class LocalStore<T> {
+export class LocalStore {
 
     constructor(private readonly repoName: string) { }
 
-    public get(): T[] {
+    public get(): any[] {
         const val = localStorage.getItem(this.repoName);
         if (val) {
-            return JSON.parse(val) as T[];
+            return JSON.parse(val);
         } else {
             return [];
         }
     }
 
-    public set(items: T[]) {
+    public set(items: any[]) {
         const val = JSON.stringify(items);
         localStorage.setItem(this.repoName, val);
     }
