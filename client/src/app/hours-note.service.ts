@@ -6,14 +6,12 @@ import { LocalStore } from './local-store';
   providedIn: 'root'
 })
 export class HoursNoteService {
-  private readonly _notes: HoursNote[] = [];
-
-  constructor(
-    private store: LocalStore = new LocalStore("hours")) {
-  }
+  private _notes: HoursNote[] = [];
+  private readonly _store: LocalStore = new LocalStore("hours")
 
   public load() {
-    const items = this.store.get();
+    const items = this._store.get();
+    this._notes = [];
     items.map(item => this._notes.push(new HoursNote().deserialize(item)));
   }
 
@@ -22,6 +20,6 @@ export class HoursNoteService {
   }
 
   public save() {
-    this.store.set(this._notes);
+    this._store.set(this._notes);
   }
 }

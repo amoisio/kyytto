@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router} from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LearningNote } from '../learning-note';
-import { LocalStore } from '../local-store';
+import { LearningNoteService } from '../learning-note.service';
 
 @Component({
   selector: 'app-learning',
@@ -11,10 +11,11 @@ import { LocalStore } from '../local-store';
   styleUrls: ['./learning.component.scss']
 })
 export class LearningComponent implements OnInit {
-  public notes: LearningNote[] = [];
-  private store: LocalStore<LearningNote> = new LocalStore<LearningNote>("learning");
 
-  constructor(private readonly formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private service: LearningNoteService,
+    private formBuilder: FormBuilder, 
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -22,7 +23,15 @@ export class LearningComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.notes = this.store.get();
+    this.service.load();
+  }
+
+  get notes(): LearningNote[] {
+    return this.service.notes;
+  }
+
+  get topics(): string[] {
+    return this.service.topics;
   }
 
   noteForm = this.formBuilder.group({
@@ -48,18 +57,15 @@ export class LearningComponent implements OnInit {
   add(topic: string, detail: string): void {
     let note = this.notes.find(note => note.topic === topic);
     if (note) {
-      note.details!.push(detail);  
+      note.details.push(detail);  
     } else {
-      this.notes.push({ topic: topic, details: [detail]});
+      let newNote = new LearningNote();
+      newNote.topic = topic;
+      newNote.details.push(detail);
+      this.notes.push(newNote);
     }
-    this.store.set(this.notes);
+    this.service.save();
     this.focusOnMain();
-  }
-
-  get topics(): string[] {
-    return this.notes
-      .map(note => note.topic!)
-      .sort();
   }
 
   focusOnMain() {

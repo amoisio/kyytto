@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { TodoNote } from '../todo-note';
-import { LocalStore } from '../local-store';
+import { TodoNoteService } from '../todo-note.service';
 
 @Component({
   selector: 'app-todos',
@@ -11,10 +11,10 @@ import { LocalStore } from '../local-store';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit {
-  public notes: TodoNote[] = [];
-  private store: LocalStore<TodoNote> = new LocalStore<TodoNote>("todos");
-
-  constructor(private readonly formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private service: TodoNoteService,
+    private formBuilder: FormBuilder, 
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -22,7 +22,11 @@ export class TodosComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.notes = this.store.get();
+    this.service.load();
+  }
+
+  get notes(): TodoNote[] {
+    return this.service.notes;
   }
 
   noteForm = this.formBuilder.group({
@@ -45,9 +49,12 @@ export class TodosComponent implements OnInit {
   add(description: string): void {
     let note = this.notes.find(note => note.description === description);
     if (!note) {
-      this.notes.push({ description: description, done: false });
+      let newNote = new TodoNote();
+      newNote.description = description;
+      newNote.done = false;
+      this.notes.push(newNote);
     }
-    this.store.set(this.notes);
+    this.service.save();
     this.focusOnMain();
   }
 

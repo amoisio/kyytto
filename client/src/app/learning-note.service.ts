@@ -6,14 +6,12 @@ import { LocalStore } from './local-store';
   providedIn: 'root'
 })
 export class LearningNoteService {
-  private readonly _notes: LearningNote[] = [];
-  
-  constructor(
-    private store: LocalStore = new LocalStore("learning")) { 
-  }
+  private _notes: LearningNote[] = [];
+  private readonly _store: LocalStore = new LocalStore("learning")
   
   public load() {
-    const items = this.store.get();
+    const items = this._store.get();
+    this._notes = [];
     items.map(item => this._notes.push(new LearningNote().deserialize(item)));
   }
 
@@ -21,7 +19,13 @@ export class LearningNoteService {
     return this._notes;
   }
 
+  get topics(): string[] {
+    return this._notes
+      .map(note => note.topic)
+      .sort();
+  }
+
   public save() {
-    this.store.set(this._notes);
+    this._store.set(this._notes);
   }
 }

@@ -6,14 +6,12 @@ import { LocalStore } from './local-store';
   providedIn: 'root'
 })
 export class TodoNoteService {
-  private readonly _notes: TodoNote[] = [];
-
-  constructor(
-    private store: LocalStore = new LocalStore("todos")) {
-  }
+  private _notes: TodoNote[] = [];
+  private readonly _store: LocalStore = new LocalStore("todos")
 
   public load() {
-    const items = this.store.get();
+    const items = this._store.get();
+    this._notes = [];
     items.map(item => this._notes.push(new TodoNote().deserialize(item)));
   }
 
@@ -22,6 +20,6 @@ export class TodoNoteService {
   }
 
   public save() {
-    this.store.set(this._notes);
+    this._store.set(this._notes);
   }
 }

@@ -1,1 +1,17 @@
-<p>hours works!</p>
+<form id="add-note-form" [formGroup]="noteForm" (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="Enter description" formControlName="description" autofocus>
+    <input type="date" placeholder="Enter date" formControlName="date">
+    <input type="number" placeholder="Enter estimate" formControlName="estimate">
+    <button class="submit-button" type="submit">
+        Add
+    </button>
+</form>
+
+<section class="note" *ngFor="let note of notes">
+    <h2>{{ note.date }}</h2>
+    <ul>
+        <li *ngFor="let detail of note.details">
+            {{ detail.description }}<span *ngIf="!!detail.estimate"> ({{detail.estimate}})</span>
+        </li>
+    </ul>
+</section>
