@@ -11,53 +11,55 @@ import { LocalStore } from '../local-store';
   styleUrls: ['./learning.component.scss']
 })
 export class LearningComponent implements OnInit {
+  public notes: LearningNote[] = [];
+  private store: LocalStore<LearningNote> = new LocalStore<LearningNote>("learning");
 
-  private readonly store: LocalStore<LearningNote>;
-  data: LearningNote[] = [];
-
-  noteForm = this.formBuilder.group({
-    topic: undefined,
-    description: undefined
-  });
-
-  constructor(private readonly formBuilder: FormBuilder, private router: Router) { 
-    this.store = new LocalStore("learning");
+  constructor(private readonly formBuilder: FormBuilder, private router: Router) {
   }
-  
-  ngOnInit(): void { 
+
+  ngOnInit(): void {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.data = this.store.get(); 
+    this.notes = this.store.get();
+  }
+
+  noteForm = this.formBuilder.group({
+    topic: undefined,
+    detail: undefined
+  });
+
+  onSubmit(): void {
+    let { topic, detail } = this.noteForm.value;
+    if (this.validate(topic, detail)) {
+      this.add(topic!, detail!);
+      this.noteForm.reset();
+    }
+  }
+
+  private validate(topic ?: string, detail ?: string): boolean {
+    return !!topic
+      && !!detail
+      && topic.length > 0
+      && detail.length > 0;
+  }
+
+  add(topic: string, detail: string): void {
+    let note = this.notes.find(note => note.topic === topic);
+    if (note) {
+      note.details!.push(detail);  
+    } else {
+      this.notes.push({ topic: topic, details: [detail]});
+    }
+    this.store.set(this.notes);
+    this.focusOnMain();
   }
 
   get topics(): string[] {
-    let tops = this.data.map(item => item.topic!);
-    console.log(tops);
-    return tops;
-  }
-
-  onSubmit(): void {
-    let {topic, description} = this.noteForm.value;
-    this.add(topic, description);
-    this.noteForm.reset();
-  }
-
-  add(topic: string, description: string): void {
-    console.log(topic, description); 
-    if (!topic || !description)
-      return;
-
-    let vals = this.data.find(item => item.topic === topic);
-    if (vals) {
-      vals.details!.push(description);  
-    } else {
-      this.data.push({ topic: topic, details: [description]});
-    }
-    
-    this.store.set(this.data);
-    this.focusOnMain();
+    return this.notes
+      .map(note => note.topic!)
+      .sort();
   }
 
   focusOnMain() {

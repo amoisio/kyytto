@@ -11,16 +11,10 @@ import { LocalStore } from '../local-store';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit {
-
-  private readonly store: LocalStore<TodoNote>;
-  data: TodoNote[] = [];
-
-  noteForm = this.formBuilder.group({
-    topic: undefined
-  });
+  public notes: TodoNote[] = [];
+  private store: LocalStore<TodoNote> = new LocalStore<TodoNote>("todos");
 
   constructor(private readonly formBuilder: FormBuilder, private router: Router) {
-    this.store = new LocalStore("todos");
   }
 
   ngOnInit(): void {
@@ -28,26 +22,32 @@ export class TodosComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.data = this.store.get();
+    this.notes = this.store.get();
   }
+
+  noteForm = this.formBuilder.group({
+    description: undefined
+  });
 
   onSubmit(): void {
-    let { topic } = this.noteForm.value;
-    this.add(topic);
-    this.noteForm.reset();
+    let { description } = this.noteForm.value;
+    if (this.validate(description)) {
+      this.add(description!);
+      this.noteForm.reset();
+    }
   }
 
-  add(topic: string): void {
-    console.log(topic);
-    if (!topic)
-      return;
+  public validate(description ?: string): boolean {
+    return !!description
+      && description.length > 0;
+  }
 
-    let vals = this.data.find(item => item.topic === topic);
-    if (!vals) {
-      this.data.push({ topic: topic, done: false });
+  add(description: string): void {
+    let note = this.notes.find(note => note.description === description);
+    if (!note) {
+      this.notes.push({ description: description, done: false });
     }
-
-    this.store.set(this.data);
+    this.store.set(this.notes);
     this.focusOnMain();
   }
 
@@ -58,6 +58,3 @@ export class TodosComponent implements OnInit {
     }
   }
 }
-
-
-
