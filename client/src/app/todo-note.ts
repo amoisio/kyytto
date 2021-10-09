@@ -1,7 +1,10 @@
 import { INote } from "./inote";
 
 export class TodoNote implements INote {
-    public topic?: string;
-    public details?: string[];
-    public done !: boolean;
+    public description: string = '';
+    public done : boolean = false;
+
+    public validate(): boolean {
+        return this.description.length > 0;
+    }
 }
