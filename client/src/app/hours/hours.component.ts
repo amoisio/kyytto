@@ -31,7 +31,7 @@ export class HoursComponent implements OnInit {
 
   noteForm = this.formBuilder.group({
     description: undefined,
-    date: new Date(Date.now()),
+    date: new Date().toISOString(),
     estimate: undefined
   });
 
@@ -67,7 +67,7 @@ export class HoursComponent implements OnInit {
   }
 
   focusOnMain() {
-    const mainHeader = document.querySelector('#add-note-form > input') as HTMLElement;
+    const mainHeader = document.querySelector('#add-note-form > input[type="text"]') as HTMLElement;
     if (mainHeader) {
       mainHeader.focus();
     }
