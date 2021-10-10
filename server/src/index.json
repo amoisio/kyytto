@@ -1,0 +1,17 @@
+{
+    "href": "http://localhost:8080/index.json",
+    "links": [
+        {
+            "href": "http://localhost:8080/learning.json",
+            "title": "Learning"
+        },
+        {
+            "href": "http://localhost:8080/todos.json",
+            "title": "Todos"
+        },
+        {
+            "href": "http://localhost:8080/hours.json",
+            "title": "Hours"
+        }
+    ]
+}
