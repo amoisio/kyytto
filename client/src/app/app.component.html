@@ -1,5 +1,5 @@
 <div class="sidebar">
-  <app-side-bar></app-side-bar>
+  <app-side-bar [links]="links" *ngIf="links"></app-side-bar>
 </div>
 <div class="content">
   <router-outlet></router-outlet>
