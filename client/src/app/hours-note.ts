@@ -1,6 +1,7 @@
 import { ISerializable } from "./iserializable";
+import { ResourceDto } from "./resource-dto";
 
-export class HoursNote implements ISerializable<HoursNote> {
+export class HoursNote extends ResourceDto implements ISerializable<HoursNote> {
     public date : Date = new Date();
     public readonly details : HourItem[] = [];
  
@@ -18,6 +19,8 @@ export class HoursNote implements ISerializable<HoursNote> {
     }
 
     public deserialize(input: any): HoursNote {
+        this.href = input.href;
+        this.rel = input.rel;
         this.date = input.date;
         for(let item of input.details) {
             this.details.push(new HourItem().deserialize(item));

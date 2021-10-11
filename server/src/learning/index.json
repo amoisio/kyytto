@@ -1,0 +1,31 @@
+{
+    "href": "http://localhost:8080/learning/index.json",
+    "rel": "/learning",
+    "notes" : [
+        {
+            "href": "http://localhost:8080/learning/bf75c9dc-1483-4e8a-a286-f0ed269995dc.json",
+            "rel": "/learning/bf75c9dc-1483-4e8a-a286-f0ed269995dc",
+            "topic" : "gRPC",
+            "details": [
+                "High performance RPC framework",
+                "https://grpc.io/"
+            ]
+        },
+        {
+            "href": "http://localhost:8080/learning/53472501-dc13-4d13-a249-a2e1ae0789b3.json",
+            "rel": "/learning/53472501-dc13-4d13-a249-a2e1ae0789b3",
+            "topic": "Kubernetes",
+            "details": [
+                "Container orchestrator"
+            ]
+        },
+        {
+            "href": "http://localhost:8080/learning/31224b6f-017c-4c3d-846b-cffe0dea8029.json",
+            "rel": "/learning/31224b6f-017c-4c3d-846b-cffe0dea8029",
+            "topic": "DDD",
+            "details": [
+                "Pluralsight course on DDD"
+            ]
+        }
+    ]
+}
