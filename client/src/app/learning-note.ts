@@ -1,21 +1,41 @@
-import { ISerializable } from "./iserializable";
-import { ResourceDto } from "./resource-dto";
+import { IInitializable } from "./iinitializable";
+import { IResource } from "./iresource";
 
-export class LearningNote extends ResourceDto implements ISerializable<LearningNote> {
-    public topic : string = '';
-    public readonly details : string[] = [];
+export class LearningNote implements IResource, IInitializable<LearningNoteDto, LearningNote> {
+    public href !: string;
+    public rel!: string;
+    public topic !: string;
+    public details !: string[];
     
     public add(detail: string) {
         this.details.push(detail);
     }
 
-    public deserialize(input: any): LearningNote {
+    public init(input: LearningNoteDto): LearningNote {
         this.href = input.href;
         this.rel = input.rel;
         this.topic = input.topic;
-        for (let detail of input.details) {
-            this.details.push(detail);
-        }
+        this.details = input.details.map(d => d);
         return this;
+    }
+}
+
+export class LearningNotesDto implements IResource {
+    public href !: string;
+    public rel!: string;
+    public notes !: LearningNoteDto[];
+}
+
+export class LearningNoteDto implements IResource {
+    public href !: string;
+    public rel!: string;
+    public topic !: string;
+    public details !: string[];
+
+    constructor(note: LearningNote) {
+        this.href = note.href;
+        this.rel = note.rel;
+        this.topic = note.topic;
+        this.details = note.details.map(d => d);
     }
 }

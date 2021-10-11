@@ -1,31 +1,42 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LearningNote } from './learning-note';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { LearningNote, LearningNoteDto, LearningNotesDto } from './learning-note';
 import { LocalStore } from './local-store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LearningNoteService {
-  private _notes: LearningNote[] = [];
-  private readonly _store: LocalStore = new LocalStore("learning")
-  
-  public load() {
-    const items = this._store.get();
-    this._notes = [];
-    items.map(item => this._notes.push(new LearningNote().deserialize(item)));
+  constructor(private readonly http: HttpClient) { }
+
+  private hoursUrl = "http://localhost:8080/learning/";
+
+  public getNotes(): Observable<LearningNote[]> {
+    return this.http.get<LearningNotesDto>(this.hoursUrl)
+      .pipe(
+        map(notesDto => notesDto.notes.map(dto => new LearningNote().init(dto)))
+      );
   }
 
-  get notes(): LearningNote[] {
-    return this._notes;
+  public addNote(note: LearningNote): Observable<LearningNote> {
+    const dto = new LearningNoteDto(note);
+    return this.http.post<LearningNoteDto>(this.hoursUrl, dto, this.httpOptions)
+      .pipe(
+        map(noteDto => new LearningNote().init(noteDto))
+      );
   }
 
-  get topics(): string[] {
-    return this._notes
-      .map(note => note.topic)
-      .sort();
+  public updateNote(note: LearningNote): Observable<LearningNote> {
+    const dto = new LearningNoteDto(note);
+    return this.http.put<LearningNoteDto>(this.hoursUrl, dto, this.httpOptions)
+      .pipe(
+        map(noteDto => new LearningNote().init(noteDto))
+      )
   }
 
-  public save() {
-    this._store.set(this._notes);
-  }
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 }

@@ -1,25 +1,42 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HoursNote } from './hours-note';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { HourNote, HourNoteDto, HourNotesDto } from './hour-notes';
 import { LocalStore } from './local-store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HoursNoteService {
-  private _notes: HoursNote[] = [];
-  private readonly _store: LocalStore = new LocalStore("hours")
+  constructor(private readonly http: HttpClient) { }
 
-  public load() {
-    const items = this._store.get();
-    this._notes = [];
-    items.map(item => this._notes.push(new HoursNote().deserialize(item)));
+  private hoursUrl = "http://localhost:8080/hours/";
+
+  public getNotes(): Observable<HourNote[]> {
+    return this.http.get<HourNotesDto>(this.hoursUrl)
+      .pipe(
+        map(notesDto => notesDto.notes.map(dto => new HourNote(dto.date).init(dto)))
+      );
   }
 
-  get notes(): HoursNote[] {
-    return this._notes;
+  public addNote(note: HourNote): Observable<HourNote> {
+    const dto = new HourNoteDto(note);
+    return this.http.post<HourNoteDto>(this.hoursUrl, dto, this.httpOptions)
+      .pipe(
+        map(noteDto => new HourNote(noteDto.date).init(noteDto))
+      );
   }
 
-  public save() {
-    this._store.set(this._notes);
+  public updateNote(note: HourNote): Observable<HourNote> {
+    const dto = new HourNoteDto(note);
+    return this.http.put<HourNoteDto>(this.hoursUrl, dto, this.httpOptions)
+      .pipe(
+        map(noteDto => new HourNote(noteDto.date).init(noteDto))
+      )
   }
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 }

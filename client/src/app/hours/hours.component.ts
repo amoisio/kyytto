@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { HourItem, HoursNote } from '../hours-note';
+import { HourNote, HourNoteDto } from '../hour-notes';
 import { HoursNoteService } from '../hours-note.service';
 
 @Component({
@@ -11,6 +11,9 @@ import { HoursNoteService } from '../hours-note.service';
   styleUrls: ['./hours.component.scss']
 })
 export class HoursComponent implements OnInit {
+
+  notes: HourNote[] = [];
+
   constructor(
     private service: HoursNoteService,
     private formBuilder: FormBuilder, 
@@ -22,11 +25,8 @@ export class HoursComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.service.load();
-  }
-
-  get notes(): HoursNote[] {
-    return this.service.notes;
+    this.service.getNotes()
+      .subscribe(notes => this.notes = notes);
   }
 
   noteForm = this.formBuilder.group({
@@ -40,6 +40,7 @@ export class HoursComponent implements OnInit {
     if (this.validate(description, date)) {
       this.add(description!, date!, estimate!);
       this.noteForm.reset();
+      this.focusOnMain();
     }
   }
 
@@ -51,19 +52,18 @@ export class HoursComponent implements OnInit {
 
   add(description: string, date: Date, estimate ?: number): void {
     let note = this.notes.find(note => note.date === date);
-    let line = new HourItem();
-    line.description = description;
-    line.estimate = estimate;
     if (note) {
-      note.details!.push(line);
+      note.addDetail(description, estimate);
+      this.service.updateNote(note);
     } else {
-      let newNote = new HoursNote();
-      newNote.date = date;
-      newNote.details.push(line);
-      this.notes.push(newNote);
+      let newNote = new HourNote(date, description, estimate);
+      this.service.addNote(newNote)
+        .subscribe(note => {
+          newNote.href = note.href;
+          newNote.rel = note.rel;
+          this.notes.push(newNote);
+        });
     }
-    this.service.save();
-    this.focusOnMain();
   }
 
   focusOnMain() {

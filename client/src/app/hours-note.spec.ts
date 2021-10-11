@@ -1,7 +1,7 @@
-import { HoursNote } from './hours-note';
+import { HourNote } from './hour-notes';
 
 describe('HoursNote', () => {
   it('should create an instance', () => {
-    expect(new HoursNote()).toBeTruthy();
+    expect(new HourNote()).toBeTruthy();
   });
 });

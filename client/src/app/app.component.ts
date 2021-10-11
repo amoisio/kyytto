@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   private getLinks(): Observable<HomeDto> {
-    console.log("gettign");
     return this.http.get<HomeDto>(this.homeUrl);
   }
 }

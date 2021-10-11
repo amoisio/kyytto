@@ -11,6 +11,9 @@ import { TodoNoteService } from '../todo-note.service';
   styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit {
+
+  notes: TodoNote[] = [];
+
   constructor(
     private service: TodoNoteService,
     private formBuilder: FormBuilder, 
@@ -22,11 +25,8 @@ export class TodosComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.service.load();
-  }
-
-  get notes(): TodoNote[] {
-    return this.service.notes;
+    this.service.getNotes()
+      .subscribe(notes => this.notes = notes);
   }
 
   noteForm = this.formBuilder.group({
@@ -38,6 +38,7 @@ export class TodosComponent implements OnInit {
     if (this.validate(description)) {
       this.add(description!);
       this.noteForm.reset();
+      this.focusOnMain();
     }
   }
 
@@ -52,10 +53,13 @@ export class TodosComponent implements OnInit {
       let newNote = new TodoNote();
       newNote.description = description;
       newNote.done = false;
-      this.notes.push(newNote);
+      this.service.addNote(newNote)
+        .subscribe(note => {
+          newNote.href = note.href;
+          newNote.rel = note.rel;
+          this.notes.push(newNote);
+        });
     }
-    this.service.save();
-    this.focusOnMain();
   }
 
   focusOnMain() {

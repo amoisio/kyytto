@@ -12,6 +12,8 @@ import { LearningNoteService } from '../learning-note.service';
 })
 export class LearningComponent implements OnInit {
 
+  notes: LearningNote[] = [];
+
   constructor(
     private service: LearningNoteService,
     private formBuilder: FormBuilder, 
@@ -23,15 +25,14 @@ export class LearningComponent implements OnInit {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(this.focusOnMain);
 
-    this.service.load();
-  }
-
-  get notes(): LearningNote[] {
-    return this.service.notes;
+    this.service.getNotes()
+      .subscribe(notes => this.notes = notes);
   }
 
   get topics(): string[] {
-    return this.service.topics;
+    return this.notes
+      .map(note => note.topic)
+      .sort();
   }
 
   noteForm = this.formBuilder.group({
@@ -44,6 +45,7 @@ export class LearningComponent implements OnInit {
     if (this.validate(topic, detail)) {
       this.add(topic!, detail!);
       this.noteForm.reset();
+      this.focusOnMain();
     }
   }
 
@@ -58,14 +60,18 @@ export class LearningComponent implements OnInit {
     let note = this.notes.find(note => note.topic === topic);
     if (note) {
       note.details.push(detail);  
+      this.service.updateNote(note);
     } else {
       let newNote = new LearningNote();
       newNote.topic = topic;
       newNote.details.push(detail);
-      this.notes.push(newNote);
+      this.service.addNote(newNote)
+        .subscribe(note => {
+          newNote.href = note.href;
+          newNote.rel = note.rel;
+          this.notes.push(newNote);
+        });
     }
-    this.service.save();
-    this.focusOnMain();
   }
 
   focusOnMain() {
