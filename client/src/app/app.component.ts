@@ -12,7 +12,7 @@ import { HomeDto, LinkDto } from './home';
 })
 export class AppComponent implements OnInit {
 
-  private readonly homeUrl = "http://localhost:8080/";
+  private readonly homeUrl = "http://localhost:8080";
 
   constructor(private http: HttpClient) {
 

@@ -16,6 +16,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', indexRoutes.getRoot);
+app.use('/', indexRoutes);
 
 module.exports = app;
