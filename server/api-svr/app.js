@@ -1,12 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var R = require('ramda');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const R = require('ramda');
+const mysql = require('mysql');
 
-var indexRoutes = require('./routes/index');
+const connection = mysql.createConnection({
+  host: process.env['SQL_HOST'],
+  user: process.env['SQL_USER'],
+  password: process.env['SQL_PWD'],
+  database: process.env['SQL_DB']
+});
 
-var app = express();
+const indexRoutes = require('./routes/index');
+
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
