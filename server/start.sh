@@ -5,23 +5,25 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 echo "Executing start-db in $SCRIPTPATH"
 
-NAME=$1
-PASSWORD=$2
+NAME=$SQL_CONTAINER 
+DBNAME=$SQL_DATABASE
+PASSWORD=$SQL_PASSWORD
 
-docker container stop $NAME
+echo "Stopping container $NAME..."
+sudo docker container stop $NAME > /dev/null
+echo "Container $NAME stopped."
 
-docker run --rm --name "$NAME" \
+echo "Starting a new container $NAME..."
+sudo docker run --rm --name "$NAME" \
     -v $SCRIPTPATH/database:/usr/share/mysql-8.0/scripts \
     -e MYSQL_ROOT_PASSWORD=$PASSWORD \
-    -e MYSQL_DATABASE=$NAME \
-    -d mysql:latest
+    -e MYSQL_DATABASE=$DBNAME \
+    -d mysql:latest > /dev/null
+echo "Container $NAME started."
 
-docker exec -it kyytto sh -c "/usr/share/mysql-8.0/scripts/test.sh"
-# docker exec -it "$NAME" mysql -p
+TIMEOUT=30
+echo "Waiting for $TIMEOUT seconds - give mysql service time to start"
+sleep 30
 
-# docker exec -it "$NAME" sh -c "mysql -p < /usr/share/mysql-8.0/scripts/init.sql"
-# echo $STATUS
-# docker exec -it "$NAME" systemctl status mysql
-
-# Install init
-# source /usr/share/mysql-8.0/scripts/migrations/init.sql
+echo "Seed development database with data"
+sudo docker exec -it "$NAME" sh -c "mysql -p$PASSWORD $DBNAME < /usr/share/mysql-8.0/scripts/init.sql"

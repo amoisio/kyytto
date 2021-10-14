@@ -1,5 +1,3 @@
-USE kyytto;
-
 CREATE TABLE todos
 (
   id              VARCHAR(64) NOT NULL,
@@ -59,3 +57,7 @@ INSERT INTO learning (id, topic) VALUES ('53472501-dc13-4d13-a249-a2e1ae0789b3',
 INSERT INTO learning_details (learn_id, description) VALUES ('53472501-dc13-4d13-a249-a2e1ae0789b3', "Container orchestrator");
 INSERT INTO learning (id, topic) VALUES ('31224b6f-017c-4c3d-846b-cffe0dea8029', 'DDD');
 INSERT INTO learning_details (learn_id, description) VALUES ('31224b6f-017c-4c3d-846b-cffe0dea8029', "Pluralsight course on DDD");
+
+SELECT 
+  l.id, l.topic, d.DESCRIPTION
+FROM learning l inner join learning_details d on l.id = d.learn_id;
