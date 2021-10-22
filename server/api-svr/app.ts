@@ -1,35 +1,34 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const R = require('ramda');
-const mysql = require('mysql');
-const links = require('./lib/links');
+import express, { Express } from 'express';
+import * as mysql from 'mysql';
+import * as links from './lib/links';
+import logger from 'morgan';
 
-const todoRepository = require('./lib/todoNoteRepo');
+// const createError = require('http-errors');
+// const path = require('path');
+
+// const todoRepository = require('./lib/todoNoteRepo');
 // const bugsRepository = require('./lib/bugs');
 // const usersRepository = require('./lib/users');
 
-const indexRoutes = require('./routes/index');
-const todoRoutes = require('./routes/todoNotes');
-const learningRoutes = require('./routes/learningNotes');
+// const indexRoutes = require('./routes/index');
+// const todoRoutes = require('./routes/todoNotes');
+// const learningRoutes = require('./routes/learningNotes');
 // const bugRoutes = require('./routes/bug');
 
 
-const connection = mysql.createConnection({
-  host: process.env['SQL_HOST'],
-  user: process.env['SQL_USERNAME'],
-  password: process.env['SQL_PASSWORD'],
-  database: process.env['SQL_DATABASE']
-});
+// const connection: mysql.Connection = mysql.createConnection({
+//   host: process.env['SQL_HOST'],
+//   user: process.env['SQL_USERNAME'],
+//   password: process.env['SQL_PASSWORD'],
+//   database: process.env['SQL_DATABASE']
+// });
 
+const app: Express = express();
 
-const app = express();
-
-app.use((req, res, next) => {
-  res.linkBuilder = links.builder(process.env['API_SVR_HOST'], selectedContentTypeInfo.extension);
-  next();
-});
+// app.use((req, res, next) => {
+//   res.linkBuilder = links.builder(process.env['API_SVR_HOST'], '.json');
+//   next();
+// });
 
 
 app.use(logger('dev'));
@@ -42,7 +41,7 @@ app.use((req, res, next) => {
 
 // app.use('/', indexRoutes);
 
-app.get('/', indexRoutes.getRoot());
+// app.get('/', indexRoutes.getRoot());
 
 // app.get('/todos', (req, res, next) => {
 
@@ -52,7 +51,7 @@ app.get('/', indexRoutes.getRoot());
 // app.get('/todos', todoRoutes.getTodoNotes(
 //   todoRepository.getTodoNotes(connection)));
 
-app.get('/learning')
+// app.get('/learning')
 
 // app.get('/bugs/:pagekey', bugsRoutes.getPage(
 //   bugsRepository.getBugsPage(connection)));

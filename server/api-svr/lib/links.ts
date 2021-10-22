@@ -1,7 +1,7 @@
-const R = require('ramda');
+import * as R from 'ramda';
 
-const lastSegment = exports.lastSegment = id => {
-    const t = R.pipe(R.split('/'), R.last)(id);  
+export const lastSegment = (id: string): string => {
+    const t : any = R.pipe(R.split('/'), R.last)(id);  
     if(t.indexOf('.') > 0){
         return t.slice(0, t.indexOf('.'));
     }
@@ -9,9 +9,9 @@ const lastSegment = exports.lastSegment = id => {
 };
 
 // writer: String -> [String] -> String
-const writer = exports.writer = R.curry((host, segments) => {
+export const writer = R.curry((host, segments) => {
     // if there's just one argment, assume it's a FQ URL 
-    if(arguments.length === 1)
+    if (!segments || segments.length == 0)
         return host;
 
     const path = R.join('/')(segments);
@@ -19,14 +19,14 @@ const writer = exports.writer = R.curry((host, segments) => {
     return u.toString();
 });
 
-const bindMethods = (builder) => {
+const bindMethods = (builder: any) => {
     builder.addSegment = addSegment(builder);
     builder.addQuery = addQuery(builder);
     builder.overrideExtension = overrideExtension(builder);
     builder.toString = toString(builder);
 };
 
-const toString = (builder) => {
+const toString = (builder: any) => {
     return () => {
         let path = R.join('/', builder.segments);
         if(builder.extension){
@@ -71,7 +71,7 @@ const overrideExtension = R.curry((builder, extension) => {
     return ret;
 });
 
-const builder = exports.builder = (base, extension) => {
+export const builder = (base: any, extension: any) => {
     const ret = {
         base,
         extension,
