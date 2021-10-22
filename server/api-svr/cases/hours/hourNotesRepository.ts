@@ -1,5 +1,5 @@
 import { Connection } from 'mysql';
-import { HourDetail, HourNote } from '../persistence/hourNote';
+import { HourDetail, HourNote } from './hourNote';
 
 export const getHourNotes = (connection: Connection) => {
     return new Promise(async (resolve) => {

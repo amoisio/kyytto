@@ -1,4 +1,4 @@
-import { IResource } from "./iresource";
+import { IResource } from "../iresource";
 
 export class TodoNotesDto implements IResource {
     public href !: string;
