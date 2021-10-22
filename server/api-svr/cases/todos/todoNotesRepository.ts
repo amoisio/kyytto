@@ -1,5 +1,5 @@
 import { Connection } from 'mysql';
-import { TodoNote } from '../persistence/todoNote';
+import { TodoNote } from './todoNote';
 
 export const getTodoNotes = (connection: Connection): Promise<TodoNote[]> => {
     const query = `select 

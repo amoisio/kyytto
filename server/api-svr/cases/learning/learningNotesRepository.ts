@@ -1,5 +1,5 @@
 import { Connection } from 'mysql';
-import { LearningDetail, LearningNote } from '../persistence/learningNote';
+import { LearningDetail, LearningNote } from './learningNote';
 
 export const getLearningNotes = (connection: Connection) => {
     return new Promise(async (resolve) => {
