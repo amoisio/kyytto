@@ -4,17 +4,33 @@ const path = require('path');
 const logger = require('morgan');
 const R = require('ramda');
 const mysql = require('mysql');
+const links = require('./lib/links');
+
+const todoRepository = require('./lib/todoNoteRepo');
+// const bugsRepository = require('./lib/bugs');
+// const usersRepository = require('./lib/users');
+
+const indexRoutes = require('./routes/index');
+const todoRoutes = require('./routes/todoNotes');
+const learningRoutes = require('./routes/learningNotes');
+// const bugRoutes = require('./routes/bug');
+
 
 const connection = mysql.createConnection({
   host: process.env['SQL_HOST'],
-  user: process.env['SQL_USER'],
-  password: process.env['SQL_PWD'],
-  database: process.env['SQL_DB']
+  user: process.env['SQL_USERNAME'],
+  password: process.env['SQL_PASSWORD'],
+  database: process.env['SQL_DATABASE']
 });
 
-const indexRoutes = require('./routes/index');
 
 const app = express();
+
+app.use((req, res, next) => {
+  res.linkBuilder = links.builder(process.env['API_SVR_HOST'], selectedContentTypeInfo.extension);
+  next();
+});
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -24,6 +40,31 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', indexRoutes);
+// app.use('/', indexRoutes);
+
+app.get('/', indexRoutes.getRoot());
+
+// app.get('/todos', (req, res, next) => {
+
+// });
+
+
+// app.get('/todos', todoRoutes.getTodoNotes(
+//   todoRepository.getTodoNotes(connection)));
+
+app.get('/learning')
+
+// app.get('/bugs/:pagekey', bugsRoutes.getPage(
+//   bugsRepository.getBugsPage(connection)));
+
+// app.post('/bugs', bugsRoutes.postBug(
+//   bugRepository.saveBug(connection)));
+
+// app.get('/bug/:bugid', bugRoutes.getBug(
+//   bugRepository.getBug(connection)));
+
+// app.put('/bug/:bugid', bugRoutes.putBug(
+//   bugRepository.saveBug(connection)));
+
 
 module.exports = app;
