@@ -1,8 +1,12 @@
 import { Connection } from 'mysql';
 import { HourDetail, HourNote } from './hourNote';
-
+import { store } from '../../lib/utilities';
 export default class HourNoteRepository {
-    constructor(private connection: Connection) { }
+    private _query: <T>(query: string) => Promise<T>;
+
+    constructor(private connection: Connection) { 
+        this._query = store(connection);
+    }
 
     public async getAll(): Promise<HourNote[]> {
         return new Promise(async (resolve) => {
@@ -17,44 +21,25 @@ export default class HourNoteRepository {
     }
 
     private queryHours(): Promise<HourNote[]> {
-        const query = `select 
+        const cmd = `select 
             id, 
             date,
         from hours`;
-
-        return new Promise((resolve, reject) => {
-            this.connection.query(query, (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return this._query(cmd);
     };
 
     private queryDetails(): Promise<HourDetail[]> {
-        const query = `select 
+        const cmd = `select 
             hour_id, 
             description,
             estimate
         from hour_details`;
-
-        return new Promise((resolve, reject) => {
-            this.connection.query(query, (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return this._query(cmd);
     };
 
     private combineDetailsToHours(hours: HourNote[], details: HourDetail[]): void {
         for (let hour of hours) {
             hour.details = details.filter(detail => detail.hour_id === hour.id);
         }
-
     }
 }

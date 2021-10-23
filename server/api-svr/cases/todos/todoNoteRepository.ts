@@ -1,28 +1,24 @@
 import { Connection } from 'mysql';
+import { store } from '../../lib/utilities';
 import { TodoNote } from './todoNote';
 
 export default class TodoNoteRepository {
-    constructor(private connection: Connection) { }
+    private _query: <T>(query: string) => Promise<T>;
+
+    constructor(private connection: Connection) { 
+        this._query = store(connection);
+    }
 
     public async getAll(): Promise<TodoNote[]> { 
         return await this.queryTodos();
     }
 
     private queryTodos(): Promise<TodoNote[]> {
-        const query = `select 
+        const cmd = `select 
             id, 
             description, 
             done        
         from todos`;
-
-        return new Promise((resolve, reject) => {
-            this.connection.query(query, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return this._query(cmd);
     };
 }

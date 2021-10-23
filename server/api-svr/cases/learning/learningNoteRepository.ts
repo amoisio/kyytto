@@ -1,8 +1,13 @@
 import { Connection } from 'mysql';
+import { store } from '../../lib/utilities';
 import { LearningDetail, LearningNote } from './learningNote';
 
 export default class LearningNoteRepository {
-    constructor(private connection: Connection) { }
+    private _query: <T>(query: string) => Promise<T>;
+
+    constructor(private connection: Connection) { 
+        this._query = store(connection);
+    }
 
     public async getAll(): Promise<LearningNote[]> {
         return new Promise(async (resolve) => {
@@ -17,37 +22,19 @@ export default class LearningNoteRepository {
     }
 
     private queryTopics(): Promise<LearningNote[]> {
-        const query = `select 
+        const cmd = `select 
             id, 
             topic,
         from learning`;
-
-        return new Promise((resolve, reject) => {
-            this.connection.query(query, (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return this._query(cmd);
     };
 
     private queryDetails(): Promise<LearningDetail[]> {
-        const query = `select 
+        const cmd = `select 
             learn_id, 
             description,
         from learning_details`;
-
-        return new Promise((resolve, reject) => {
-            this.connection.query(query, (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return this._query(cmd);
     };
 
     private combineDetailsToTopics(topics: LearningNote[], details: LearningDetail[]): void {
