@@ -6,6 +6,7 @@ export default class LinkBuilder {
 
     private segments: string[] = [];
     private query: string[][] = [[]];
+
     public addSegment(segment: string) : LinkBuilder {
         this.segments.push(segment);
         return this;
@@ -19,6 +20,12 @@ export default class LinkBuilder {
         return this;
     }
     public toString(): string {
+        return this.toUrl().toString();
+    };
+    public toPathname(): string {
+        return this.toUrl().pathname;
+    }
+    private toUrl(): URL {
         let path = this.segments.join('/');
         if (this.extension) {
             if (path === '' || path === '/') {
@@ -29,8 +36,8 @@ export default class LinkBuilder {
 
         const u = new URL(path, this.base);
         u.search = this.query.map(pair => pair.join('=')).join('&');
-        return u.toString();
-    };
+        return u;
+    }   
 }
 
 export const lastSegment = (id: string): string => {

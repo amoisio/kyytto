@@ -1,7 +1,9 @@
 import express, { Express } from 'express';
 import * as mysql from 'mysql';
-import * as links from './lib/linkBuilder';
+import LinkBuilder, * as links from './lib/linkBuilder';
 import logger from 'morgan';
+import LearningNoteRepository from './cases/learning/learningNoteRepository';
+import { LearningNotesDto } from './cases/learning/learningNoteDto';
 
 // const createError = require('http-errors');
 // const path = require('path');
@@ -16,20 +18,14 @@ import logger from 'morgan';
 // const bugRoutes = require('./routes/bug');
 
 
-// const connection: mysql.Connection = mysql.createConnection({
-//   host: process.env['SQL_HOST'],
-//   user: process.env['SQL_USERNAME'],
-//   password: process.env['SQL_PASSWORD'],
-//   database: process.env['SQL_DATABASE']
-// });
+const connection: mysql.Connection = mysql.createConnection({
+  host: process.env['SQL_HOST'],
+  user: process.env['SQL_USERNAME'],
+  password: process.env['SQL_PASSWORD'],
+  database: process.env['SQL_DATABASE']
+});
 
 const app: Express = express();
-
-// app.use((req, res, next) => {
-//   res.linkBuilder = links.builder(process.env['API_SVR_HOST'], '.json');
-//   next();
-// });
-
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -51,7 +47,13 @@ app.use((req, res, next) => {
 // app.get('/todos', todoRoutes.getTodoNotes(
 //   todoRepository.getTodoNotes(connection)));
 
-// app.get('/learning')
+app.get('/learning', async (req, res) => {
+  const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
+  const repo = new LearningNoteRepository(connection);
+  const notes = await repo.getAll();
+  const dtos = LearningNotesDto.CreateFrom(notes, builder.addSegment('/learning'));
+  res.json(dtos);
+});
 
 // app.get('/bugs/:pagekey', bugsRoutes.getPage(
 //   bugsRepository.getBugsPage(connection)));

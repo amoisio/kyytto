@@ -1,11 +1,19 @@
 import { IResource } from "../iresource";
-import { LearningDetail, LearningNote } from "./learningNote";
+import { LearningNote } from "./learningNote";
 import LinkBuilder from "../../lib/linkBuilder";
 
 export class LearningNotesDto implements IResource {
     public href !: string;
     public rel!: string;
     public notes !: LearningNoteDto[];
+
+    public static CreateFrom(notes: LearningNote[], builder: LinkBuilder): LearningNotesDto {
+        const dto = new LearningNotesDto();
+        dto.href = builder.toString();
+        dto.rel = builder.toPathname();
+        dto.notes = notes.map(note => LearningNoteDto.CreateFrom(note, builder.addSegment(note.id)));
+        return dto;
+    }
 }
 
 export class LearningNoteDto implements IResource {
@@ -13,30 +21,13 @@ export class LearningNoteDto implements IResource {
     public rel!: string;
     public topic !: string;
     public details !: string[];
+
+    public static CreateFrom(note: LearningNote, builder: LinkBuilder): LearningNoteDto {
+        const dto = new LearningNoteDto;
+        dto.href = builder.toString();
+        dto.rel = builder.toPathname();
+        dto.topic = note.topic;
+        dto.details = note.details.map(detail => detail.description);
+        return dto;
+    }
 }
-
-// export const notesMapper = R.curry((builder: LinkBuilder, notes: LearningNote[]): LearningNotesDto => {
-//     const dtos = notes.map(note => noteMapper(builder, note));
-// }
-
-// export const noteMapper = R.curry((builder: LinkBuilder, note: LearningNote) : LearningNoteDto => {
-//     const dto = new LearningNoteDto;
-//     dto.href = builder.addSegment('learning').toString();
-//     const dto = {
-//         href: 
-//         rel: '/learning',
-//         notes: R.map(r => {
-//             return {
-//                 id: lb.addSegment(r.id).toString(),
-//                 topic: r.topic,
-
-//                 createdBy: r.createdBy,
-//                 createdOn: r.createdOn,
-//                 modifiedOn: r.modifiedOn
-//             }
-//         }, results.items)
-//     };
-// });
-
-// export const detailMapper = (detail: LearningDetail): string => 
-//     detail.description;
