@@ -7,6 +7,8 @@ import LearningNoteRepository from './cases/learning/learningNoteRepository';
 import { LearningNotesDto } from './cases/learning/learningNoteDto';
 import TodoNoteRepository from './cases/todos/todoNoteRepository';
 import { TodoNotesDto } from './cases/todos/todoNoteDto';
+import HourNoteRepository from './cases/hours/hourNoteRepository';
+import { HourNotesDto } from './cases/hours/hourNoteDto';
 
 // const createError = require('http-errors');
 // const path = require('path');
@@ -34,6 +36,14 @@ app.use((req, res, next) => {
 // app.use('/', indexRoutes);
 
 // app.get('/', indexRoutes.getRoot());
+
+app.get('/hours', async (req, res) => {
+  const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
+  const repo = new HourNoteRepository(connection);
+  const notes = await repo.getAll();
+  const dtos = HourNotesDto.CreateFrom(notes, builder.addSegment('/hours'));
+  res.json(dtos);
+});
 
 app.get('/todos', async (req, res) => {
   const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
