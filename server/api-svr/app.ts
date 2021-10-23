@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import * as mysql from 'mysql';
-import * as links from './lib/links';
+import * as links from './lib/linkBuilder';
 import logger from 'morgan';
 
 // const createError = require('http-errors');
