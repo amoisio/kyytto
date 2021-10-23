@@ -2,20 +2,16 @@ import express, { Express } from 'express';
 import * as mysql from 'mysql';
 import LinkBuilder, * as links from './lib/linkBuilder';
 import logger from 'morgan';
+
 import LearningNoteRepository from './cases/learning/learningNoteRepository';
 import { LearningNotesDto } from './cases/learning/learningNoteDto';
+import TodoNoteRepository from './cases/todos/todoNoteRepository';
+import { TodoNotesDto } from './cases/todos/todoNoteDto';
 
 // const createError = require('http-errors');
 // const path = require('path');
 
-// const todoRepository = require('./lib/todoNoteRepo');
-// const bugsRepository = require('./lib/bugs');
-// const usersRepository = require('./lib/users');
-
 // const indexRoutes = require('./routes/index');
-// const todoRoutes = require('./routes/todoNotes');
-// const learningRoutes = require('./routes/learningNotes');
-// const bugRoutes = require('./routes/bug');
 
 
 const connection: mysql.Connection = mysql.createConnection({
@@ -25,7 +21,7 @@ const connection: mysql.Connection = mysql.createConnection({
   database: process.env['SQL_DATABASE']
 });
 
-const app: Express = express();
+export const app: Express = express();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -39,13 +35,13 @@ app.use((req, res, next) => {
 
 // app.get('/', indexRoutes.getRoot());
 
-// app.get('/todos', (req, res, next) => {
-
-// });
-
-
-// app.get('/todos', todoRoutes.getTodoNotes(
-//   todoRepository.getTodoNotes(connection)));
+app.get('/todos', async (req, res) => {
+  const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
+  const repo = new TodoNoteRepository(connection);
+  const notes = await repo.getAll();
+  const dtos = TodoNotesDto.CreateFrom(notes, builder.addSegment('/todos'));
+  res.json(dtos);
+});
 
 app.get('/learning', async (req, res) => {
   const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
@@ -53,20 +49,4 @@ app.get('/learning', async (req, res) => {
   const notes = await repo.getAll();
   const dtos = LearningNotesDto.CreateFrom(notes, builder.addSegment('/learning'));
   res.json(dtos);
-});
-
-// app.get('/bugs/:pagekey', bugsRoutes.getPage(
-//   bugsRepository.getBugsPage(connection)));
-
-// app.post('/bugs', bugsRoutes.postBug(
-//   bugRepository.saveBug(connection)));
-
-// app.get('/bug/:bugid', bugRoutes.getBug(
-//   bugRepository.getBug(connection)));
-
-// app.put('/bug/:bugid', bugRoutes.putBug(
-//   bugRepository.saveBug(connection)));
-
-
-module.exports = app;
-  
+});  
