@@ -1,6 +1,7 @@
 export default class LinkBuilder {
     constructor (
         private base : string,
+        private port : string = '80',
         private extension ?: string
     ) {}
 
@@ -40,6 +41,7 @@ export default class LinkBuilder {
         }
 
         const u = new URL(path, this.base);
+        u.port = this.port;
         u.search = this.query.map(pair => pair.join('=')).join('&');
         return u;
     }   
