@@ -23,7 +23,7 @@ export default class HourNoteRepository {
     private queryHours(): Promise<HourNote[]> {
         const cmd = `select 
             id, 
-            date,
+            date
         from hours`;
         return this._query(cmd);
     };

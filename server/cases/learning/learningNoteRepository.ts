@@ -24,7 +24,7 @@ export default class LearningNoteRepository {
     private queryTopics(): Promise<LearningNote[]> {
         const cmd = `select 
             id, 
-            topic,
+            topic
         from learning`;
         return this._query(cmd);
     };
@@ -32,7 +32,7 @@ export default class LearningNoteRepository {
     private queryDetails(): Promise<LearningDetail[]> {
         const cmd = `select 
             learn_id, 
-            description,
+            description
         from learning_details`;
         return this._query(cmd);
     };
