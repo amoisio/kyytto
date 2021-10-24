@@ -1,39 +1,14 @@
 #!/usr/bin/env node
+import { app } from './app';
+import { debug } from 'debug';
+import http from 'http';
 
-/**
- * Module dependencies.
- */
-
-var app = require('../app');
-var debug = require('debug')('api-svr:server');
-var http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '8080');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+const logger = debug('api-svr:server');
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
-function normalizePort(val) {
+const normalizePort = (val: string): number | string | false => {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -47,13 +22,12 @@ function normalizePort(val) {
   }
 
   return false;
-}
+};
 
 /**
  * Event listener for HTTP server "error" event.
  */
-
-function onError(error) {
+const onError = (error: any) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -75,16 +49,33 @@ function onError(error) {
     default:
       throw error;
   }
-}
+};
 
 /**
  * Event listener for HTTP server "listening" event.
  */
-
-function onListening() {
-  var addr = server.address();
+const onListening = () => {
+  var addr = server.address()!;
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger('Listening on ' + bind);
 }
+
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(process.env.PORT || '8080');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
