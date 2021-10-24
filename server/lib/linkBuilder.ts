@@ -11,6 +11,11 @@ export default class LinkBuilder {
         this.segments.push(segment);
         return this;
     }
+    public withSegments(...segments: string[]): LinkBuilder {
+        this.segments = segments.map(s => s);
+        return this;
+    }
+
     public addQuery(pair: [string, string]): LinkBuilder {
         this.query.push(pair);
         return this;

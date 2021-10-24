@@ -9,12 +9,7 @@ import TodoNoteRepository from './cases/todos/todoNoteRepository';
 import { TodoNotesDto } from './cases/todos/todoNoteDto';
 import HourNoteRepository from './cases/hours/hourNoteRepository';
 import { HourNotesDto } from './cases/hours/hourNoteDto';
-
-// const createError = require('http-errors');
-// const path = require('path');
-
-// const indexRoutes = require('./routes/index');
-
+import { PageDto } from './cases/navigation/pageDto';
 
 const connection: mysql.Connection = mysql.createConnection({
   host: process.env['SQL_HOST'],
@@ -33,15 +28,20 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use('/', indexRoutes);
-
-// app.get('/', indexRoutes.getRoot());
+app.get('/', (req, res) => {
+  const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
+  const dto = PageDto.Create('index', builder);
+  dto.pages.push(PageDto.Create("todos", builder.withSegments('/todos')));
+  dto.pages.push(PageDto.Create("hours", builder.withSegments('/hours')));
+  dto.pages.push(PageDto.Create("learning", builder.withSegments('/learning')));
+  res.json(dto);
+});
 
 app.get('/hours', async (req, res) => {
   const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
   const repo = new HourNoteRepository(connection);
   const notes = await repo.getAll();
-  const dtos = HourNotesDto.CreateFrom(notes, builder.addSegment('/hours'));
+  const dtos = HourNotesDto.CreateFrom(notes, builder.addSegment(req.baseUrl));
   res.json(dtos);
 });
 
@@ -49,7 +49,7 @@ app.get('/todos', async (req, res) => {
   const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
   const repo = new TodoNoteRepository(connection);
   const notes = await repo.getAll();
-  const dtos = TodoNotesDto.CreateFrom(notes, builder.addSegment('/todos'));
+  const dtos = TodoNotesDto.CreateFrom(notes, builder.addSegment(req.baseUrl));
   res.json(dtos);
 });
 
@@ -57,6 +57,6 @@ app.get('/learning', async (req, res) => {
   const builder = new LinkBuilder(process.env['API_SVR_HOST']!, '.json');
   const repo = new LearningNoteRepository(connection);
   const notes = await repo.getAll();
-  const dtos = LearningNotesDto.CreateFrom(notes, builder.addSegment('/learning'));
+  const dtos = LearningNotesDto.CreateFrom(notes, builder.addSegment(req.baseUrl));
   res.json(dtos);
 });  
