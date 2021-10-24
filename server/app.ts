@@ -39,9 +39,9 @@ app.get('/', (req, res) => {
   const builder = getLinkBuilder();
   const dto = PageDto.Create('index', builder);
   dto.pages = [];
-  dto.pages.push(PageDto.Create("todos", builder.withSegments('/todos')));
-  dto.pages.push(PageDto.Create("hours", builder.withSegments('/hours')));
-  dto.pages.push(PageDto.Create("learning", builder.withSegments('/learning')));
+  dto.pages.push(PageDto.Create("todos", builder.addSegment('/todos')));
+  dto.pages.push(PageDto.Create("hours", builder.addSegment('/hours')));
+  dto.pages.push(PageDto.Create("learning", builder.addSegment('/learning')));
   res.json(dto);
 });
 

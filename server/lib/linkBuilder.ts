@@ -9,21 +9,19 @@ export default class LinkBuilder {
     private query: string[][] = [[]];
 
     public addSegment(segment: string) : LinkBuilder {
-        this.segments.push(segment);
-        return this;
+        const copy = this.copy();
+        copy.segments.push(segment); 
+        return copy;
     }
-    public withSegments(...segments: string[]): LinkBuilder {
-        this.segments = segments.map(s => s);
-        return this;
-    }
-
     public addQuery(pair: [string, string]): LinkBuilder {
-        this.query.push(pair);
-        return this;
+        const copy = this.copy();
+        copy.query.push(pair);
+        return copy;
     };
     public overrideExtension(extension: string): LinkBuilder {
-        this.extension = extension;
-        return this;
+        const copy = this.copy();
+        copy.extension = extension;
+        return copy;
     }
     public toString(): string {
         return this.toUrl().toString();
@@ -44,7 +42,13 @@ export default class LinkBuilder {
         u.port = this.port;
         u.search = this.query.map(pair => pair.join('=')).join('&');
         return u;
-    }   
+    }
+    private copy() : LinkBuilder {
+        const builder = new LinkBuilder(this.base, this.port, this.extension);
+        builder.segments = this.segments.map(s => s);
+        builder.query = this.query.map(q => q.map(p => p));
+        return builder;
+    }
 }
 
 export const lastSegment = (id: string): string => {
