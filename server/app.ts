@@ -11,6 +11,7 @@ import HourNoteRepository from './cases/hours/hourNoteRepository';
 import { HourNotesDto } from './cases/hours/hourNoteDto';
 import { PageDto } from './cases/navigation/pageDto';
 import { TodoNote } from './cases/todos/todoNote';
+import { NewTodo } from './cases/todos/newTodo';
 
 const connection: mysql.Connection = mysql.createConnection({
   host: process.env['SQL_HOST'],
@@ -75,10 +76,18 @@ app.get('/todos/:id', async (req, res) => {
 
 // Create a new todo note => redirect to get the new note
 app.post('/todos', async (req, res) => {
-  const note = req.body as string;
+  const todo = req.body as NewTodo;
   const repo = new TodoNoteRepository(connection);
-  const id = await repo.create(note);
+  const id = await repo.create(todo.description);
   res.redirect(`/todos/${id}`);
+});
+
+// Update an note
+app.put('/todos/:id', async (req, res) => {
+  const id = req.params['id'];
+  const repo = new TodoNoteRepository(connection);
+  const note = req.body as TodoNote;
+  await repo.update(note);
 });
 
 app.get('/learning', async (req, res) => {

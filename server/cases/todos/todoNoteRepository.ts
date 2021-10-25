@@ -22,7 +22,10 @@ export default class TodoNoteRepository {
 
     public async get(id: string): Promise<TodoNote> {
         const cmd = this.selectOneQuery(id);
-        return await this._query(cmd);
+        const results = await this._query(cmd) as any[];
+        return results.length > 0
+            ? results[0]
+            : undefined;
     }
 
     private selectOneQuery = (id: string) => `
@@ -35,17 +38,15 @@ export default class TodoNoteRepository {
         const note = new TodoNote();
         note.id = uuidv4();
         note.description = description;
-
         const cmd = this.insertQuery(note);
         await this._query(cmd);
-
         return note.id;
     }
 
     private insertQuery = (note: TodoNote) => `
         insert into 
-        todos (id, description)
-        values ('${note.id}', '${note.description});`;
+        todos (id, description, done)
+        values ('${note.id}', '${note.description}', 0);`;
 
     public async update(note: TodoNote): Promise<void> {
         const cmd = this.updateQuery(note);
