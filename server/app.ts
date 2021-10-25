@@ -6,10 +6,11 @@ import logger from 'morgan';
 import LearningNoteRepository from './cases/learning/learningNoteRepository';
 import { LearningNotesDto } from './cases/learning/learningNoteDto';
 import TodoNoteRepository from './cases/todos/todoNoteRepository';
-import { TodoNotesDto } from './cases/todos/todoNoteDto';
+import { TodoNoteDto, TodoNotesDto } from './cases/todos/todoNoteDto';
 import HourNoteRepository from './cases/hours/hourNoteRepository';
 import { HourNotesDto } from './cases/hours/hourNoteDto';
 import { PageDto } from './cases/navigation/pageDto';
+import { TodoNote } from './cases/todos/todoNote';
 
 const connection: mysql.Connection = mysql.createConnection({
   host: process.env['SQL_HOST'],
@@ -53,12 +54,31 @@ app.get('/hours', async (req, res) => {
   res.json(dtos);
 });
 
+// Get all todo notes
 app.get('/todos', async (req, res) => {
   const builder = getLinkBuilder();
   const repo = new TodoNoteRepository(connection);
   const notes = await repo.getAll();
   const dtos = TodoNotesDto.CreateFrom(notes, builder.addSegment(req.originalUrl));
   res.json(dtos);
+});
+
+// Get a single todo note
+app.get('/todos/:id', async (req, res) => {
+  const builder = getLinkBuilder();
+  const repo = new TodoNoteRepository(connection);
+  const id = req.params['id'];
+  const note = await repo.get(id);
+  const dto = TodoNoteDto.CreateFrom(note, builder.addSegment(req.originalUrl));
+  res.json(dto);
+});
+
+// Create a new todo note => redirect to get the new note
+app.post('/todos', async (req, res) => {
+  const note = req.body as string;
+  const repo = new TodoNoteRepository(connection);
+  const id = await repo.create(note);
+  res.redirect(`/todos/${id}`);
 });
 
 app.get('/learning', async (req, res) => {
