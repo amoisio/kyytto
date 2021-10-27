@@ -16,20 +16,8 @@ import { NewTodo } from './cases/todos/newTodo';
 import UnitOfWork from './lib/unitOfWork';
 import { NewHour } from './cases/hours/newHour';
 import { HourDetail, HourNote } from './cases/hours/hourNote';
-
-const getLinkBuilder = (): LinkBuilder => {
-  const host = process.env['API_SERVER_HOST']!;
-  const port = process.env['API_SERVER_PORT']!;
-  const builder = new LinkBuilder(host, port);
-  return builder;
-}
-
-const connectionFactory = (): Promise<mysql.Connection> => mysql.createConnection({
-  host: process.env['SQL_HOST'],
-  user: process.env['SQL_USERNAME'],
-  password: process.env['SQL_PASSWORD'],
-  database: process.env['SQL_DATABASE']
-});
+import { router as hourNoteRoutes } from './cases/hours/hourNoteRoutes';
+import { getLinkBuilder } from './lib/utilities';
 
 export const app: Express = express();
 
@@ -41,14 +29,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  req.app.locals['link-builder'] = getLinkBuilder();
-  next();
-});
-
 
 app.get('/', (req, res) => {
-  const lb = req.app.locals['link-builder'] as LinkBuilder;
+  const lb = getLinkBuilder();
   const dto = PageDto.Create('index', lb);
   dto.pages = [];
   dto.pages.push(PageDto.Create("todos", lb.addSegment('/todos')));
@@ -57,53 +40,10 @@ app.get('/', (req, res) => {
   res.json(dto);
 });
 
-app.get('/hours', async (req, res) => {
-  const uow = await UnitOfWork.startSession(connectionFactory);
-  const repo = uow.hourNoteRepository;
-  const notes = await repo.getAll();
-  await uow.closeSession();
-  
-  const lb = req.app.locals['link-builder'] as LinkBuilder;
-  const dtos = HourNotesDto.CreateFrom(notes, lb.addSegment(req.originalUrl));
-  res.json(dtos);
-});
 
-app.get('/hours/:id', async (req, res) => {
-  const id = req.params['id'];
-  
-  const uow = await UnitOfWork.startSession(connectionFactory);
-  const repo = uow.hourNoteRepository;
-  const note = await repo.get(id);
-  await uow.closeSession();
+app.use(hourNoteRoutes);
 
-  const lb = req.app.locals['link-builder'] as LinkBuilder;
-  const dtos = HourNoteDto.CreateFrom(note, lb.addSegment(req.originalUrl));
-  res.json(dtos);
-});
-
-app.post('/hours', async (req, res) => {
-  const hour = req.body as NewHour;
-  const note = new HourNote(uuidv4(), hour.date);
-  note.addDetail(hour.description, hour.estimate);
-  
-  const uow = await UnitOfWork.startSession(connectionFactory);
-  const repo = uow.hourNoteRepository;
-  const id = await repo.create(note);
-  await uow.closeSession();
-
-  res.redirect(`/hours/${id}`);
-});
-
-
-app.put('/hours/:id', async (req, res) => {
-  const note = req.body as HourNote;
-
-  const uow = await UnitOfWork.startSession(connectionFactory);
-  const repo = uow.hourNoteRepository;
-  await repo.update(note);
-  await uow.closeSession();
-  res.end();
-});
+// 
 
 // // Get all todo notes
 // app.get('/todos', async (req, res) => {
