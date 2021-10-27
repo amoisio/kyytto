@@ -94,6 +94,17 @@ app.post('/hours', async (req, res) => {
   res.redirect(`/hours/${id}`);
 });
 
+
+app.put('/hours/:id', async (req, res) => {
+  const note = req.body as HourNote;
+
+  const uow = await UnitOfWork.startSession(connectionFactory);
+  const repo = uow.hourNoteRepository;
+  await repo.update(note);
+  await uow.closeSession();
+  res.end();
+});
+
 // // Get all todo notes
 // app.get('/todos', async (req, res) => {
 //   const builder = req.app.locals['link-builder'] as LinkBuilder;
@@ -124,13 +135,6 @@ app.post('/hours', async (req, res) => {
 //   res.redirect(`/todos/${id}`);
 // });
 
-// // Update an note
-// app.put('/todos/:id', async (req, res) => {
-//   const id = req.params['id'];
-//   const repo = new TodoNoteRepository(connection);
-//   const note = req.body as TodoNote;
-//   await repo.update(note);
-// });
 
 // app.get('/learning', async (req, res) => {
 //   const builder = req.app.locals['link-builder'] as LinkBuilder;

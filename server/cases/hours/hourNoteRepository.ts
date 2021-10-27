@@ -75,9 +75,33 @@ export default class HourNoteRepository implements IRepository<HourNote>{
         values (?, ?, ?);`;
 
     public async update(item: HourNote): Promise<void> {
+        await this.connection.beginTransaction();
 
+        try {
+            await this.connection.execute(
+                this.updateHour, [item.date, item.id]);
+
+            await this.connection.execute(
+                this.deleteDetails, [item.id]);
+
+            for (let detail of item.details) {
+                await this.connection.execute(
+                    this.insertDetail, [detail.hour_id, detail.description, detail.estimate]);
+            }
+            await this.connection.commit();
+        } catch {
+            await this.connection.rollback();
+        }
     }
 
+    private updateHour = `
+        update hours 
+        set date = ?
+        where id = ?;`;
+
+    private deleteDetails = `
+        delete from hour_details
+        where hour_id = ?;`
 
     private constructHours(rows: RowDataPacket[]): HourNote[] {
         const arr: HourNote[] = [];
