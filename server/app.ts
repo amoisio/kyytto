@@ -47,12 +47,3 @@ app.use(hourNoteRoutes);
 //   const id = await repo.create(note);
 //   res.redirect(`/todos/${id}`);
 // });
-
-
-// app.get('/learning', async (req, res) => {
-//   const builder = req.app.locals['link-builder'] as LinkBuilder;
-//   const repo = new LearningNoteRepository(connection);
-//   const notes = await repo.getAll();
-//   const dtos = LearningNotesDto.CreateFrom(notes, builder.addSegment(req.originalUrl));
-//   res.json(dtos);
-// });  
