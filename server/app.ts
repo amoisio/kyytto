@@ -1,23 +1,7 @@
 import express, { Express } from 'express';
-import * as mysql from 'mysql2/promise';
-import LinkBuilder, * as links from './lib/linkBuilder';
 import logger from 'morgan';
-import { v4 as uuidv4 } from 'uuid';
-
-import LearningNoteRepository from './cases/learning/learningNoteRepository';
-import { LearningNotesDto } from './cases/learning/learningNoteDto';
-import TodoNoteRepository from './cases/todos/todoNoteRepository';
-import { TodoNoteDto, TodoNotesDto } from './cases/todos/todoNoteDto';
-import HourNoteRepository from './cases/hours/hourNoteRepository';
-import { HourNoteDto, HourNotesDto } from './cases/hours/hourNoteDto';
-import { PageDto } from './cases/navigation/pageDto';
-import { TodoNote } from './cases/todos/todoNote';
-import { NewTodo } from './cases/todos/newTodo';
-import UnitOfWork from './lib/unitOfWork';
-import { NewHour } from './cases/hours/newHour';
-import { HourDetail, HourNote } from './cases/hours/hourNote';
+import { router as indexRoutes } from './cases/navigation/indexRoutes';
 import { router as hourNoteRoutes } from './cases/hours/hourNoteRoutes';
-import { getLinkBuilder } from './lib/utilities';
 
 export const app: Express = express();
 
@@ -29,18 +13,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.get('/', (req, res) => {
-  const lb = getLinkBuilder();
-  const dto = PageDto.Create('index', lb);
-  dto.pages = [];
-  dto.pages.push(PageDto.Create("todos", lb.addSegment('/todos')));
-  dto.pages.push(PageDto.Create("hours", lb.addSegment('/hours')));
-  dto.pages.push(PageDto.Create("learning", lb.addSegment('/learning')));
-  res.json(dto);
-});
-
-
+app.use(indexRoutes);
 app.use(hourNoteRoutes);
 
 // 

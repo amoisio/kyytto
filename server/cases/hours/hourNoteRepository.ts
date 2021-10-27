@@ -7,7 +7,6 @@ export default class HourNoteRepository implements IRepository<HourNote>{
 
     }
 
-
     public async getAll(): Promise<HourNote[]> {
         const cmd = this.selectHours;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd);
