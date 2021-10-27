@@ -1,7 +1,18 @@
 export class HourNote {
-    public id !: string;
-    public date !: Date;
-    public details !: HourDetail[];
+    constructor(
+        public id : string,
+        public date : Date) {
+        this.details = [];
+    }
+    public details : HourDetail[];
+
+    public addDetail(description: string, estimate ?: number) {
+        const detail = new HourDetail();
+        detail.hour_id = this.id;
+        detail.description = description;
+        detail.estimate = estimate;
+        this.details.push(detail);
+    }
 }
 
 export class HourDetail {
