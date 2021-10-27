@@ -1,6 +1,6 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
 import IRepository from '../irepository';
-import { HourDetail, HourNote } from './hourNote';
+import { HourNote } from './hourNote';
 export default class HourNoteRepository implements IRepository<HourNote>{
 
     constructor(private connection: Connection) {

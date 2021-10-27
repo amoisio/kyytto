@@ -1,42 +1,60 @@
-import { Connection } from 'mysql';
 import { store } from '../../lib/utilities';
 import { LearningDetail, LearningNote } from './learningNote';
 import { v4 as uuidv4 } from 'uuid';
+import IRepository from '../irepository';
+import { Connection, RowDataPacket } from 'mysql2/promise';
 
-export default class LearningNoteRepository {
-    private _query: <T>(query: string) => Promise<T>;
+export default class LearningNoteRepository implements IRepository<LearningNote> {
 
     constructor(private connection: Connection) { 
-        this._query = store(connection);
+
     }
 
     public async getAll(): Promise<LearningNote[]> {
-        return new Promise(async (resolve) => {
-            const query = Promise.all<LearningNote[], LearningDetail[]>([
-                this._query(this.selectTopicsQuery()),
-                this._query(this.selectDetailsQuery())
-            ]);
-            const [topics, details] = await query;
-            this.combineDetailsToTopics(topics, details);
-            return resolve(topics);
-        });
+        const cmd = this.selectTopics;
+        const rowData = await this.connection.execute<RowDataPacket[]>(cmd);
+        if (rowData[0].length == 0) {
+            return [];
+        } else {
+            const results = this.constructNotes(rowData[0])
+            return results;
+        }
     }
 
-    private selectTopicsQuery = () => `
-        select 
-            id, 
-            topic
-        from learning`;
+    private selectTopics = `
+        select l.id, l.topic, d.learn_id, d.description
+        from 
+            learning l inner join 
+            learning_details d on l.id = d.learn_id
+        order by l.topic;`;
 
-    private selectDetailsQuery = () => `
-        select 
-            learn_id, 
-            description
-        from learning_details`
+    get(id: string): Promise<LearningNote> {
+        throw new Error('Method not implemented.');
+    }
+    create(item: LearningNote): Promise<string> {
+        throw new Error('Method not implemented.');
+    }
+    update(item: LearningNote): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
 
-    private combineDetailsToTopics(topics: LearningNote[], details: LearningDetail[]): void {
-        for (let topic of topics) {
-            topic.details = details.filter(detail => detail.learn_id === topic.id);
+    private constructNotes(rows: RowDataPacket[]): LearningNote[] {
+        const arr: LearningNote[] = [];
+        const map = new Map<string, LearningNote>();
+
+        for (let row of rows) {
+            let id = row.id;
+            let note: LearningNote;
+            if (map.has(id)) {
+                note = map.get(id)!;
+            } else {
+                note = new LearningNote(id, row.topic);
+                arr.push(note);
+                map.set(note.id, note);
+            }
+
+            note.addDetail(row.description);
         }
+        return arr;
     }
 }

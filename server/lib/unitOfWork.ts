@@ -1,5 +1,6 @@
 import { Connection } from "mysql2/promise";
 import HourNoteRepository from "../cases/hours/hourNoteRepository";
+import LearningNoteRepository from "../cases/learning/learningNoteRepository";
 
 export default class UnitOfWork {
 
@@ -12,10 +13,13 @@ export default class UnitOfWork {
         uow.connection  = await connectionFactory();
         await uow.connection.connect();
         uow.hourNoteRepository = new HourNoteRepository(uow.connection);
+        uow.learningNoteRepository = new LearningNoteRepository(uow.connection);
         return uow;
     }
 
     public hourNoteRepository !: HourNoteRepository;
+    public learningNoteRepository !: LearningNoteRepository;
+
 
     public async closeSession() : Promise<void> {
         this.connection.end();
