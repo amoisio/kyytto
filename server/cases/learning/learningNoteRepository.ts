@@ -9,7 +9,7 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
     }
 
     public async getAll(): Promise<LearningNote[]> {
-        const cmd = this.selectTopics;
+        const cmd = this.selectAll;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd);
         if (rowData[0].length == 0) {
             return [];
@@ -19,7 +19,7 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
         }
     }
 
-    private selectTopics = `
+    private selectAll = `
         select l.id, l.topic, d.learn_id, d.description
         from 
             learning l inner join 
@@ -27,7 +27,7 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
         order by l.topic;`;
 
     public async get(id: string): Promise<LearningNote> {
-        const cmd = this.selectTopicById;
+        const cmd = this.selectNoteById;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
         if (rowData[0].length == 0) {
             throw new Error(`No LearningNote found for ${id}.`);
@@ -37,7 +37,7 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
         }
     }
 
-    private selectTopicById = `
+    private selectNoteById = `
         select l.id, l.topic, d.learn_id, d.description
         from 
             learning l inner join 
@@ -45,14 +45,14 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
         where
             l.id = ?;`;
 
-    public async create(item: LearningNote): Promise<string> {
+    public async create(note: LearningNote): Promise<string> {
         await this.connection.beginTransaction();
 
         try {
             await this.connection.execute(
-                this.insertTopic, [item.id, item.topic]);
+                this.insertNote, [note.id, note.topic]);
 
-            for (let detail of item.details) {
+            for (let detail of note.details) {
                 await this.connection.execute(
                     this.insertDetail, [detail.learn_id, detail.description]);
             }
@@ -61,10 +61,10 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
             await this.connection.rollback();
         }
 
-        return item.id;
+        return note.id;
     }
 
-    private insertTopic = `
+    private insertNote = `
         insert into learning (id, topic)
         values (?, ?);`;
 
@@ -72,17 +72,17 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
         insert into learning_details (learn_id, description)
         values (?, ?);`;
 
-    public async update(item: LearningNote): Promise<void> {
+    public async update(note: LearningNote): Promise<void> {
         await this.connection.beginTransaction();
 
         try {
             await this.connection.execute(
-                this.updateTopic, [item.topic, item.id]);
+                this.updateNote, [note.topic, note.id]);
 
             await this.connection.execute(
-                this.deleteDetails, [item.id]);
+                this.deleteDetails, [note.id]);
 
-            for (let detail of item.details) {
+            for (let detail of note.details) {
                 await this.connection.execute(
                     this.insertDetail, [detail.learn_id, detail.description]);
             }
@@ -92,7 +92,7 @@ export default class LearningNoteRepository implements IRepository<LearningNote>
         }
     }
 
-    private updateTopic = `
+    private updateNote = `
         update learning
         set topic = ?
         where id = ?;`;

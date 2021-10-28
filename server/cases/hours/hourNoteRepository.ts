@@ -8,17 +8,17 @@ export default class HourNoteRepository implements IRepository<HourNote>{
     }
 
     public async getAll(): Promise<HourNote[]> {
-        const cmd = this.selectHours;
+        const cmd = this.selectAll;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd);
         if (rowData[0].length == 0) {
             return [];
         } else {
-            const results = this.constructHours(rowData[0])
+            const results = this.constructNotes(rowData[0])
             return results;
         }
     }
 
-    private selectHours = `
+    private selectAll = `
         select h.id, h.date, d.hour_id, d.description, d.estimate
         from 
             hours h inner join 
@@ -27,17 +27,17 @@ export default class HourNoteRepository implements IRepository<HourNote>{
 
 
     public async get(id: string): Promise<HourNote> {
-        const cmd = this.selectHoursById;
+        const cmd = this.selectNoteById;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
         if (rowData[0].length == 0) {
             throw new Error(`No HourNote found for ${id}.`);
         } else {
-            const results = this.constructHours(rowData[0])
+            const results = this.constructNotes(rowData[0])
             return results[0];
         }
     }
 
-    private selectHoursById = `
+    private selectNoteById = `
         select h.id, h.date, d.hour_id, d.description, d.estimate
         from 
             hours h inner join 
@@ -45,14 +45,14 @@ export default class HourNoteRepository implements IRepository<HourNote>{
         where
             h.id = ?;`;
 
-    public async create(item: HourNote): Promise<string> {
+    public async create(note: HourNote): Promise<string> {
         await this.connection.beginTransaction();
 
         try {
             await this.connection.execute(
-                this.insertHour, [item.id, item.date]);
+                this.insertNote, [note.id, note.date]);
 
-            for (let detail of item.details) {
+            for (let detail of note.details) {
                 await this.connection.execute(
                     this.insertDetail, [detail.hour_id, detail.description, detail.estimate]);
             }
@@ -61,10 +61,10 @@ export default class HourNoteRepository implements IRepository<HourNote>{
             await this.connection.rollback();
         }
 
-        return item.id;
+        return note.id;
     }
 
-    private insertHour = `
+    private insertNote = `
         insert into hours (id, date)
         values (?, ?);`;
 
@@ -72,17 +72,17 @@ export default class HourNoteRepository implements IRepository<HourNote>{
         insert into hour_details (hour_id, description, estimate)
         values (?, ?, ?);`;
 
-    public async update(item: HourNote): Promise<void> {
+    public async update(note: HourNote): Promise<void> {
         await this.connection.beginTransaction();
 
         try {
             await this.connection.execute(
-                this.updateHour, [item.date, item.id]);
+                this.updateNote, [note.date, note.id]);
 
             await this.connection.execute(
-                this.deleteDetails, [item.id]);
+                this.deleteDetails, [note.id]);
 
-            for (let detail of item.details) {
+            for (let detail of note.details) {
                 await this.connection.execute(
                     this.insertDetail, [detail.hour_id, detail.description, detail.estimate]);
             }
@@ -92,7 +92,7 @@ export default class HourNoteRepository implements IRepository<HourNote>{
         }
     }
 
-    private updateHour = `
+    private updateNote = `
         update hours 
         set date = ?
         where id = ?;`;
@@ -101,7 +101,7 @@ export default class HourNoteRepository implements IRepository<HourNote>{
         delete from hour_details
         where hour_id = ?;`
 
-    private constructHours(rows: RowDataPacket[]): HourNote[] {
+    private constructNotes(rows: RowDataPacket[]): HourNote[] {
         const arr: HourNote[] = [];
         const map = new Map<string, HourNote>();
 

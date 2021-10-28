@@ -7,11 +7,11 @@ export class TodoNotesDto implements IResource {
     public rel !: string;
     public notes !: TodoNoteDto[];
 
-    public static CreateFrom(notes: TodoNote[], builder: LinkBuilder): TodoNotesDto{
+    public static createFrom(notes: TodoNote[], builder: LinkBuilder): TodoNotesDto{
         const dto = new TodoNotesDto();
         dto.href = builder.toString();
         dto.rel = builder.toPathname();
-        dto.notes = notes.map(note => TodoNoteDto.CreateFrom(note, builder.addSegment(note.id)));
+        dto.notes = notes.map(note => TodoNoteDto.createFrom(note, builder.addSegment(note.id)));
         return dto;
     }
 }
@@ -22,7 +22,7 @@ export class TodoNoteDto implements IResource {
     public description !: string;
     public done !: boolean;
 
-    public static CreateFrom(note: TodoNote, builder: LinkBuilder): TodoNoteDto {
+    public static createFrom(note: TodoNote, builder: LinkBuilder): TodoNoteDto {
         const dto = new TodoNoteDto;
         dto.href = builder.toString();
         dto.rel = builder.toPathname();

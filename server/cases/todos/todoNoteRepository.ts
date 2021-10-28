@@ -9,7 +9,7 @@ export default class TodoNoteRepository implements IRepository<TodoNote> {
     }
 
     public async getAll(): Promise<TodoNote[]> { 
-        const cmd = this.selectTodos;
+        const cmd = this.selectAll;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd);
         if (rowData[0].length == 0) {
             return [];
@@ -19,12 +19,12 @@ export default class TodoNoteRepository implements IRepository<TodoNote> {
         }
     }
     
-    private selectTodos = `
+    private selectAll = `
         select id, description, done        
         from todos`;
 
     public async get(id: string): Promise<TodoNote> {
-        const cmd = this.selectTodoById;
+        const cmd = this.selectNoteById;
         const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
         if (rowData[0].length == 0) {
             throw new Error(`No TodoNote found for ${id}.`);
@@ -34,14 +34,14 @@ export default class TodoNoteRepository implements IRepository<TodoNote> {
         }
     }
 
-    private selectTodoById = `
+    private selectNoteById = `
         select id, description, done        
         from todos
         where id = ?;`;
 
-    public async create(item: TodoNote): Promise<string> {
-        await this.connection.execute(this.insertNote, [item.id, item.description]);
-        return item.id;
+    public async create(note: TodoNote): Promise<string> {
+        await this.connection.execute(this.insertNote, [note.id, note.description]);
+        return note.id;
     }
 
     private insertNote = `

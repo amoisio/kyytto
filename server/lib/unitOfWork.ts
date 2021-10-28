@@ -23,7 +23,6 @@ export default class UnitOfWork {
     public learningNoteRepository !: LearningNoteRepository;
     public todoNoteRepository !: TodoNoteRepository;
 
-
     public async closeSession() : Promise<void> {
         this.connection.end();
     }

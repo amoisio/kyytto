@@ -15,7 +15,7 @@ router.get('/hours', async (req, res) => {
     await uow.closeSession();
 
     const lb = getLinkBuilder();
-    const dtos = HourNotesDto.CreateFrom(notes, lb.addSegment(req.originalUrl));
+    const dtos = HourNotesDto.createFrom(notes, lb.addSegment(req.originalUrl));
     res.json(dtos);
 });
 
@@ -28,7 +28,7 @@ router.get('/hours/:id', async (req, res) => {
     await uow.closeSession();
 
     const lb = getLinkBuilder();
-    const dtos = HourNoteDto.CreateFrom(note, lb.addSegment(req.originalUrl));
+    const dtos = HourNoteDto.createFrom(note, lb.addSegment(req.originalUrl));
     res.json(dtos);
 });
 

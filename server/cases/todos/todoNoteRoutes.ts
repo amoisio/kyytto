@@ -15,7 +15,7 @@ router.get('/todos', async (req, res) => {
     await uow.closeSession();
 
     const lb = getLinkBuilder();
-    const dtos = TodoNotesDto.CreateFrom(notes, lb.addSegment(req.originalUrl));
+    const dtos = TodoNotesDto.createFrom(notes, lb.addSegment(req.originalUrl));
     res.json(dtos);
 });
 
@@ -28,7 +28,7 @@ router.get('/todos/:id', async (req, res) => {
     await uow.closeSession();
 
     const lb = getLinkBuilder();
-    const dtos = TodoNoteDto.CreateFrom(note, lb.addSegment(req.originalUrl));
+    const dtos = TodoNoteDto.createFrom(note, lb.addSegment(req.originalUrl));
     res.json(dtos);
 });
 

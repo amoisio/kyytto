@@ -11,7 +11,7 @@ export class LearningNotesDto implements IResource {
         const dto = new LearningNotesDto();
         dto.href = builder.toString();
         dto.rel = builder.toPathname();
-        dto.notes = notes.map(note => LearningNoteDto.CreateFrom(note, builder.addSegment(note.id)));
+        dto.notes = notes.map(note => LearningNoteDto.createFrom(note, builder.addSegment(note.id)));
         return dto;
     }
 }
@@ -22,7 +22,7 @@ export class LearningNoteDto implements IResource {
     public topic !: string;
     public details !: string[];
 
-    public static CreateFrom(note: LearningNote, builder: LinkBuilder): LearningNoteDto {
+    public static createFrom(note: LearningNote, builder: LinkBuilder): LearningNoteDto {
         const dto = new LearningNoteDto;
         dto.href = builder.toString();
         dto.rel = builder.toPathname();

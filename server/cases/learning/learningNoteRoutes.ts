@@ -28,7 +28,7 @@ router.get('/learning/:id', async (req, res) => {
     await uow.closeSession();
 
     const lb = getLinkBuilder();
-    const dtos = LearningNoteDto.CreateFrom(note, lb.addSegment(req.originalUrl));
+    const dtos = LearningNoteDto.createFrom(note, lb.addSegment(req.originalUrl));
     res.json(dtos);
 });
 

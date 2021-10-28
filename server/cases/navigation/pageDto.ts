@@ -8,7 +8,7 @@ export class PageDto implements IResource {
     public title !: string;
     public pages ?: PageDto[];
 
-    public static Create(title: string, builder: LinkBuilder): PageDto {
+    public static create(title: string, builder: LinkBuilder): PageDto {
         const dto = new PageDto;
         dto.href = builder.toString();
         dto.rel = builder.toPathname();
