@@ -3,7 +3,7 @@ import UnitOfWork from '../../lib/unitOfWork';
 import { connectionFactory, getLinkBuilder } from '../../lib/utilities';
 import { HourNote } from './hourNote';
 import { HourNoteDto, HourNotesDto } from './hourNoteDto';
-import { NewHour } from './newHour';
+import { NewHourDto } from './newHourDto';
 import { v4 as uuidv4 } from 'uuid';
 
 export const router = express.Router();
@@ -33,9 +33,9 @@ router.get('/hours/:id', async (req, res) => {
 });
 
 router.post('/hours', async (req, res) => {
-    const hour = req.body as NewHour;
-    const note = new HourNote(uuidv4(), hour.date);
-    note.addDetail(hour.description, hour.estimate);
+    const input = req.body as NewHourDto;
+    const note = new HourNote(uuidv4(), input.date);
+    note.addDetail(input.description, input.estimate);
 
     const uow = await UnitOfWork.startSession(connectionFactory);
     const repo = uow.hourNoteRepository;
@@ -46,7 +46,8 @@ router.post('/hours', async (req, res) => {
 });
 
 router.put('/hours/:id', async (req, res) => {
-    const note = req.body as HourNote;
+    const input = req.body as HourNoteDto;
+    const note = input.toEntity();
 
     const uow = await UnitOfWork.startSession(connectionFactory);
     const repo = uow.hourNoteRepository;

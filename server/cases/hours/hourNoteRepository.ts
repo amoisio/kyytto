@@ -43,8 +43,7 @@ export default class HourNoteRepository implements IRepository<HourNote>{
             hours h inner join 
             hour_details d on h.id = d.hour_id
         where
-            h.id = ?
-        order by h.date desc;`;
+            h.id = ?;`;
 
     public async create(item: HourNote): Promise<string> {
         await this.connection.beginTransaction();

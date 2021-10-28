@@ -30,6 +30,15 @@ export class HourNoteDto implements IResource {
         dto.details = note.details.map(detail => HourDetailDto.CreateFrom(detail));
         return dto;
     }
+
+    public toEntity(): HourNote {
+        const id = LinkBuilder.lastSegment(this.href);
+        const entity = new HourNote(id, this.date);
+        for (let detail of this.details) {
+            entity.addDetail(detail.description, detail.estimate);
+        }
+        return entity;
+    }
 }
 
 export class HourDetailDto {
