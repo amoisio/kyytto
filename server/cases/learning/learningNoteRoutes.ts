@@ -3,9 +3,10 @@ import UnitOfWork from '../../lib/unitOfWork';
 import { connectionFactory, getLinkBuilder } from '../../lib/utilities';
 import { v4 as uuidv4 } from 'uuid';
 import { LearningNoteDto, LearningNotesDto } from './learningNoteDto';
+import { NewLearningDto } from './newLearningDto';
+import { LearningNote } from './learningNote';
 
 export const router = express.Router();
-
 
 router.get('/learning', async (req, res) => {
     const uow = await UnitOfWork.startSession(connectionFactory);
@@ -18,38 +19,39 @@ router.get('/learning', async (req, res) => {
     res.json(dtos);
 });
 
-// router.get('/hours/:id', async (req, res) => {
-//     const id = req.params['id'];
+router.get('/learning/:id', async (req, res) => {
+    const id = req.params['id'];
 
-//     const uow = await UnitOfWork.startSession(connectionFactory);
-//     const repo = uow.hourNoteRepository;
-//     const note = await repo.get(id);
-//     await uow.closeSession();
+    const uow = await UnitOfWork.startSession(connectionFactory);
+    const repo = uow.learningNoteRepository;
+    const note = await repo.get(id);
+    await uow.closeSession();
 
-//     const lb = getLinkBuilder();
-//     const dtos = HourNoteDto.CreateFrom(note, lb.addSegment(req.originalUrl));
-//     res.json(dtos);
-// });
+    const lb = getLinkBuilder();
+    const dtos = LearningNoteDto.CreateFrom(note, lb.addSegment(req.originalUrl));
+    res.json(dtos);
+});
 
-// router.post('/hours', async (req, res) => {
-//     const hour = req.body as NewHour;
-//     const note = new HourNote(uuidv4(), hour.date);
-//     note.addDetail(hour.description, hour.estimate);
+router.post('/learning', async (req, res) => {
+    const input = req.body as NewLearningDto;
+    const note = new LearningNote(uuidv4(), input.topic);
+    note.addDetail(input.description);
 
-//     const uow = await UnitOfWork.startSession(connectionFactory);
-//     const repo = uow.hourNoteRepository;
-//     const id = await repo.create(note);
-//     await uow.closeSession();
+    const uow = await UnitOfWork.startSession(connectionFactory);
+    const repo = uow.learningNoteRepository;
+    const id = await repo.create(note);
+    await uow.closeSession();
 
-//     res.redirect(`/hours/${id}`);
-// });
+    res.redirect(`/learning/${id}`);
+});
 
-// router.put('/hours/:id', async (req, res) => {
-//     const note = req.body as HourNote;
+router.put('/learning/:id', async (req, res) => {
+    const dto = req.body as LearningNoteDto;
+    const note = dto.toEntity();
 
-//     const uow = await UnitOfWork.startSession(connectionFactory);
-//     const repo = uow.hourNoteRepository;
-//     await repo.update(note);
-//     await uow.closeSession();
-//     res.end();
-// });
+    const uow = await UnitOfWork.startSession(connectionFactory);
+    const repo = uow.learningNoteRepository;
+    await repo.update(note);
+    await uow.closeSession();
+    res.end();
+});

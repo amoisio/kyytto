@@ -30,4 +30,13 @@ export class LearningNoteDto implements IResource {
         dto.details = note.details.map(detail => detail.description);
         return dto;
     }
+
+    public toEntity(): LearningNote {
+        const id = LinkBuilder.lastSegment(this.href);
+        const entity = new LearningNote(id, this.topic);
+        for(let detail of this.details) {
+            entity.addDetail(detail);
+        }
+        return entity;
+    }
 }

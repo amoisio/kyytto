@@ -49,13 +49,14 @@ export default class LinkBuilder {
         builder.query = this.query.map(q => q.map(p => p));
         return builder;
     }
+
+    public static lastSegment = (id: string): string => {
+        const fragments = id.split('/');
+        const t = fragments[fragments.length - 1];
+        if (t.indexOf('.') > 0) {
+            return t.slice(0, t.indexOf('.'));
+        }
+        return t;
+    };
 }
 
-export const lastSegment = (id: string): string => {
-    const fragments = id.split('/');
-    const t = fragments[fragments.length - 1];
-    if(t.indexOf('.') > 0){
-        return t.slice(0, t.indexOf('.'));
-    }
-    return t;
-};
