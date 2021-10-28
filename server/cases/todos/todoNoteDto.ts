@@ -31,4 +31,10 @@ export class TodoNoteDto implements IResource {
         return dto;
     }
 
+    public toEntity(): TodoNote {
+        const id = LinkBuilder.lastSegment(this.href);
+        const entity = new TodoNote(id, this.description, this.done);
+        return entity;
+    }
+
 }

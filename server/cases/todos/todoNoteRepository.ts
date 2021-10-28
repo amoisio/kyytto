@@ -1,61 +1,69 @@
-import { Connection } from 'mysql';
-import { store } from '../../lib/utilities';
+import { Connection, RowDataPacket } from 'mysql2/promise';
+import IRepository from '../irepository';
 import { TodoNote } from './todoNote';
-import { v4 as uuidv4 } from 'uuid';
 
-export default class TodoNoteRepository {
-    private _query: <T>(query: string) => Promise<T>;
+export default class TodoNoteRepository implements IRepository<TodoNote> {
 
     constructor(private connection: Connection) { 
-        this._query = store(connection);
+
     }
 
     public async getAll(): Promise<TodoNote[]> { 
-        const cmd = this.selectQuery();
-        return await this._query(cmd);
+        const cmd = this.selectTodos;
+        const rowData = await this.connection.execute<RowDataPacket[]>(cmd);
+        if (rowData[0].length == 0) {
+            return [];
+        } else {
+            const results = this.constructNotes(rowData[0])
+            return results;
+        }
     }
     
-    private selectQuery = () => `
-        select 
-            id, description, done        
+    private selectTodos = `
+        select id, description, done        
         from todos`;
 
     public async get(id: string): Promise<TodoNote> {
-        const cmd = this.selectOneQuery(id);
-        const results = await this._query(cmd) as any[];
-        return results.length > 0
-            ? results[0]
-            : undefined;
+        const cmd = this.selectTodoById;
+        const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
+        if (rowData[0].length == 0) {
+            throw new Error(`No TodoNote found for ${id}.`);
+        } else {
+            const results = this.constructNotes(rowData[0])
+            return results[0];
+        }
     }
 
-    private selectOneQuery = (id: string) => `
-        select 
-            id, description, done        
+    private selectTodoById = `
+        select id, description, done        
         from todos
-        where id = '${id}'`;
+        where id = ?;`;
 
-    public async create(description: string): Promise<string> {
-        const note = new TodoNote();
-        note.id = uuidv4();
-        note.description = description;
-        const cmd = this.insertQuery(note);
-        await this._query(cmd);
-        return note.id;
+    public async create(item: TodoNote): Promise<string> {
+        await this.connection.execute(this.insertNote, [item.id, item.description]);
+        return item.id;
     }
 
-    private insertQuery = (note: TodoNote) => `
-        insert into 
-        todos (id, description, done)
-        values ('${note.id}', '${note.description}', 0);`;
+    private insertNote = `
+        insert into todos (id, description)
+        values (?, ?);`;
 
     public async update(note: TodoNote): Promise<void> {
-        const cmd = this.updateQuery(note);
-        return this._query(cmd);        
+        await this.connection.execute(this.updateQuery, [note.description, note.done, note.id]);
     }
 
-    private updateQuery = (note: TodoNote) => `
+    private updateQuery = `
         update todos
-        set description = '${note.description}',
-            done = ${note.done}
-        where id = '${note.id}';`;
+        set description = ?,
+            done = ?
+        where id = ?;`;
+
+    private constructNotes(rows: RowDataPacket[]): TodoNote[] {
+        const arr: TodoNote[] = [];
+        for (let row of rows) {
+            let note = new TodoNote(row.id, row.description, row.done);
+            arr.push(note);
+        }
+        return arr;
+    }
 }

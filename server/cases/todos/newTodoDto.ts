@@ -1,3 +1,3 @@
-export class NewTodo {
+export class NewTodoDto {
     public description !: string;
 }
