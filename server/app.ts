@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import logger from 'morgan';
 import { router as indexRoutes } from './cases/navigation/indexRoutes';
 import { router as hourNoteRoutes } from './cases/hours/hourNoteRoutes';
+import { router as learningNoteRoutes } from './cases/learning/learningNoteRoutes';
 
 export const app: Express = express();
 
@@ -15,7 +16,7 @@ app.use((req, res, next) => {
 
 app.use(indexRoutes);
 app.use(hourNoteRoutes);
-
+app.use(learningNoteRoutes);
 // 
 
 // // Get all todo notes

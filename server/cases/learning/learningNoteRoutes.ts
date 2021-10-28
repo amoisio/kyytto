@@ -46,8 +46,8 @@ router.post('/learning', async (req, res) => {
 });
 
 router.put('/learning/:id', async (req, res) => {
-    const dto = req.body as LearningNoteDto;
-    const note = dto.toEntity();
+    const input = req.body as LearningNoteDto;
+    const note = input.toEntity();
 
     const uow = await UnitOfWork.startSession(connectionFactory);
     const repo = uow.learningNoteRepository;
