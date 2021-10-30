@@ -1,5 +1,5 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import IRepository from '../irepository';
+import IRepository from '../../lib/irepository';
 import { LearningNote } from './learningNote';
 
 export default class LearningNoteRepository implements IRepository<LearningNote> {

@@ -1,5 +1,5 @@
 import LinkBuilder from "../../lib/linkBuilder";
-import { IResource } from "../iresource";
+import { IResource } from "../../lib/iresource";
 
 export class PageDto implements IResource {
 
