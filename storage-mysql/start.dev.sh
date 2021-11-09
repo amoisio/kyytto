@@ -1,15 +1,9 @@
 #!/bin/bash
 
 #
-# Rebuilds and starts the MySql container. Data files are read and 
-# persisted under /data.
+# Rebuilds the MySql container, sets up the database schema and populates it with
+# some initial fake data.
 #
-
-SCRIPT=$(readlink -f "$0")
-SCRIPTPATH=$(dirname "$SCRIPT")
-echo ""
-echo "/// Executing start-db in $SCRIPTPATH"
-echo "/////////////////////////////////////////////"
 
 # Load environment variables from .envrc
 echo ""
@@ -36,5 +30,18 @@ echo ""
 echo "/// Starting container $SQL_CONTAINER"
 echo "/////////////////////////////////////////////"
 docker run --rm --name $SQL_CONTAINER \
-    -v $SCRIPTPATH/data/$SQL_INSTANCE:/var/lib/mysql \
-    -d $SQL_CONTAINER
+    -e MYSQL_ROOT_PASSWORD=$SQL_PASSWORD \
+    -e MYSQL_DATABASE=$SQL_DATABASE \
+    -d $SQL_CONTAINER 
+
+# Waiting for mysql service to start
+echo ""
+echo "/// Waiting for $INIT_TIMEOUT seconds - give mysql service time to start"
+echo "/////////////////////////////////////////////"
+sleep $INIT_TIMEOUT
+
+echo ""
+echo "/// Seed development database with data"
+echo "/////////////////////////////////////////////"
+sudo docker exec -it $SQL_CONTAINER sh -c "mysql -p$SQL_PASSWORD $SQL_DATABASE < 0_schema.sql"
+sudo docker exec -it $SQL_CONTAINER sh -c "mysql -p$SQL_PASSWORD $SQL_DATABASE < 1_init.sql"

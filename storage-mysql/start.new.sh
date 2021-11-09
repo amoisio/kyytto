@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Rebuilds and starts the MySql container. Data files are read and 
+# Rebuilds the MySql container and sets up the database schema. Data files are
 # persisted under /data.
 #
 
@@ -37,4 +37,17 @@ echo "/// Starting container $SQL_CONTAINER"
 echo "/////////////////////////////////////////////"
 docker run --rm --name $SQL_CONTAINER \
     -v $SCRIPTPATH/data/$SQL_INSTANCE:/var/lib/mysql \
-    -d $SQL_CONTAINER
+    -e MYSQL_ROOT_PASSWORD=$SQL_PASSWORD \
+    -e MYSQL_DATABASE=$SQL_DATABASE \
+    -d $SQL_CONTAINER 
+
+# Waiting for mysql service to start
+echo ""
+echo "/// Waiting for $INIT_TIMEOUT seconds - give mysql service time to start"
+echo "/////////////////////////////////////////////"
+sleep $INIT_TIMEOUT
+
+echo ""
+echo "/// Setup database schema"
+echo "/////////////////////////////////////////////"
+sudo docker exec -it $SQL_CONTAINER sh -c "mysql -p$SQL_PASSWORD $SQL_DATABASE < 0_schema.sql"
