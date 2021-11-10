@@ -29,7 +29,7 @@ docker container rm -f $SQL_CONTAINER 2> /dev/null
 echo ""
 echo "/// Rebuild container image $SQL_CONTAINER"
 echo "/////////////////////////////////////////////"
-docker build -t $SQL_CONTAINER --build-arg ROOT_PASSWORD=$SQL_PASSWORD .
+docker build -t $SQL_CONTAINER .
 
 # Start the container
 echo ""
@@ -37,7 +37,9 @@ echo "/// Starting container $SQL_CONTAINER"
 echo "/////////////////////////////////////////////"
 docker run --rm --name $SQL_CONTAINER \
     -v $SCRIPTPATH/data/$SQL_INSTANCE:/var/lib/mysql \
-    -e MYSQL_ROOT_PASSWORD=$SQL_PASSWORD \
+    -e MYSQL_ROOT_PASSWORD=$SQL_ROOT_PASSWORD \
+    -e MYSQL_USER=$SQL_DEFAULT_USERNAME \
+    -e MYSQL_PASSWORD=$SQL_DEFAULT_PASSWORD \
     -e MYSQL_DATABASE=$SQL_DATABASE \
     -d $SQL_CONTAINER 
 

@@ -29,7 +29,7 @@ docker container rm -f $SQL_CONTAINER 2> /dev/null
 echo ""
 echo "/// Rebuild container image $SQL_CONTAINER"
 echo "/////////////////////////////////////////////"
-docker build -t $SQL_CONTAINER --build-arg ROOT_PASSWORD=$SQL_PASSWORD .
+docker build -t $SQL_CONTAINER .
 
 # Start the container
 echo ""
