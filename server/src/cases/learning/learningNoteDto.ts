@@ -1,4 +1,4 @@
-import { IResource } from "../../lib/iresource";
+import { IResource } from "../../lib/iResource";
 import { LearningNote } from "./learningNote";
 import LinkBuilder from "../../lib/linkBuilder";
 

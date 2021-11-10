@@ -1,5 +1,5 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import IRepository from '../../lib/irepository';
+import IRepository from '../../lib/iRepository';
 import { TodoNote } from './todoNote';
 
 export default class TodoNoteRepository implements IRepository<TodoNote> {

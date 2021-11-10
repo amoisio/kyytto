@@ -1,6 +1,6 @@
 import express from 'express';
-import UnitOfWork from '../../lib/unitOfWork';
-import { connectionFactory, getLinkBuilder } from '../../lib/utilities';
+import { unitOfWork } from '../../lib/mysql/mySqlUnitOfWork';
+import { getLinkBuilder } from '../../lib/utilities';
 import { HourNote } from './hourNote';
 import { HourNoteDto, HourNotesDto } from './hourNoteDto';
 import { NewHourDto } from './newHourDto';
@@ -9,7 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 export const router = express.Router();
 
 router.get('/hours', async (req, res) => {
-    const uow = await UnitOfWork.startSession(connectionFactory);
+    const uow = unitOfWork();
+    await uow.startSession();
     const repo = uow.hourNoteRepository;
     const notes = await repo.getAll();
     await uow.closeSession();
@@ -22,7 +23,8 @@ router.get('/hours', async (req, res) => {
 router.get('/hours/:id', async (req, res) => {
     const id = req.params['id'];
 
-    const uow = await UnitOfWork.startSession(connectionFactory);
+    const uow = unitOfWork();
+    await uow.startSession();
     const repo = uow.hourNoteRepository;
     const note = await repo.get(id);
     await uow.closeSession();
@@ -37,7 +39,8 @@ router.post('/hours', async (req, res) => {
     const note = new HourNote(uuidv4(), input.date);
     note.addDetail(input.description, input.estimate);
 
-    const uow = await UnitOfWork.startSession(connectionFactory);
+    const uow = unitOfWork();
+    await uow.startSession();
     const repo = uow.hourNoteRepository;
     const id = await repo.create(note);
     await uow.closeSession();
@@ -49,7 +52,8 @@ router.put('/hours/:id', async (req, res) => {
     const input = req.body as HourNoteDto;
     const note = input.toEntity();
 
-    const uow = await UnitOfWork.startSession(connectionFactory);
+    const uow = unitOfWork();
+    await uow.startSession();
     const repo = uow.hourNoteRepository;
     await repo.update(note);
     await uow.closeSession();
