@@ -1,5 +1,5 @@
 import express from 'express';
-import { unitOfWork } from '../../lib/mysql/mySqlUnitOfWork';
+import { unitOfWork } from '../../lib/mysql/unitOfWork';
 import { getLinkBuilder } from '../../lib/utilities';
 import { v4 as uuidv4 } from 'uuid';
 import { TodoNoteDto, TodoNotesDto } from './todoNoteDto';

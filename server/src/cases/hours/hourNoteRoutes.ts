@@ -1,5 +1,5 @@
 import express from 'express';
-import { unitOfWork } from '../../lib/mysql/mySqlUnitOfWork';
+import { unitOfWork } from '../../lib/mysql/unitOfWork';
 import { getLinkBuilder } from '../../lib/utilities';
 import { HourNote } from './hourNote';
 import { HourNoteDto, HourNotesDto } from './hourNoteDto';

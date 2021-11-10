@@ -5,7 +5,7 @@ import LearningNoteRepository from "../../cases/learning/learningNoteRepository"
 import TodoNoteRepository from "../../cases/todos/todoNoteRepository";
 import IUnitOfWork from "../iUnitOfWork";
 
-export default class MySqlUnitOfWork implements IUnitOfWork {
+export default class UnitOfWork implements IUnitOfWork {
 
     private _connection !: Connection;
     private readonly _connectionFactory !: () => Promise<Connection>;
@@ -31,4 +31,4 @@ export default class MySqlUnitOfWork implements IUnitOfWork {
     }
 }
 
-export const unitOfWork = () => new MySqlUnitOfWork(connectionFactory);
+export const unitOfWork = () => new UnitOfWork(connectionFactory);
