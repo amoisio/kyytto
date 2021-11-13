@@ -1,6 +1,6 @@
 <template>
   <router-link class="category-button" :to="routerLink">
-    <span :class="className"></span>
+    <font-awesome-icon :icon="icon" fixed-width size="lg"></font-awesome-icon>
     <span>
       <slot></slot>
     </span>
@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
   props: {
-    className: String,
+    icon: String,
     routerLink: String
   }
 })

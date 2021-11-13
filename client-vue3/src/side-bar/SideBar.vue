@@ -4,18 +4,18 @@
   </div>
   <nav>
       <!-- links.learning.rel -->
-    <category-button routerLink="/learning" className="fas fa-graduation-cap fa-fw fa-2x">
+    <category-button routerLink="/learning" icon="graduation-cap">
         ensimmäinen
         <!-- {{ links.learning.title }} -->
     </category-button>
 
 <!-- links.hours.rel -->
-    <category-button routerLink="/hours" className="fas fa-calendar-alt fa-fw fa-2x">
+    <category-button routerLink="/hours" icon="calendar-alt">
         toinen
         <!-- {{ links.hours.title }} -->
     </category-button>
 <!-- links.todos.rel -->
-    <category-button routerLink="/todos" className="fas fa-clipboard-list fa-fw fa-2x">
+    <category-button routerLink="/todos" icon="clipboard-list">
         kolmas
         <!-- {{ links.todos.title }} -->
     </category-button>
