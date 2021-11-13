@@ -1,10 +1,10 @@
 <template>
-  <a class="category-button" @click="routeTo(routerLink)">
+  <router-link class="category-button" :to="routerLink">
     <span :class="className"></span>
     <span>
       <slot></slot>
     </span>
-  </a>
+  </router-link>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -12,15 +12,10 @@ export default defineComponent({
   props: {
     className: String,
     routerLink: String
-  },
-  methods: {
-    routeTo (route: string) {
-      alert(route)
-    }
   }
 })
 </script>
-<style lang="css">
+<style scoped>
   .category-button {
     display: block;
     color: white;

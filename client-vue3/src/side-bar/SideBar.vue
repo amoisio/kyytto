@@ -3,17 +3,19 @@
     <span class="logo">K</span>
   </div>
   <nav>
-    <category-button routerLink="links.learning.rel" className="fas fa-graduation-cap fa-fw fa-2x">
+      <!-- links.learning.rel -->
+    <category-button routerLink="/learning" className="fas fa-graduation-cap fa-fw fa-2x">
         ensimmäinen
         <!-- {{ links.learning.title }} -->
     </category-button>
 
-    <category-button routerLink="links.hours.rel" className="fas fa-calendar-alt fa-fw fa-2x">
+<!-- links.hours.rel -->
+    <category-button routerLink="/hours" className="fas fa-calendar-alt fa-fw fa-2x">
         toinen
         <!-- {{ links.hours.title }} -->
     </category-button>
-
-    <category-button routerLink="links.todos.rel" className="fas fa-clipboard-list fa-fw fa-2x">
+<!-- links.todos.rel -->
+    <category-button routerLink="/todos" className="fas fa-clipboard-list fa-fw fa-2x">
         kolmas
         <!-- {{ links.todos.title }} -->
     </category-button>
