@@ -9,11 +9,8 @@ import { faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck } from
 
 library.add(faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck);
 
-const Hours = { template: '<div>hours</div>' };
-
 const routes = [
   { path: '/learning', component: LearningView },
-  { path: '/hours', component: Hours },
   { path: '/todos', component: TodoView }
 ];
 

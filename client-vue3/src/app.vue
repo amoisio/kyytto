@@ -10,9 +10,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SideBar from './side-bar/side-bar.vue';
+import { TodoService } from './todos/todo-service';
 export default defineComponent({
   components: {
     SideBar
+  },
+  provide: {
+    todoService: new TodoService()
   }
 });
 </script>

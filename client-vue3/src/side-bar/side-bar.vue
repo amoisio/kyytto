@@ -6,9 +6,6 @@
     <category-button :routerLink="navigation.learning.rel" icon="graduation-cap">
       {{ navigation.learning.title }}
     </category-button>
-    <category-button :routerLink="navigation.hours.rel" icon="calendar-alt">
-      {{ navigation.hours.title }}
-    </category-button>
     <category-button :routerLink="navigation.todos.rel" icon="clipboard-list">
       {{ navigation.todos.title }}
     </category-button>
@@ -31,11 +28,6 @@
           href: '/learning',
           rel: '/learning',
           title: 'Learning'
-        },
-        hours: {
-          href: '/hours',
-          rel: '/hours',
-          title: 'Hours'
         },
         todos: {
           href: '/todos',
