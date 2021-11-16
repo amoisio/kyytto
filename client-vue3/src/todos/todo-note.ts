@@ -36,6 +36,6 @@ export class TodoNote implements IResource, IInitializable<TodoNoteDto, TodoNote
     }
 }
 
-export class NewTodoNote {
-    public description !: string;
+export interface INewTodoNote {
+    description : string;
 }

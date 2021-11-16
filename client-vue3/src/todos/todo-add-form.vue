@@ -8,7 +8,7 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { NewTodoNote } from './todo-note';
+  import { INewTodoNote } from './todo-note';
   export default defineComponent({
     name: 'TodoAddForm',
     emits: ['add'],
@@ -20,8 +20,7 @@
     methods: {
       add() {
         if (this.description !== undefined) {
-          const item = new NewTodoNote();
-          item.description = this.description;
+          const item = { description: this.description } as INewTodoNote;
           this.$emit('add', item);
           this.description = undefined;
           this.focusOnDescription();
