@@ -9,7 +9,7 @@
   import TodoList from './todo-list.vue';
 
   export default defineComponent({
-    name: 'TodosView',
+    name: 'TodoView',
     components: {
       TodoAddForm,
       TodoList
