@@ -1,0 +1,93 @@
+
+<!--
+    //   ngOnInit(): void {
+    //   this.router.events
+    //     .pipe(filter(e => e instanceof NavigationEnd))
+    //     .subscribe(this.focusOnMain);
+
+    //   this.service.getNotes()
+    //     .subscribe(notes => this.notes = notes);
+    // }
+
+    // onSubmit(): void {
+    //   let { description } = this.noteForm.value;
+    //   if (this.validate(description)) {
+    //     this.add(description!);
+    //     this.noteForm.reset();
+    //     this.focusOnMain();
+    //   }
+    // }
+
+    // public validate(description ?: string): boolean {
+    //   return !!description
+    //     && description.length > 0;
+    // }
+
+    // add(description: string): void {
+    //   let note = this.notes.find(note => note.description === description);
+    //   if (!note) {
+    //     let newNote = new TodoNote();
+    //     newNote.description = description;
+    //     newNote.done = false;
+    //     this.service.addNote(newNote)
+    //       .subscribe(note => {
+    //         newNote.href = note.href;
+    //         newNote.rel = note.rel;
+    //         this.notes.push(newNote);
+    //       });
+    //   }
+    // }
+
+    // focusOnMain() {
+    //   const mainHeader = document.querySelector('#add-note-form > input') as HTMLElement;
+    //   if (mainHeader) {
+    //     mainHeader.focus();
+    //   }
+    // }
+    
+    input {
+    display: block;
+    border: 1px solid #cccccc;
+    padding: 4px;
+    margin-bottom: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    color: black;
+  }
+
+  input[type='checkbox'] {
+    display: inline;
+    width: auto;
+  }
+
+  button {
+    border: solid;
+    border-width: 1px;
+    border-color: #006666;
+    border-radius: 0;
+    width: 100%;
+    font-size: 1em;
+    font-weight: 400;
+    color: #006666;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .note {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #006666;
+
+    h2 {
+      margin-bottom: 4px;
+      border-top-width: 0;
+      border-left-width: 0;
+      border-right-width: 0;
+      border-bottom-width: 1px;
+      border-color: #006666;
+      border-style: solid;
+    }
+  }
+    
+    -->

@@ -8,13 +8,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import SideBar from './side-bar/SideBar.vue'
+import { defineComponent } from 'vue';
+import SideBar from './side-bar/side-bar.vue';
 export default defineComponent({
   components: {
     SideBar
   }
-})
+});
 </script>
 <style scoped>
   .sidebar {

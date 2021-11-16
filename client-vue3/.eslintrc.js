@@ -12,6 +12,9 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
+    'space-before-function-paren': ['error', 'never'],
+    semi: ['error', 'always'],
+    indent: 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   },
@@ -26,4 +29,4 @@ module.exports = {
       }
     }
   ]
-}
+};
