@@ -3,10 +3,7 @@
     <span class="logo">K</span>
   </div>
   <nav>
-    <category-button
-      :routerLink="navigation.learning.rel"
-      icon="graduation-cap"
-    >
+    <category-button :routerLink="navigation.learning.rel" icon="graduation-cap">
       {{ navigation.learning.title }}
     </category-button>
     <category-button :routerLink="navigation.hours.rel" icon="calendar-alt">
