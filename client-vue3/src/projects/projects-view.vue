@@ -1,6 +1,7 @@
 <template>
   <p>
     Welcome to projects page!
+    {{ count }}
   </p>
 </template>
 <script lang="ts">
@@ -8,7 +9,7 @@
   // import { TodoNote, INewTodoNote } from './todo-note';
   // import TodoAddForm from './todo-add-form.vue';
   // import TodoList from './todo-list.vue';
-  // import { ITodoService } from './todo-service';
+  import { ProjectService, IProjectService } from './project-service';
 
   export default defineComponent({
     name: 'ProjectsView',
@@ -20,9 +21,12 @@
       // this.items = this.service.getNotes();
     },
     computed: {
-      // service(): ITodoService {
-      //   return inject('todoService') as ITodoService;
-      // }
+      service(): IProjectService {
+        return new ProjectService();
+      },
+      count(): number {
+        return this.service.getAll().length;
+      }
     },
     data() {
       return {
