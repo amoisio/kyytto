@@ -1,29 +1,12 @@
 # client-vue3
 
-## Project setup
-```
-npm install
-```
+So, I decided to pivot 'Kyyttö' toward an application that I would use for tracking work on my personal side-projects.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Requirements:
+- A simple Kanban table which includes todo items and in-progress items
+    - Later add a project based filter
+- A simple way to create new todo items
+- A project page for recording project ideas
 
-### Compiles and minifies for production
-```
-npm run build
-```
+First task is to build a view where I can add, edit and delete project ideas.
 
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

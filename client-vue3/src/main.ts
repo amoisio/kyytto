@@ -1,8 +1,9 @@
 import * as Vue from 'vue';
 import * as VueRouter from 'vue-router';
 import App from './app.vue';
-import TodoView from './todos/todo-view.vue';
-import LearningView from './learning/learning-view.vue';
+// import TodoView from './todos/todo-view.vue';
+// import LearningView from './learning/learning-view.vue';
+import ProjectsView from './projects/projects-view.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +11,10 @@ import { faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck } from
 library.add(faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck);
 
 const routes = [
-  { path: '/learning', component: LearningView },
-  { path: '/todos', component: TodoView }
+  // { path: '/learning', component: LearningView },
+  // { path: '/todos', component: TodoView },
+  { path: '/', redirect: '/projects' },
+  { path: '/projects', component: ProjectsView }
 ];
 
 const router = VueRouter.createRouter({

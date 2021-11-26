@@ -1,7 +1,6 @@
 <template>
   <div class="sidebar">
-    <!-- [links]="links" *ngIf="links" -->
-    <side-bar></side-bar>
+    <!-- <side-bar></side-bar> -->
   </div>
   <div class="content">
     <router-view></router-view>
@@ -9,14 +8,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import SideBar from './side-bar/side-bar.vue';
-import { TodoService } from './todos/todo-service';
+// import SideBar from './side-bar/side-bar.vue';
+// import { TodoService } from './todos/todo-service';
 export default defineComponent({
   components: {
-    SideBar
+    // SideBar
   },
   provide: {
-    todoService: new TodoService()
+    // todoService: new TodoService()
   }
 });
 </script>
@@ -42,7 +41,7 @@ export default defineComponent({
     padding: 0px;
     width: 300px;
     height: 100%;
-    color: white;
+    color: black;
     font-weight: 600;
   }
 </style>
