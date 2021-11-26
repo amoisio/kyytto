@@ -1,6 +1,6 @@
 import { IProject, INewProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
-
+import { pickColor } from '@/lib/colorPicker';
 export interface IProjectService {
   create(project: INewProject): IProject;
   getAll(): IProject[];
@@ -18,7 +18,7 @@ export class ProjectService implements IProjectService {
 
   private createProject(project: INewProject): IProject {
     const id = uuidv4();
-    const color = '';
+    const color = pickColor(this.getAll().map((pro) => pro.color));
     const item = {
       href: `/projects/${id}`,
       name: project.name,
