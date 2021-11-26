@@ -19,15 +19,17 @@ export default defineComponent({
   }
 });
 </script>
-<style scoped>
+<style lang="scss">
+  @import './assets/styles.module.scss';
+
   .sidebar {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 75px;
-    background-color: #006666;
-    color: white;
+    background-color: $russian-violet;
+    color: $platinum;
     font-weight: 600;
   }
 
