@@ -1,0 +1,29 @@
+@import './globals.scss';
+
+body {
+  background-color: $platinum;
+  margin: 0px 0px;
+  padding: 0px 0px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+$side-bar-left: 0px;
+$side-bar-top: 0px;
+$side-bar-width: 75px;
+
+$default-border: 2px solid $russian-violet;
+$default-border-radius: 4px;
+$default-padding: 4px;
+$default-margin: 4px;
+
+button {
+  border: $default-border;
+  border-radius: $default-border-radius;
+  width: 100%;
+  font-size: 1em;
+  font-weight: 400;
+  color: white;
+  background-color: $russian-violet;
+  padding: $default-padding;
+  margin: $default-margin;
+}

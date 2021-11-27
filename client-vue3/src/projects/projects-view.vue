@@ -1,18 +1,22 @@
 <template>
-  <project-add-form @add="onAdd"></project-add-form>
+  <button class="new-project-button" @click="showAddNewForm" v-if="!showForm">New Project</button>
+
+  <project-add-form v-else @add="onAdd"></project-add-form>
+
+  <project-item v-for="project of projects" :project="project" :key="project.href" @remove="onRemove"></project-item>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { INewProject, IProject } from './project';
   import ProjectAddForm from './project-add-form.vue';
-  // import TodoList from './todo-list.vue';
+  import ProjectItem from './project-item.vue';
   import { ProjectService, IProjectService } from './project-service';
 
   export default defineComponent({
     name: 'ProjectsView',
     components: {
-      ProjectAddForm
-      // TodoList
+      ProjectAddForm,
+      ProjectItem
     },
     created() {
       this.projects = this.service.getAll();
@@ -24,14 +28,26 @@
     },
     data() {
       return {
-        projects: [] as IProject[]
+        projects: [] as IProject[],
+        showForm: false
       };
     },
     methods: {
       onAdd(newItem: INewProject) {
-        const item = this.service.create(newItem);
-        this.projects.push(item);
+        this.service.create(newItem);
+        this.projects = this.service.getAll();
+        this.showForm = false;
+      },
+      onRemove(item: IProject) {
+        this.service.remove(item);
+        this.projects = this.service.getAll();
+      },
+      showAddNewForm() {
+        this.showForm = true;
       }
     }
   });
 </script>
+<style lang="scss">
+
+</style>

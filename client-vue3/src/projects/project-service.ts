@@ -2,18 +2,18 @@ import { IProject, INewProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
 import { pickColor } from '@/lib/colorPicker';
 export interface IProjectService {
-  create(project: INewProject): IProject;
+  create(project: INewProject): void;
   getAll(): IProject[];
   update(project: IProject): void;
+  remove(project: IProject): void;
 }
 
 export class ProjectService implements IProjectService {
-  public create(project: INewProject): IProject {
+  public create(project: INewProject): void {
     const item = this.createProject(project);
     const notes = this.getAll();
     notes.push(item);
     this.setProjects(notes);
-    return item;
   }
 
   private createProject(project: INewProject): IProject {
@@ -49,5 +49,11 @@ export class ProjectService implements IProjectService {
   private setProjects(projects: IProject[]) {
     const str = JSON.stringify(projects);
     localStorage.setItem('projects', str);
+  }
+
+  public remove(project: IProject): void {
+    const projects = this.getAll();
+    const newProjects = projects.filter((item) => item.href !== project.href);
+    this.setProjects(newProjects);
   }
 }

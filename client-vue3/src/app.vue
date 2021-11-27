@@ -1,49 +1,42 @@
 <template>
   <div class="sidebar">
-    <!-- <side-bar></side-bar> -->
+    <side-bar></side-bar>
   </div>
   <div class="content">
     <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
-// import SideBar from './side-bar/side-bar.vue';
-// import { TodoService } from './todos/todo-service';
-export default defineComponent({
-  components: {
-    // SideBar
-  },
-  provide: {
-    // todoService: new TodoService()
-  }
-});
+  import { defineComponent } from 'vue';
+  import SideBar from './side-bar/side-bar.vue';
+  // import { TodoService } from './todos/todo-service';
+  export default defineComponent({
+    components: {
+      SideBar
+    },
+    provide: {
+      // todoService: new TodoService()
+    }
+  });
 </script>
 <style lang="scss">
-  @import './assets/styles.module.scss';
+  @import './assets/globals.scss';
+  @import './assets/baseStyles.scss';
 
   .sidebar {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: $side-bar-top;
+    left: $side-bar-left;
     height: 100%;
-    width: 75px;
+    width: $side-bar-width;
     background-color: $russian-violet;
-    color: $platinum;
-    font-weight: 600;
-  }
-
-  .sidebar img {
-    margin: 0 16px;
   }
 
   .content {
-    position: relative;
-    margin-left: 75px;
-    padding: 0px;
-    width: 300px;
+    position: absolute;
+    top: $side-bar-top;
+    left: $side-bar-width;
+    width: auto;
     height: 100%;
-    color: black;
-    font-weight: 600;
   }
 </style>

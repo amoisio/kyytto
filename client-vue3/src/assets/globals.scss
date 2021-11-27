@@ -1,21 +1,3 @@
-// /* CSS HEX */
-// --russian-violet: #3C114Dff;
-// --english-violet: #5E3B6Bff;
-// --chinese-violet: #80668Aff;
-// --heliotrope-gray: #A190A8ff;
-// --lavender-gray: #C3BBC7ff;
-// --platinum: #E5E5E5ff;
-
-// /* CSS HSL */
-// --russian-violet: hsla(283, 64%, 18%, 1);
-// --english-violet: hsla(284, 29%, 33%, 1);
-// --chinese-violet: hsla(283, 15%, 47%, 1);
-// --heliotrope-gray: hsla(283, 12%, 61%, 1);
-// --lavender-gray: hsla(280, 10%, 76%, 1);
-// --platinum: hsla(0, 0%, 90%, 1);
-
-
-
 /* SCSS HEX */
 $russian-violet: #3C114Dff;
 $english-violet: #5E3B6Bff;
@@ -50,7 +32,3 @@ $gradient-bottom-right: linear-gradient(135deg, #3C114Dff, #5E3B6Bff, #80668Aff,
 $gradient-top-left: linear-gradient(225deg, #3C114Dff, #5E3B6Bff, #80668Aff, #A190A8ff, #C3BBC7ff, #E5E5E5ff);
 $gradient-bottom-left: linear-gradient(315deg, #3C114Dff, #5E3B6Bff, #80668Aff, #A190A8ff, #C3BBC7ff, #E5E5E5ff);
 $gradient-radial: radial-gradient(#3C114Dff, #5E3B6Bff, #80668Aff, #A190A8ff, #C3BBC7ff, #E5E5E5ff);
-
-body {
-    background-color: $platinum;
-}
