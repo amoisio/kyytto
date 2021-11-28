@@ -3,17 +3,15 @@
     <side-bar></side-bar>
   </div>
   <div class="content-placeholder">
-    <content-pane></content-pane>
+    <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import SideBar from './side-bar/side-bar.vue';
-  import ContentPane from './content-pane.vue';
   export default defineComponent({
     components: {
-      SideBar,
-      ContentPane
+      SideBar
     }
   });
 </script>
@@ -32,7 +30,7 @@
 
   .content-placeholder {
     position: relative;
-    margin: $default-margin $default-margin $default-margin $default-margin+$side-bar-width;
+    margin: $default-margin $default-margin $default-margin $default-margin + $side-bar-width;
     height: 100%;
   }
 </style>

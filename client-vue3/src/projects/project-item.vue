@@ -4,7 +4,6 @@
     <p class="project-description">{{ project.description }}</p>
     <div class="project-controls">
       <button @click="edit">Edit</button>
-      <button @click="remove">Delete</button>
     </div>
   </section>
 </template>

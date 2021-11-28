@@ -1,20 +1,25 @@
 <template>
-  <button class="new-project-button" @click="showAddNewForm" v-if="!showForm">New Project</button>
-  <project-add-form v-else @add="onAdd"></project-add-form>
-  <project-item v-for="project of projects" :project="project" :key="project.href" @remove="onRemove"></project-item>
+  <project-list :projects="projects" @new="showCreateForm" @edit="showEditForm" v-if="showList"></project-list>
+  <project-details v-else :project="current" @save="save" @remove="remove" @cancel="resetView"></project-details>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { INewProject, IProject } from './project';
-  import ProjectAddForm from './project-add-form.vue';
-  import ProjectItem from './project-item.vue';
+  import { IProject } from './project';
+  import ProjectDetails from './project-details.vue';
+  import ProjectList from './project-list.vue';
   import { ProjectService, IProjectService } from './project-service';
+
+  interface IProjectsViewModel {
+    current?: IProject;
+    projects: IProject[];
+    showList: boolean;
+  }
 
   export default defineComponent({
     name: 'ProjectsView',
     components: {
-      ProjectAddForm,
-      ProjectItem
+      ProjectDetails,
+      ProjectList
     },
     created() {
       this.projects = this.service.getAll();
@@ -22,30 +27,45 @@
     computed: {
       service(): IProjectService {
         return new ProjectService();
+      },
+      isNew(): boolean {
+        return this.current === undefined;
       }
     },
     data() {
       return {
-        projects: [] as IProject[],
-        showForm: false
-      };
+        current: undefined,
+        projects: [],
+        showList: true
+      } as IProjectsViewModel;
     },
     methods: {
-      onAdd(newItem: INewProject) {
-        this.service.create(newItem);
-        this.projects = this.service.getAll();
-        this.showForm = false;
+      showCreateForm() {
+        this.showList = false;
       },
-      onRemove(item: IProject) {
-        this.service.remove(item);
-        this.projects = this.service.getAll();
+      showEditForm(project: IProject) {
+        this.current = project;
+        this.showList = false;
       },
-      showAddNewForm() {
-        this.showForm = true;
+      save(project: IProject) {
+        if (this.isNew) {
+          this.service.create(project);
+        } else {
+          this.service.update(project);
+        }
+        this.projects = this.service.getAll();
+        this.resetView();
+      },
+      remove(project: IProject) {
+        this.service.remove(project);
+        this.projects = this.service.getAll();
+        this.resetView();
+      },
+      resetView() {
+        this.current = undefined;
+        this.showList = true;
       }
     }
   });
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

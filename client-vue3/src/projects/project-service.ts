@@ -2,28 +2,28 @@ import { IProject, INewProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
 import { pickColor } from '@/lib/colorPicker';
 export interface IProjectService {
-  create(project: INewProject): void;
+  create(project: IProject): void;
   getAll(): IProject[];
   update(project: IProject): void;
   remove(project: IProject): void;
 }
 
 export class ProjectService implements IProjectService {
-  public create(project: INewProject): void {
+  public create(project: IProject): void {
     const item = this.createProject(project);
     const notes = this.getAll();
     notes.push(item);
     this.setProjects(notes);
   }
 
-  private createProject(project: INewProject): IProject {
+  private createProject(project: IProject): IProject {
     const id = uuidv4();
-    const color = pickColor(this.getAll().map((pro) => pro.color));
+    // const color = pickColor(this.getAll().map((pro) => pro.color));
     const item = {
       href: `/projects/${id}`,
       name: project.name,
       description: project.description,
-      color: color
+      color: project.color
     } as IProject;
     return item;
   }

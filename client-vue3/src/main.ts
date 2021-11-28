@@ -1,7 +1,7 @@
 import * as Vue from 'vue';
 import * as VueRouter from 'vue-router';
 import App from './app.vue';
-// import TodoView from './todos/todo-view.vue';
+import BoardView from './board/board-view.vue';
 // import LearningView from './learning/learning-view.vue';
 import ProjectsView from './projects/projects-view.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -12,7 +12,7 @@ library.add(faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck, fa
 
 const routes = [
   // { path: '/learning', component: LearningView },
-  // { path: '/todos', component: TodoView },
+  { path: '/board', component: BoardView },
   { path: '/projects', component: ProjectsView }
 ];
 
