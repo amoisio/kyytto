@@ -1,6 +1,8 @@
 <template>
-  <project-list :projects="projects" @new="showCreateForm" @edit="showEditForm" v-if="showList"></project-list>
-  <project-details v-else :project="current" @save="save" @remove="remove" @cancel="resetView"></project-details>
+  <div class="projects-view">
+    <project-list :projects="projects" @new="showCreateForm" @edit="showEditForm" v-if="showList"></project-list>
+    <project-details v-else :project="current" @save="save" @remove="remove" @cancel="resetView"></project-details>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
@@ -68,4 +70,9 @@
     }
   });
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+  @import '@/assets/baseStyles.scss';
+  .projects-view {
+    width: 300px;
+  }
+</style>

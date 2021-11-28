@@ -1,11 +1,8 @@
 <template>
-  <section class="project-item">
-    <p class="project-name">{{ project.name }}</p>
-    <p class="project-description">{{ project.description }}</p>
-    <div class="project-controls">
-      <button @click="edit">Edit</button>
-    </div>
-  </section>
+  <button class="project-item" @click="$emit('edit')">
+    <span class="project-color" :style="{ 'background-color': project.color }">&nbsp;</span>
+    <span class="project-name">{{ project.name }}</span>
+  </button>
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
@@ -13,18 +10,11 @@
 
   export default defineComponent({
     name: 'ProjectItem',
+    emits: ['edit'],
     props: {
       project: {
         type: Object as PropType<IProject>,
         required: true
-      }
-    },
-    methods: {
-      edit() {
-        this.$emit('edit', this.project);
-      },
-      remove() {
-        this.$emit('remove', this.project);
       }
     }
   });
@@ -32,29 +22,36 @@
 <style lang="scss">
   @import '@/assets/baseStyles.scss';
 
-  .project-item {
-    border: 2px solid $chinese-violet;
-    border-radius: 10px;
-
-    button {
-      border: 2px solid $chinese-violet;
-      border-radius: 10px;
-      width: 20%;
-      font-size: 1em;
-      font-weight: 400;
-      color: white;
-      background-color: $chinese-violet;
-      padding-top: 4px;
-      padding-bottom: 4px;
+  .project-item  {
+    color: $russian-violet;
+    width: 100%;
+    margin-top: $default-margin;
+    background-color: $heliotrope-gray;
+    text-align:left;
+    border: 2px solid $english-violet;
+    border-radius: 20px;
+    &:focus {
+      outline: none;
     }
 
-    .project-name {
-      font-size: larger;
-      font-weight: bolder;
+    &:hover,
+    &:focus,
+    &.active {
+      background-color: $lavender-gray;
+      color: $english-violet;
     }
+  }
 
-    .project-description {
-      font-weight: normal;
-    }
+  .project-color {
+    display: inline-flex;
+    margin-right: 4px;
+    width: 20px;
+    border: 2px solid $english-violet;
+    border-radius: 20px;
+  }
+
+  .project-name {
+    position: relative;
+    display: inline-flex;
   }
 </style>
