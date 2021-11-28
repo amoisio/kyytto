@@ -33,10 +33,8 @@
   }
 
   .content {
-    position: absolute;
-    top: $side-bar-top;
-    left: $side-bar-width;
-    width: auto;
+    position: relative;
+    margin: $default-margin $default-margin $default-margin $default-margin+$side-bar-width;
     height: 100%;
   }
 </style>

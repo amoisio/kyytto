@@ -1,8 +1,6 @@
 <template>
   <button class="new-project-button" @click="showAddNewForm" v-if="!showForm">New Project</button>
-
   <project-add-form v-else @add="onAdd"></project-add-form>
-
   <project-item v-for="project of projects" :project="project" :key="project.href" @remove="onRemove"></project-item>
 </template>
 <script lang="ts">
