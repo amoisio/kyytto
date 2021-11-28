@@ -1,5 +1,5 @@
 <template>
-  <router-link :class="{'category-button': true, 'active': isCurrentRoute }" :to="routerLink">
+  <router-link :class="{ 'category-button': true, 'active': isCurrentRoute }" :to="routerLink">
     <span class="icon">
       <font-awesome-icon :icon="icon" fixed-width size="lg"></font-awesome-icon>
     </span>
@@ -34,10 +34,16 @@
 
     .icon {
       display: block !important;
-      margin-bottom:8px;
+      margin-bottom: 8px;
     }
 
-    &:hover, &:focus, &.active {
+    &:focus {
+      outline: none;
+    }
+
+    &:hover,
+    &:focus,
+    &.active {
       background-color: $lavender-gray;
       color: $russian-violet;
     }

@@ -13,7 +13,6 @@ library.add(faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck, fa
 const routes = [
   // { path: '/learning', component: LearningView },
   // { path: '/todos', component: TodoView },
-  { path: '/', redirect: '/projects' },
   { path: '/projects', component: ProjectsView }
 ];
 
