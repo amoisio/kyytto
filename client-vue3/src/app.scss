@@ -21,6 +21,10 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+h1 {
+  color: defaults.$dark1;
+}
+
 .menu-layout-container {
   position: absolute;
   top: $top;

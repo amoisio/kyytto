@@ -6,9 +6,20 @@ import BoardView from './board/board-view.vue';
 import ProjectsView from './projects/projects-view.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck, faTasks, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
+import { faGraduationCap, faCalendarAlt, faClipboardList, faPen, faEdit, faPlus, faPlusSquare, faCheck, faTasks, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faGraduationCap, faCalendarAlt, faClipboardList, faPlus, faCheck, faTasks, faProjectDiagram);
+library.add(
+  faGraduationCap,
+  faCalendarAlt,
+  faClipboardList,
+  faPen,
+  faEdit,
+  faPlus,
+  faPlusSquare,
+  faCheck,
+  faTasks,
+  faProjectDiagram
+);
 
 const routes = [
   // { path: '/learning', component: LearningView },

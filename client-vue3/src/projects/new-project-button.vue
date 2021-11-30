@@ -1,6 +1,6 @@
 <template>
-  <button class="button-primary" @click="showNewProjectForm">
-    <font-awesome-icon icon="plus" fixed-width size="lg"></font-awesome-icon>
+  <button class="new-project-button" @click="showNewProjectForm">
+    <!-- <font-awesome-icon icon="plus-square" fixed-width size="2x"></font-awesome-icon> -->
     New project
   </button>
 </template>
