@@ -5,15 +5,13 @@ $left: 0px;
 $top: 0px;
 $width: 75px;
 
-$border: defaults.$border-width defaults.$border-style defaults.$border-color;
-
 $primary-background-color: defaults.$light1;
 $primary-color: color.change(defaults.$dark1, $blackness: 80%);
-$primary-button-background-color: defaults.$dark1;
+$primary-button-background-color: defaults.$dark2;
 $primary-button-color: white;
 $primary-button-highlight-background-color: defaults.$light2;
 $primary-button-highlight-color: defaults.$dark1;
-$primary-button-border: defaults.$border-width defaults.$border-style defaults.$dark1;
+$primary-button-border: 0px defaults.$border-style defaults.$dark1;
 
 body {
   background-color: defaults.$light1;
@@ -33,19 +31,18 @@ body {
 
 .content-layout-container {
   position: relative;
-  margin: defaults.$margin defaults.$margin defaults.$margin (defaults.$margin + $width);
+  margin: 12px 12px 12px (12px + $width);
   height: 100%;
 }
 
 .button-primary {
-  font-size: 1em;
-  font-weight: 400;
-  color: $primary-button-color;
-  background-color: $primary-button-background-color;
-  padding: defaults.$padding;
+  color: white;
+  background-color: color.adjust(defaults.$dark2, $lightness: 0%);
+  padding: 4px;
   text-align: center;
   text-decoration: none;
-  border: $primary-button-border;
+  border: 2px solid defaults.$dark1;
+  border-radius: 4px;
 
   &:focus {
     outline: none;
@@ -54,7 +51,7 @@ body {
   &:hover,
   &:focus,
   &.active {
-    background-color: $primary-button-highlight-background-color;
-    color: $primary-button-highlight-color;
+    background-color: color.adjust(defaults.$dark2, $blackness: 20% );
+    color: defaults.$highlight1;
   }
 }

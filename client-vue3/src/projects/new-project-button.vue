@@ -1,5 +1,8 @@
 <template>
-  <button class="button-primary" @click="showNewProjectForm">New Project</button>
+  <button class="button-primary" @click="showNewProjectForm">
+    <font-awesome-icon icon="plus" fixed-width size="lg"></font-awesome-icon>
+    New project
+  </button>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';

@@ -42,8 +42,7 @@ $button-highlight-color: defaults.$dark1;
     &:focus,
     &.active {
       color: defaults.$highlight1;
-      opacity: 100%;
-
+      background-color: rgba($color: black, $alpha: 0.2);
     }
   }
 }

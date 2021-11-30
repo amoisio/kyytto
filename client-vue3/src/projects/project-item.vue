@@ -1,6 +1,6 @@
 <template>
   <button class="project-item" @click="$emit('edit')">
-    <span class="project-color" :style="{ 'background-color': project.color }">&nbsp;</span>
+    <!-- <span class="project-color" :style="{ 'background-color': project.color}">&nbsp;</span> -->
     <span class="project-name">{{ project.name }}</span>
   </button>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <new-project-button @new="$emit('new')"></new-project-button>
+  <new-project-button class="new-project-button" @new="$emit('new')"></new-project-button>
   <project-item v-for="project of projects" :project="project" :key="project.href" @edit="$emit('edit', project)">
   </project-item>
 </template>
@@ -24,3 +24,8 @@
     }
   });
 </script>
+<style lang="scss">
+  .new-project-button {
+    float:right;
+  }
+</style>

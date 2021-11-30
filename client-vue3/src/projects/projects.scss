@@ -36,31 +36,15 @@ $border: defaults.$border-width defaults.$border-style defaults.$border-color;
     }
   }
 
-  // .new-project-button {
-  //   background-color: $primary-button-background-color;
-  //   color: $primary-button-color;
-  //   width: 100%;
-  //   margin-top: $default-margin;
-  //   text-align: left;
-  //   border: 2px solid $primary-button-border-color;
-  //   border-radius: 20px;
-
-  //   &:hover,
-  //   &:focus,
-  //   &.active {
-  //     background-color: $primary-button-highlight-background-color;
-  //     color: $primary-button-highlight-color;
-  //   }
-  // }
-
   .project-item {
-    color: defaults.$dark1;
+    background-color: defaults.$dark2;
+    color: white;
     width: 100%;
     margin-top: defaults.$margin;
-    background-color: defaults.$light3;
     text-align: left;
-    border: $border;
-    border-radius: 20px;
+    border: 2px solid defaults.$dark1;
+    border-radius: 4px;
+    padding: 4px;
     &:focus {
       outline: none;
     }
@@ -68,21 +52,22 @@ $border: defaults.$border-width defaults.$border-style defaults.$border-color;
     &:hover,
     &:focus,
     &.active {
-      background-color: defaults.$light2;
-      color: defaults.$dark2;
+      background-color: color.adjust(defaults.$dark2, $blackness: 20% );
+      color: defaults.$highlight1;
     }
 
     .project-color {
       display: inline-flex;
       margin-right: 4px;
-      width: 20px;
-      border: $border;
-      border-radius: 20px;
+      width: 15px;
+      border: 2px defaults.$border-style defaults.$border-color;
+      border-radius: 100%;
     }
 
     .project-name {
       position: relative;
       display: inline-flex;
+      font-size: larger;
     }
   }
 }

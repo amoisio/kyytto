@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $dark1: hsla(216, 100%, 4%, 1);
 $dark2: hsla(214, 35%, 37%, 1);
 $dark3: #80668aff;
@@ -5,7 +7,9 @@ $light3: #a190a8ff;
 $light2: #c3bbc7ff;
 $light1: #e5e5e5;
 
-$highlight1: #ffd60a;
+$highlight:#ffd60a;
+$highlight1: color.adjust($highlight, $whiteness:30%);
+
 $margin: 4px;
 $padding: 4px;
 
