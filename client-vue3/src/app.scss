@@ -1,0 +1,60 @@
+@use 'defaults';
+@use 'sass:color';
+
+$left: 0px;
+$top: 0px;
+$width: 75px;
+
+$border: defaults.$border-width defaults.$border-style defaults.$border-color;
+
+$primary-background-color: defaults.$light1;
+$primary-color: color.change(defaults.$dark1, $blackness: 80%);
+$primary-button-background-color: defaults.$dark1;
+$primary-button-color: white;
+$primary-button-highlight-background-color: defaults.$light2;
+$primary-button-highlight-color: defaults.$dark1;
+$primary-button-border: defaults.$border-width defaults.$border-style defaults.$dark1;
+
+body {
+  background-color: defaults.$light1;
+  width: 100%;
+  margin: 0px 0px;
+  padding: 0px 0px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menu-layout-container {
+  position: absolute;
+  top: $top;
+  left: $left;
+  height: 100%;
+  width: $width;
+}
+
+.content-layout-container {
+  position: relative;
+  margin: defaults.$margin defaults.$margin defaults.$margin (defaults.$margin + $width);
+  height: 100%;
+}
+
+.button-primary {
+  font-size: 1em;
+  font-weight: 400;
+  color: $primary-button-color;
+  background-color: $primary-button-background-color;
+  padding: defaults.$padding;
+  text-align: center;
+  text-decoration: none;
+  border: $primary-button-border;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:focus,
+  &.active {
+    background-color: $primary-button-highlight-background-color;
+    color: $primary-button-highlight-color;
+  }
+}

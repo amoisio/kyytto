@@ -12,26 +12,26 @@
   </section>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { LearningNote } from './learning-note';
-  export default defineComponent({
-    name: 'LearningItem',
-    emits: ['archive', 'select'],
-    props: {
-      item: {
-        type: LearningNote,
-        required: true
-      }
-    },
-    methods: {
-      archive() {
-        this.$emit('archive', this.item);
-      },
-      select() {
-        this.$emit('select', this.item);
-      }
+import { defineComponent } from 'vue';
+import { LearningNote } from './learning-note';
+export default defineComponent({
+  name: 'LearningItem',
+  emits: ['archive', 'select'],
+  props: {
+    item: {
+      type: LearningNote,
+      required: true
     }
-  });
+  },
+  methods: {
+    archive() {
+      this.$emit('archive', this.item);
+    },
+    select() {
+      this.$emit('select', this.item);
+    }
+  }
+});
 </script>
 <style scoped>
   .note {

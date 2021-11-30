@@ -1,6 +1,6 @@
-import { IProject, INewProject } from './project';
+import { IProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
-import { pickColor } from '@/lib/colorPicker';
+// import { pickColor } from '@/lib/colorPicker'
 export interface IProjectService {
   create(project: IProject): void;
   getAll(): IProject[];

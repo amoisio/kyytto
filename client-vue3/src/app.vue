@@ -1,36 +1,20 @@
 <template>
-  <div class="sidebar-placeholder">
-    <side-bar></side-bar>
+  <div class="menu-layout-container">
+    <menu-view></menu-view>
   </div>
-  <div class="content-placeholder">
+  <div class="content-layout-container">
     <router-view></router-view>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import SideBar from './side-bar/side-bar.vue';
+  import MenuView from './menu/menu-view.vue';
   export default defineComponent({
     components: {
-      SideBar
+      MenuView
     }
   });
 </script>
 <style lang="scss">
-  @import './assets/globals.scss';
-  @import './assets/baseStyles.scss';
-
-  .sidebar-placeholder {
-    position: absolute;
-    top: $side-bar-top;
-    left: $side-bar-left;
-    height: 100%;
-    width: $side-bar-width;
-    background-color: $russian-violet;
-  }
-
-  .content-placeholder {
-    position: relative;
-    margin: $default-margin $default-margin $default-margin $default-margin + $side-bar-width;
-    height: 100%;
-  }
+  @use 'app';
 </style>

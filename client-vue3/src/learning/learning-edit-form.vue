@@ -4,17 +4,17 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { LearningNote } from './learning-note';
-  export default defineComponent({
-    name: 'LearningEditForm',
-    props: {
-      modelValue: {
-        type: LearningNote,
-        required: true
-      }
+import { defineComponent } from 'vue';
+import { LearningNote } from './learning-note';
+export default defineComponent({
+  name: 'LearningEditForm',
+  props: {
+    modelValue: {
+      type: LearningNote,
+      required: true
     }
-  });
+  }
+});
 </script>
 <style scoped>
   .inline-button {

@@ -8,33 +8,33 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { INewLearningNote } from './learning-note';
-  export default defineComponent({
-    name: 'LearningAddForm',
-    emits: ['add'],
-    data() {
-      return {
-        topic: undefined as string | undefined,
-        detail: undefined as string | undefined
-      };
-    },
-    methods: {
-      add() {
-        if (this.topic !== undefined) {
-          const item = { topic: this.topic, detail: this.detail } as INewLearningNote;
-          this.$emit('add', item);
-          this.topic = undefined;
-          this.detail = undefined;
-          this.focusOnTopic();
-        }
-      },
-      focusOnTopic() {
-        const input = this.$refs.topic as HTMLElement;
-        input.focus();
+import { defineComponent } from 'vue';
+import { INewLearningNote } from './learning-note';
+export default defineComponent({
+  name: 'LearningAddForm',
+  emits: ['add'],
+  data() {
+    return {
+      topic: undefined as string | undefined,
+      detail: undefined as string | undefined
+    };
+  },
+  methods: {
+    add() {
+      if (this.topic !== undefined) {
+        const item = { topic: this.topic, detail: this.detail } as INewLearningNote;
+        this.$emit('add', item);
+        this.topic = undefined;
+        this.detail = undefined;
+        this.focusOnTopic();
       }
+    },
+    focusOnTopic() {
+      const input = this.$refs.topic as HTMLElement;
+      input.focus();
     }
-  });
+  }
+});
 </script>
 <style scoped>
   .inline-button {

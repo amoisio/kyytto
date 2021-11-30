@@ -9,23 +9,23 @@
   </section>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { TodoNote } from './todo-note';
-  export default defineComponent({
-    name: 'TodoItem',
-    emits: ['complete'],
-    props: {
-      item: {
-        type: TodoNote,
-        required: true
-      }
-    },
-    methods: {
-      complete() {
-        this.$emit('complete', this.item);
-      }
+import { defineComponent } from 'vue';
+import { TodoNote } from './todo-note';
+export default defineComponent({
+  name: 'TodoItem',
+  emits: ['complete'],
+  props: {
+    item: {
+      type: TodoNote,
+      required: true
     }
-  });
+  },
+  methods: {
+    complete() {
+      this.$emit('complete', this.item);
+    }
+  }
+});
 </script>
 <style scoped>
   .note {

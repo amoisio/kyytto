@@ -19,39 +19,3 @@
     }
   });
 </script>
-<style lang="scss">
-  @import '@/assets/baseStyles.scss';
-
-  .project-item  {
-    color: $russian-violet;
-    width: 100%;
-    margin-top: $default-margin;
-    background-color: $heliotrope-gray;
-    text-align:left;
-    border: 2px solid $english-violet;
-    border-radius: 20px;
-    &:focus {
-      outline: none;
-    }
-
-    &:hover,
-    &:focus,
-    &.active {
-      background-color: $lavender-gray;
-      color: $english-violet;
-    }
-  }
-
-  .project-color {
-    display: inline-flex;
-    margin-right: 4px;
-    width: 20px;
-    border: 2px solid $english-violet;
-    border-radius: 20px;
-  }
-
-  .project-name {
-    position: relative;
-    display: inline-flex;
-  }
-</style>

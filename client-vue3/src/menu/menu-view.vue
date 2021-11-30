@@ -1,21 +1,21 @@
 <template>
   <nav class="menu">
     <div class="logo">K</div>
-    <category-button v-for="link of links" :key="link.href" :routerLink="linkFrom(link.href)" :icon="link.icon">
+    <menu-button v-for="link of links" :key="link.href" :routerLink="linkFrom(link.href)" :icon="link.icon">
       {{ link.title }}
-    </category-button>
+    </menu-button>
   </nav>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import CategoryButton from './category-button.vue';
+  import MenuButton from './menu-button.vue';
   import { parse } from '@/lib/hrefParser';
-  import ILink from '@/ilink';
+  import { ILink } from '@/ilink';
   import { IMenuService, MenuService } from './menu-service';
   export default defineComponent({
-    name: 'SideBar',
+    name: 'MenuView',
     components: {
-      CategoryButton
+      MenuButton
     },
     created() {
       this.links = this.service.getAll();
@@ -32,24 +32,11 @@
     },
     methods: {
       linkFrom(href: string): string {
-        console.log('linkFrom');
         return parse(href).rel;
       }
     }
   });
 </script>
 <style lang="scss">
-  @import '@/assets/globals.scss';
-
-  .menu {
-    color: $platinum;
-    .logo {
-      display: block;
-      text-align: center;
-      font-size: xx-large;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      color: $platinum;
-    }
-  }
+  @use 'menu';
 </style>

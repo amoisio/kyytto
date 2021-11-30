@@ -1,0 +1,44 @@
+@use '../defaults';
+@use 'sass:color';
+
+$color: color.change(defaults.$light1, $whiteness: 90%);
+$background-color: defaults.$dark1;
+
+$button-color: $color;
+$button-background-color: $background-color;
+$button-highlight-background-color: defaults.$light1;
+$button-highlight-color: defaults.$dark1;
+
+.menu {
+  color: $color;
+  background-color: $background-color;
+  height: 100%;
+  .logo {
+    display: block;
+    text-align: center;
+    font-size: xx-large;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .menu-button {
+    color: $button-color;
+    background-color: $button-background-color;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0px;
+
+    .icon {
+      display: block !important;
+      margin-bottom: 8px;
+    }
+
+    &:hover,
+    &:focus,
+    &.active {
+      background-color: $button-highlight-background-color;
+      color: $button-highlight-color;
+    }
+  }
+}

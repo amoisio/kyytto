@@ -1,4 +1,4 @@
-import ILink from '@/ilink';
+import { ILink } from '@/ilink';
 export interface IMenuService {
   getAll(): ILink[];
 }

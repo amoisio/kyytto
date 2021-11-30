@@ -17,7 +17,6 @@ export const parse = (path: string): Href => {
 
   if (url.pathname.length > 1) {
     const fragments = url.pathname.split('/');
-    console.log(fragments);
     for (let i = 0; i < fragments.length - 1; i++) {
       const frag = fragments[i].trim();
       if (frag.length > 0) {

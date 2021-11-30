@@ -7,31 +7,31 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { INewTodoNote } from './todo-note';
-  export default defineComponent({
-    name: 'TodoAddForm',
-    emits: ['add'],
-    data() {
-      return {
-        description: undefined as string | undefined
-      };
-    },
-    methods: {
-      add() {
-        if (this.description !== undefined) {
-          const item = { description: this.description } as INewTodoNote;
-          this.$emit('add', item);
-          this.description = undefined;
-          this.focusOnDescription();
-        }
-      },
-      focusOnDescription() {
-        const input = this.$refs.description as HTMLElement;
-        input.focus();
+import { defineComponent } from 'vue';
+import { INewTodoNote } from './todo-note';
+export default defineComponent({
+  name: 'TodoAddForm',
+  emits: ['add'],
+  data() {
+    return {
+      description: undefined as string | undefined
+    };
+  },
+  methods: {
+    add() {
+      if (this.description !== undefined) {
+        const item = { description: this.description } as INewTodoNote;
+        this.$emit('add', item);
+        this.description = undefined;
+        this.focusOnDescription();
       }
+    },
+    focusOnDescription() {
+      const input = this.$refs.description as HTMLElement;
+      input.focus();
     }
-  });
+  }
+});
 </script>
 <style scoped>
   .inline-button {
