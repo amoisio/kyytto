@@ -1,9 +1,17 @@
 <template>
   <nav class="menu">
-    <div class="logo">K</div>
-    <menu-button v-for="link of links" :key="link.href" :routerLink="linkFrom(link.href)" :icon="link.icon">
-      {{ link.title }}
-    </menu-button>
+    <div class="row pb-3 pt-3">
+      <div class="col">
+        <span class="logo">K</span>
+      </div>
+    </div>
+    <div class="row" v-for="link of links" :key="link.href">
+      <div class="col">
+        <menu-button  :routerLink="linkFrom(link.href)" :icon="link.icon">
+          {{ link.title }}
+        </menu-button>
+      </div>
+    </div>
   </nav>
 </template>
 <script lang="ts">
@@ -28,6 +36,9 @@
     computed: {
       service(): IMenuService {
         return new MenuService();
+      },
+      eventName(): string {
+        return 'keypress.q';
       }
     },
     methods: {

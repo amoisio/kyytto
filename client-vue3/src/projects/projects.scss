@@ -3,78 +3,78 @@
 
 $border: defaults.$border-width defaults.$border-style defaults.$border-color;
 
-.projects-view {
+// .projects {
 
-  .new-project-button {
-    background-color: defaults.$dark2 ;
-    color: white;
-    border: 0;
-    width: auto;
-    padding: 0;
-  }
+//   // .new-project-button {
+//   //   background-color: defaults.$dark2 ;
+//   //   color: white;
+//   //   border: 0;
+//   //   width: auto;
+//   //   padding: 0;
+//   // }
 
-  .project-details {
-    input,
-    textarea {
-      border: $border;
-      border-radius: 10px;
-      margin-top: 2px;
-      margin-bottom: 2px;
-      width: 100%;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: medium;
-      color: defaults.$dark1;
-      outline-style: none;
-      resize: none;
+//   // .project-details {
+//   //   input,
+//   //   textarea {
+//   //     border: $border;
+//   //     border-radius: 10px;
+//   //     margin-top: 2px;
+//   //     margin-bottom: 2px;
+//   //     width: 100%;
+//   //     font-family: Arial, Helvetica, sans-serif;
+//   //     font-size: medium;
+//   //     color: defaults.$dark1;
+//   //     outline-style: none;
+//   //     resize: none;
 
-      &:focus {
-        border: 2px solid defaults.$dark3;
-      }
-    }
+//   //     &:focus {
+//   //       border: 2px solid defaults.$dark3;
+//   //     }
+//   //   }
 
-    button {
-      &:hover {
-        background-color: defaults.$dark3;
-      }
+//   //   button {
+//   //     &:hover {
+//   //       background-color: defaults.$dark3;
+//   //     }
 
-      &:focus {
-        background-color: defaults.$dark3;
-      }
-    }
-  }
+//   //     &:focus {
+//   //       background-color: defaults.$dark3;
+//   //     }
+//   //   }
+//   // }
 
-  // .project-item {
-  //   background-color: defaults.$dark2;
-  //   color: white;
-  //   width: 100%;
-  //   margin-top: defaults.$margin;
-  //   text-align: left;
-  //   border: 2px solid defaults.$dark1;
-  //   border-radius: 4px;
-  //   padding: 4px;
-  //   &:focus {
-  //     outline: none;
-  //   }
+//   // .project-item {
+//   //   background-color: defaults.$dark2;
+//   //   color: white;
+//   //   width: 100%;
+//   //   margin-top: defaults.$margin;
+//   //   text-align: left;
+//   //   border: 2px solid defaults.$dark1;
+//   //   border-radius: 4px;
+//   //   padding: 4px;
+//   //   &:focus {
+//   //     outline: none;
+//   //   }
 
-  //   &:hover,
-  //   &:focus,
-  //   &.active {
-  //     background-color: color.adjust(defaults.$dark2, $blackness: 20%);
-  //     color: defaults.$highlight1;
-  //   }
+//   //   &:hover,
+//   //   &:focus,
+//   //   &.active {
+//   //     background-color: color.adjust(defaults.$dark2, $blackness: 20%);
+//   //     color: defaults.$highlight1;
+//   //   }
 
-  //   .project-color {
-  //     display: inline-flex;
-  //     margin-right: 4px;
-  //     width: 15px;
-  //     border: 2px defaults.$border-style defaults.$border-color;
-  //     border-radius: 100%;
-  //   }
+//   //   .project-color {
+//   //     display: inline-flex;
+//   //     margin-right: 4px;
+//   //     width: 15px;
+//   //     border: 2px defaults.$border-style defaults.$border-color;
+//   //     border-radius: 100%;
+//   //   }
 
-  //   .project-name {
-  //     position: relative;
-  //     display: inline-flex;
-  //     font-size: larger;
-  //   }
-  // }
-}
+//   //   .project-name {
+//   //     position: relative;
+//   //     display: inline-flex;
+//   //     font-size: larger;
+//   //   }
+//   // }
+// }

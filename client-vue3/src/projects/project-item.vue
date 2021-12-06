@@ -1,10 +1,16 @@
 <template>
-  <div class="project-item">
-    <span class="project-color" :style="{ 'background-color': project.color }">&nbsp;</span>
-    <span class="project-name">{{ project.name }}</span>
-    <button class="edit-item" @click="$emit('edit')">
-      <font-awesome-icon icon="pen" fixed-width size="md"></font-awesome-icon>
-    </button>
+  <div class="row mt-2 mb-2">
+    <div class="col-1">
+      <button class="btn btn-primary position-relative" @click="$emit('edit')">
+        Edit
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" :style="{ 'background-color': project.color }"> 
+          <font-awesome-icon icon="pen" fixed-width size="md">d</font-awesome-icon>
+        </span>
+      </button>
+    </div>
+    <div class="col">
+      <span class="project-name">{{ project.name }}</span>
+    </div>
   </div>
 </template>
 <script lang="ts">
