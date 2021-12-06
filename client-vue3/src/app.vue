@@ -1,9 +1,13 @@
 <template>
-  <div class="menu-layout-container">
-    <menu-view></menu-view>
-  </div>
-  <div class="content-layout-container">
-    <router-view></router-view>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col menu-container gx-0">
+        <menu-view class="min-vh-100"></menu-view>
+      </div>
+      <div class="col">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
