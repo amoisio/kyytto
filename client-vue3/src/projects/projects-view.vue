@@ -8,16 +8,13 @@
     <template v-if="showList">
       <div class="row" v-for="project of projects" :key="project.href">
         <div class="col-12 col-md-6">
-          <project-item :project="project" @edit="showEditForm(project)"> </project-item>
+          <project-item :project="project" @edit="showEditForm(project)"></project-item>
         </div>
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-12 col-md-6">
           <button id="new-project" class="btn btn-outline-primary" @click="showCreateForm">
-            <b-icon
-              icon="tag"
-              size="2x">
-            </b-icon>
+            <b-icon icon="tag" size="2x"></b-icon>
             <span class="fs-5">New project</span>
           </button>
         </div>
@@ -26,7 +23,7 @@
     <template v-else>
       <div class="row">
         <div class="col-12 col-md-6">
-          <project-details :project="current" @save="save" @remove="remove" @cancel="resetView"> </project-details>
+          <project-details :project="current" @save="save" @remove="remove" @cancel="resetView"></project-details>
         </div>
       </div>
     </template>

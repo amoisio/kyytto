@@ -1,66 +1,69 @@
 <template>
-  <div class="project-details">
-    <input v-if="isNew" type="text" v-model="item.name" ref="name" placeholder="Project name"/>
-    <span v-else>{{ item.name }}</span>
-    <textarea rows="5" v-model="item.description" ref="description" placeholder="Project description"/>
-    <input type="color" v-model="item.color"/>
-    <!-- <button @click="add">
-      <font-awesome-icon icon="plus" fixed-width size="lg"></font-awesome-icon>
-    </button> -->
-    <button @click="remove">Remove</button>
-    <button @click="cancel">Cancel</button>
-    <button @click="save">Save</button>
-  </div>
+  <form>
+    <div class="mb-3">
+      <label for="projectName" class="form-label">Project name</label>
+      <input type="text" class="form-control" id="projectName" v-model="item.name" ref="name" placeholder="Project name" :readonly="!isNew"/>
+    </div>
+    <div class="mb-3">
+      <label for="projectDescription" class="form-label">Description</label>
+      <textarea id="projectDescription" class="form-control" rows="5" v-model="item.description" ref="description" placeholder="Project description" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="projectColor">Color</label>
+      <input id="projectColor" class="form-control" type="color" v-model="item.color" />
+    </div>
+    <button @click="remove" class="btn btn-outline-danger">Remove</button>
+    <button @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+    <button @click="save" class="btn btn-outline-primary">Save</button>
+  </form>
 </template>
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import { IProject } from './project';
-export default defineComponent({
-  name: 'ProjectDetails',
-  emits: ['save', 'remove', 'cancel'],
-  props: {
-    project: {
-      type: Object as PropType<IProject>,
-      required: false
-    }
-  },
-  created() {
-    Object.assign(this.item, this.project);
-  },
-  mounted() {
-    // this.focusOnName();
-  },
-  data() {
-    return {
-      item: {} as IProject
-    };
-  },
-  computed: {
-    isNew(): boolean {
-      return this.project === undefined;
-    }
-  },
-  methods: {
-    save() {
-      if (this.isValid()) {
-        this.$emit('save', this.item);
+  import { defineComponent, PropType } from 'vue';
+  import { IProject } from './project';
+  export default defineComponent({
+    name: 'ProjectDetails',
+    emits: ['save', 'remove', 'cancel'],
+    props: {
+      project: {
+        type: Object as PropType<IProject>,
+        required: false
       }
     },
-    isValid() {
-      return this.item.description.length > 0 &&
-          this.item.name.length > 0 &&
-          this.item.color.length > 0;
+    created() {
+      Object.assign(this.item, this.project);
     },
-    remove() {
-      this.$emit('remove', this.item);
+    mounted() {
+      // this.focusOnName();
     },
-    cancel() {
-      this.$emit('cancel');
+    data() {
+      return {
+        item: {} as IProject
+      };
     },
-    focusOnName() {
-      const input = this.$refs.name as HTMLElement;
-      input.focus();
+    computed: {
+      isNew(): boolean {
+        return this.project === undefined;
+      }
+    },
+    methods: {
+      save() {
+        if (this.isValid()) {
+          this.$emit('save', this.item);
+        }
+      },
+      isValid() {
+        return this.item.description.length > 0 && this.item.name.length > 0 && this.item.color.length > 0;
+      },
+      remove() {
+        this.$emit('remove', this.item);
+      },
+      cancel() {
+        this.$emit('cancel');
+      },
+      focusOnName() {
+        const input = this.$refs.name as HTMLElement;
+        input.focus();
+      }
     }
-  }
-});
+  });
 </script>
