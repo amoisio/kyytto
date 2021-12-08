@@ -1,4 +1,4 @@
-@use 'sass:color';
+@import "~bootstrap/scss/functions"; 
 
 $dark1: hsla(216, 100%, 4%, 1);
 $dark2: hsla(214, 35%, 37%, 1);
@@ -8,7 +8,7 @@ $light2: #c3bbc7ff;
 $light1: #e5e5e5;
 
 $highlight:#ffd60a;
-$highlight1: color.adjust($highlight, $whiteness:30%);
+$highlight1: $highlight;
 
 $margin: 4px;
 $padding: 4px;
@@ -17,3 +17,9 @@ $border-color: $dark1;
 $border-width: 2px;
 $border-style: solid;
 $border-radius: 0px;
+
+$primary: $light3;
+$secondary: $dark2;
+
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/bootstrap";

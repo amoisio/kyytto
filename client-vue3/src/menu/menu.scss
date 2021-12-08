@@ -1,26 +1,24 @@
-@use '../defaults';
+@use '@/custom';
 
 $color: white;
-$background-color: defaults.$dark1;
+$background-color: custom.$dark1;
 
 $button-color: $color;
 $button-background-color: $background-color;
-$button-highlight-background-color: defaults.$light1;
-$button-highlight-color: defaults.$dark1;
+$button-highlight-background-color: custom.$light1;
+$button-highlight-color: custom.$dark1;
 
 .menu {
   color: $color;
-  background: defaults.$dark2;
-  background: linear-gradient(270deg, defaults.$dark2 0%, defaults.$dark1 100%);
-  background: -moz-linear-gradient(270deg, defaults.$dark2 0%, defaults.$dark1 100%);
-  background: -webkit-linear-gradient(270deg, defaults.$dark2 0%, defaults.$dark1 100%);
+  background: custom.$dark2;
+  background: linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
+  background: -moz-linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
+  background: -webkit-linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
 
   .logo {
     display: block;
     text-align: center;
     font-size: xx-large;
-    // padding-top: 20px;
-    // padding-bottom: 20px;
   }
 
   .menu-button {
@@ -40,7 +38,7 @@ $button-highlight-color: defaults.$dark1;
     &:hover,
     &:focus,
     &.active {
-      color: defaults.$highlight1;
+      color: custom.$highlight1;
       background-color: rgba($color: black, $alpha: 0.2);
     }
   }

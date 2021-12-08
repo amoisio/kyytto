@@ -5,8 +5,8 @@
         <h1>Projects</h1>
       </div>
       <div class="col-2 pull-right">
-        <button 
-          class="btn btn-primary" 
+        <button
+          class="btn btn-secondary"
           @click="showCreateForm">New project</button>
       </div>
     </div>
@@ -93,5 +93,5 @@
   });
 </script>
 <style lang="scss">
-  @use 'projects';
+
 </style>

@@ -1,26 +1,25 @@
-@use 'defaults';
 @use 'sass:color';
+@use 'custom';
+
 
 $left: 0px;
 $top: 0px;
 $width: 100px;
 
-$primary-background-color: defaults.$light1;
-$primary-color: color.change(defaults.$dark1, $blackness: 80%);
-$primary-button-background-color: defaults.$dark2;
+$primary-background-color: custom.$light1;
+$primary-color: color.change(custom.$dark1, $blackness: 80%);
+$primary-button-background-color: custom.$dark2;
 $primary-button-color: white;
-$primary-button-highlight-background-color: defaults.$light2;
-$primary-button-highlight-color: defaults.$dark1;
-$primary-button-border: 0px defaults.$border-style defaults.$dark1;
+$primary-button-highlight-background-color: custom.$light2;
+$primary-button-highlight-color: custom.$dark1;
+$primary-button-border: 0px custom.$border-style custom.$dark1;
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h1 {
-  color: defaults.$dark1;
-  // padding-top: 20px;
-  // padding-bottom: 20px;
+  color: custom.$dark1;
 }
 
 .menu-container {
@@ -28,24 +27,3 @@ h1 {
   flex: 0 0 $width !important;
   width: $width !important;
 }
-
-// .button-primary {
-//   color: white;
-//   background-color: color.adjust(defaults.$dark2, $lightness: 0%);
-//   padding: 4px;
-//   text-align: center;
-//   text-decoration: none;
-//   border: 2px solid defaults.$dark1;
-//   border-radius: 4px;
-
-//   &:focus {
-//     outline: none;
-//   }
-
-//   &:hover,
-//   &:focus,
-//   &.active {
-//     background-color: color.adjust(defaults.$dark2, $blackness: 20% );
-//     color: defaults.$highlight1;
-//   }
-// }
