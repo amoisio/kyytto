@@ -4,10 +4,8 @@
       <button class="btn btn-outline-primary position-relative" @click="$emit('edit')">
         Edit
         <span
-          class="position-absolute top-0 start-100 translate-middle badge square-pill"
-          :style="{ 'background-color': project.color }"
-        >
-          <font-awesome-icon icon="pen" fixed-width size="md">d</font-awesome-icon>
+          class="position-absolute top-0 start-100 translate-middle">
+          <b-icon icon="tag-fill" scale=2 :style="{ 'color': project.color, 'overflow': 'visible' }"></b-icon>
         </span>
       </button>
     </div>

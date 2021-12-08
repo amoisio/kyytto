@@ -1,7 +1,7 @@
 <template>
   <router-link :class="{ 'menu-button': true, 'active': isCurrentRoute }" :to="routerLink">
     <span class="icon">
-      <font-awesome-icon :icon="icon" fixed-width size="lg"></font-awesome-icon>
+      
     </span>
     <span class="slot">
       <slot></slot>
