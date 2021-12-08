@@ -7,7 +7,7 @@
     </div>
     <div class="row" v-for="link of links" :key="link.href">
       <div class="col">
-        <menu-button  :routerLink="linkFrom(link.href)" :icon="link.icon">
+        <menu-button class="mx-0 pt-3 pb-3" :routerLink="linkFrom(link.href)" :icon="link.icon">
           {{ link.title }}
         </menu-button>
       </div>

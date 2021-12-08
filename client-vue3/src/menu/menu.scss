@@ -1,21 +1,22 @@
 @use '@/custom';
+@use 'sass:color';
 
-$color: white;
+  $color: white;
 $background-color: custom.$dark1;
 
-$button-color: $color;
+$button-color: color.change(custom.$dark2, $lightness: 80%);;
 $button-background-color: $background-color;
 $button-highlight-background-color: custom.$light1;
 $button-highlight-color: custom.$dark1;
 
 .menu {
-  color: $color;
   background: custom.$dark2;
   background: linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
   background: -moz-linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
   background: -webkit-linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
 
   .logo {
+    color: $color;
     display: block;
     text-align: center;
     font-size: xx-large;
@@ -24,16 +25,9 @@ $button-highlight-color: custom.$dark1;
   .menu-button {
     color: $button-color;
     background-color: transparent;
-    opacity: 90%;
     text-align: center;
     text-decoration: none;
     display: block;
-    padding: 8px 0px;
-
-    .icon {
-      display: block !important;
-      margin-bottom: 8px;
-    }
 
     &:hover,
     &:focus,

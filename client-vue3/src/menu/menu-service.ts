@@ -9,12 +9,12 @@ export class MenuService implements IMenuService {
       {
         href: 'http://localhost:8080/board',
         title: 'Board',
-        icon: 'tasks'
+        icon: 'list-check'
       },
       {
         href: 'http://localhost:8080/projects',
         title: 'Projects',
-        icon: 'project-diagram'
+        icon: 'tag'
       }
     ];
   }

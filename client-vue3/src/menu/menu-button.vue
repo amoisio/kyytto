@@ -1,10 +1,10 @@
 <template>
   <router-link :class="{ 'menu-button': true, 'active': isCurrentRoute }" :to="routerLink">
-    <span class="icon">
-      
-    </span>
+    <b-icon
+      :icon="icon"
+      size="2x" >
+    </b-icon>
     <span class="slot">
-      <slot></slot>
     </span>
   </router-link>
 </template>
