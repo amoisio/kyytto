@@ -1,9 +1,12 @@
 <template>
   <div class="row mt-2 mb-2">
     <div class="col-auto">
-      <button class="btn btn-primary position-relative" @click="$emit('edit')">
+      <button class="btn btn-outline-primary position-relative" @click="$emit('edit')">
         Edit
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" :style="{ 'background-color': project.color }"> 
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge square-pill"
+          :style="{ 'background-color': project.color }"
+        >
           <font-awesome-icon icon="pen" fixed-width size="md">d</font-awesome-icon>
         </span>
       </button>
@@ -29,5 +32,8 @@
   });
 </script>
 <style lang="scss">
-
+  @use '@/custom';
+  .badge {
+    border: custom.$border;
+  }
 </style>

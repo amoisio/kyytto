@@ -17,8 +17,10 @@ $border-color: $dark1;
 $border-width: 2px;
 $border-style: solid;
 $border-radius: 0px;
+$border: $border-width $border-style $border-color;
 
-$primary: $light3;
+// boostrap override
+$primary: $dark1;
 $secondary: $dark2;
 
 @import "~bootstrap/scss/variables";

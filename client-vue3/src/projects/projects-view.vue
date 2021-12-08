@@ -1,19 +1,19 @@
 <template>
   <div class="projects">
     <div class="row pb-3 pt-3">
-      <div class="col-4">
+      <div class="col-12">
         <h1>Projects</h1>
-      </div>
-      <div class="col-2 pull-right">
-        <button
-          class="btn btn-secondary"
-          @click="showCreateForm">New project</button>
       </div>
     </div>
     <template v-if="showList">
       <div class="row" v-for="project of projects" :key="project.href">
         <div class="col-12 col-md-6">
           <project-item :project="project" @edit="showEditForm(project)"> </project-item>
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-12 col-md-6">
+          <button class="btn btn-outline-primary" @click="showCreateForm">New project</button>
         </div>
       </div>
     </template>
@@ -92,6 +92,4 @@
     }
   });
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
