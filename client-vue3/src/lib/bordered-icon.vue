@@ -8,7 +8,7 @@
   </span>
 </template>
 <script lang="ts">
-  import { defineComponent, PropType } from 'vue';
+  import { defineComponent } from 'vue';
   export default defineComponent({
     name: 'BorderedIcon',
     props: {
@@ -18,7 +18,7 @@
       },
       scale: {
         type: String,
-        default: "1"
+        default: '1'
       },
       color: String,
       borderColor: String

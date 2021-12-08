@@ -3,7 +3,7 @@
     <div class="col-auto">
       <button class="btn btn-outline-primary position-relative" @click="$emit('edit')">
         <span class="fs-5">Edit</span>
-        <bordered-icon 
+        <bordered-icon
           class="top-0 start-100 translate-middle"
           icon="tag"
           scale="2"

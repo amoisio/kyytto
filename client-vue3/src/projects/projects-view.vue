@@ -13,7 +13,13 @@
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-12 col-md-6">
-          <button class="btn btn-outline-primary" @click="showCreateForm">New project</button>
+          <button id="new-project" class="btn btn-outline-primary" @click="showCreateForm">
+            <b-icon
+              icon="tag"
+              size="2x">
+            </b-icon>
+            <span class="fs-5">New project</span>
+          </button>
         </div>
       </div>
     </template>
@@ -92,4 +98,8 @@
     }
   });
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+#new-project .bootstrap-icon {
+  margin-right: 8px!important;
+}
+</style>

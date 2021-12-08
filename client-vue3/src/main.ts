@@ -3,7 +3,8 @@ import * as VueRouter from 'vue-router';
 import App from './app.vue';
 import BoardView from './board/board-view.vue';
 import ProjectsView from './projects/projects-view.vue';
-import BootstrapVue3, { BIcon } from 'bootstrap-vue-3';
+import BootstrapVue3 from 'bootstrap-vue-3';
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 
 const routes = [
   { path: '/board', component: BoardView },
@@ -18,5 +19,4 @@ const router = VueRouter.createRouter({
 const app = Vue.createApp(App);
 app.use(router);
 app.use(BootstrapVue3);
-app.component('b-icon', BIcon);
 app.mount('#app');
