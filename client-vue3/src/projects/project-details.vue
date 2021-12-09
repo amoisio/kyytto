@@ -2,19 +2,40 @@
   <form>
     <div class="mb-3">
       <label for="projectName" class="form-label">Project name</label>
-      <input type="text" class="form-control" id="projectName" v-model="item.name" ref="name" placeholder="Project name" :readonly="!isNew"/>
+      <input
+        type="text"
+        class="form-control"
+        id="projectName"
+        v-model="item.name"
+        ref="name"
+        placeholder="Project name"
+        :readonly="!isNew"
+      />
     </div>
     <div class="mb-3">
       <label for="projectDescription" class="form-label">Description</label>
-      <textarea id="projectDescription" class="form-control" rows="5" v-model="item.description" ref="description" placeholder="Project description" />
+      <textarea
+        id="projectDescription"
+        class="form-control"
+        rows="5"
+        v-model="item.description"
+        ref="description"
+        placeholder="Project description"
+      />
     </div>
     <div class="mb-3">
       <label class="form-label" for="projectColor">Color</label>
       <input id="projectColor" class="form-control" type="color" v-model="item.color" />
     </div>
-    <button @click="remove" class="btn btn-outline-danger">Remove</button>
-    <button @click="cancel" class="btn btn-outline-secondary">Cancel</button>
-    <button @click="save" class="btn btn-outline-primary">Save</button>
+    <div class="row">
+      <div class="col">
+        <button @click="save" class="btn btn-outline-success me-2">Save</button>
+        <button @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+      </div>
+      <div class="col text-end">
+        <button @click="remove" class="btn btn-outline-danger">Remove</button>
+      </div>
+    </div>
   </form>
 </template>
 <script lang="ts">

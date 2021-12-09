@@ -21,7 +21,7 @@ $border: $border-width $border-style $border-color;
 
 // boostrap override
 $primary: $dark1;
-$secondary: $dark2;
+$btn-link-hover-color: $highlight;
 
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/bootstrap";
