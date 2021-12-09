@@ -5,6 +5,7 @@ export interface Href {
   segments: string[];
   query: string[][];
   rel: string;
+  id: string;
 }
 
 export const parse = (path: string): Href => {
@@ -58,6 +59,7 @@ export const parse = (path: string): Href => {
     extension: extension,
     segments: segments,
     query: query,
-    rel: rel
+    rel: rel,
+    id: segments[segments.length - 1]
   };
 };

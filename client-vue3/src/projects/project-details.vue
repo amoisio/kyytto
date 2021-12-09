@@ -9,7 +9,6 @@
         v-model="item.name"
         ref="name"
         placeholder="Project name"
-        :readonly="!isNew"
       />
     </div>
     <div class="mb-3">
@@ -47,24 +46,19 @@
     props: {
       project: {
         type: Object as PropType<IProject>,
-        required: false
+        required: true
       }
     },
     created() {
       Object.assign(this.item, this.project);
     },
     mounted() {
-      // this.focusOnName();
+      this.focusOnName();
     },
     data() {
       return {
         item: {} as IProject
       };
-    },
-    computed: {
-      isNew(): boolean {
-        return this.project === undefined;
-      }
     },
     methods: {
       save() {

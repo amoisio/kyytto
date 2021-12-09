@@ -1,9 +1,10 @@
 import { IProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
-// import { pickColor } from '@/lib/colorPicker'
+import { parse } from '@/lib/hrefParser';
 export interface IProjectService {
   create(project: IProject): void;
   getAll(): IProject[];
+  getById(id: string): IProject;
   update(project: IProject): void;
   remove(project: IProject): void;
 }
@@ -20,7 +21,7 @@ export class ProjectService implements IProjectService {
     const id = uuidv4();
     // const color = pickColor(this.getAll().map((pro) => pro.color));
     const item = {
-      href: `/projects/${id}`,
+      href: `http://localhost:8080/api/projects/${id}`,
       name: project.name,
       description: project.description,
       color: project.color
@@ -33,9 +34,19 @@ export class ProjectService implements IProjectService {
     return str === null ? [] : JSON.parse(str);
   }
 
+  public getById(id: string): IProject {
+    const projects = this.getAll();
+    const match = projects.find(p => parse(p.href).id === id);
+    if (match === undefined) {
+      throw new Error(`No project found for ${id}`);
+    } else {
+      return match;
+    }
+  }
+
   public update(project: IProject): void {
     const projects = this.getAll();
-    const match = projects.find(item => item.href === project.href);
+    const match = projects.find((item) => item.href === project.href);
     if (match !== undefined) {
       match.name = project.name;
       match.description = project.description;

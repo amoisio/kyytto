@@ -5,49 +5,29 @@
         <h1>Projects</h1>
       </div>
       <div class="col align-self-center">
-        <button id="new-project" class="btn btn-outline-primary" @click="showCreateForm">
+        <button id="new-project" class="btn btn-outline-primary" @click="navigateToProjectForm()">
           <b-icon icon="tag" size="2x"></b-icon>
           <span class="fs-5">New project</span>
         </button>
       </div>
     </div>
-    <template v-if="showList">
-      <div class="row" v-for="project of projects" :key="project.href">
-        <div class="col-12 col-md-6">
-          <project-item :project="project" @edit="showEditForm(project)"></project-item>
-        </div>
+    <div class="row" v-for="project of projects" :key="project.href">
+      <div class="col-12 col-md-6">
+        <project-item :project="project" @edit="navigateToProjectForm(project)"></project-item>
       </div>
-      <div class="row mt-2 mb-2">
-        <div class="col-12 col-md-6">
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <project-details :project="current" @save="save" @remove="remove" @cancel="resetView"></project-details>
-        </div>
-      </div>
-    </template>
+    </div>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { IProject } from './project';
-  import ProjectDetails from './project-details.vue';
   import ProjectItem from './project-item.vue';
   import { ProjectService, IProjectService } from './project-service';
-
-  interface IProjectsViewModel {
-    current?: IProject;
-    projects: IProject[];
-    showList: boolean;
-  }
+  import { parse } from '@/lib/hrefParser';
 
   export default defineComponent({
     name: 'ProjectsView',
     components: {
-      ProjectDetails,
       ProjectItem
     },
     created() {
@@ -56,49 +36,25 @@
     computed: {
       service(): IProjectService {
         return new ProjectService();
-      },
-      isNew(): boolean {
-        return this.current === undefined;
       }
     },
     data() {
       return {
-        current: undefined,
-        projects: [],
-        showList: true
-      } as IProjectsViewModel;
+        projects: [] as IProject[]
+      };
     },
     methods: {
-      showCreateForm() {
-        this.showList = false;
-      },
-      showEditForm(project: IProject) {
-        this.current = project;
-        this.showList = false;
-      },
-      save(project: IProject) {
-        if (this.isNew) {
-          this.service.create(project);
-        } else {
-          this.service.update(project);
-        }
-        this.projects = this.service.getAll();
-        this.resetView();
-      },
-      remove(project: IProject) {
-        this.service.remove(project);
-        this.projects = this.service.getAll();
-        this.resetView();
-      },
-      resetView() {
-        this.current = undefined;
-        this.showList = true;
+      navigateToProjectForm(project?: IProject) {
+        const id = project
+          ? parse(project.href).id
+          : '0';
+        this.$router.push({ name: 'project-form', params: { id: id } });
       }
     }
   });
 </script>
 <style lang="scss">
-#new-project .bootstrap-icon {
-  margin-right: 8px!important;
-}
+  #new-project .bootstrap-icon {
+    margin-right: 8px !important;
+  }
 </style>
