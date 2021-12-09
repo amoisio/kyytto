@@ -1,6 +1,7 @@
 import { IProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
 import { parse } from '@/lib/hrefParser';
+import { colorWheel } from '@/lib/colorWheel';
 export interface IProjectService {
   create(project: IProject): void;
   getAll(): IProject[];
@@ -19,7 +20,6 @@ export class ProjectService implements IProjectService {
 
   private createProject(project: IProject): IProject {
     const id = uuidv4();
-    // const color = pickColor(this.getAll().map((pro) => pro.color));
     const item = {
       href: `http://localhost:8080/api/projects/${id}`,
       name: project.name,

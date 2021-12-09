@@ -1,7 +1,7 @@
 <template>
   <form>
     <div class="mb-3">
-      <label for="projectName" class="form-label">Project name</label>
+      <label for="projectName" class="form-label">Name</label>
       <input
         type="text"
         class="form-control"
@@ -21,10 +21,6 @@
         ref="description"
         placeholder="Project description"
       />
-    </div>
-    <div class="mb-3">
-      <label class="form-label" for="projectColor">Color</label>
-      <input id="projectColor" class="form-control" type="color" v-model="item.color" />
     </div>
     <div class="row">
       <div class="col">
@@ -78,7 +74,22 @@
       focusOnName() {
         const input = this.$refs.name as HTMLElement;
         input.focus();
+      },
+      openColor() {
+        const input = this.$refs.color as HTMLElement;
+        console.log(input);
+        input.focus();
+        input.click();
       }
     }
   });
 </script>
+<style lang="scss">
+.hidden {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+  z-index: -10;
+}
+</style>
