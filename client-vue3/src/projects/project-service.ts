@@ -1,7 +1,7 @@
 import { IProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
 import { parse } from '@/lib/hrefParser';
-import { colorWheel } from '@/lib/colorWheel';
+
 export interface IProjectService {
   create(project: IProject): void;
   getAll(): IProject[];
