@@ -1,8 +1,14 @@
 <template>
   <div class="projects">
     <div class="row pb-3 pt-3">
-      <div class="col-12">
+      <div class="col-auto">
         <h1>Projects</h1>
+      </div>
+      <div class="col align-self-center">
+        <button id="new-project" class="btn btn-outline-primary" @click="showCreateForm">
+          <b-icon icon="tag" size="2x"></b-icon>
+          <span class="fs-5">New project</span>
+        </button>
       </div>
     </div>
     <template v-if="showList">
@@ -13,10 +19,6 @@
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-12 col-md-6">
-          <button id="new-project" class="btn btn-outline-primary" @click="showCreateForm">
-            <b-icon icon="tag" size="2x"></b-icon>
-            <span class="fs-5">New project</span>
-          </button>
         </div>
       </div>
     </template>

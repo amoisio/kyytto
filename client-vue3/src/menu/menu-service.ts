@@ -14,7 +14,7 @@ export class MenuService implements IMenuService {
       {
         href: 'http://localhost:8080/projects',
         title: 'Projects',
-        icon: 'tag'
+        icon: 'tags'
       }
     ];
   }

@@ -3,8 +3,9 @@
     <b-icon
       :icon="icon"
       size="2x" >
-    </b-icon>
+    </b-icon><br/>
     <span class="slot">
+      <slot></slot>
     </span>
   </router-link>
 </template>
