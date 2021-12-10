@@ -60,10 +60,10 @@
           project.color = colorWheel.next();
         } else {
           project = this.service.getById(this.id);
+          this.model.name = project.name;
+          this.model.description = project.description;
         }
         this.project = project;
-        this.model.name = project.name;
-        this.model.description = project.description;
       } catch (e) {
         console.error(e);
         this.navigateToProjects();
