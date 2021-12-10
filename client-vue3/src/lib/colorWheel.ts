@@ -14,8 +14,8 @@ class ColorWheel {
 
   constructor() {
     const str = localStorage.getItem('current-index');
-    this.index = str === null 
-      ? 0 
+    this.index = str === null
+      ? 0
       : Number(str) % this.colors.length;
   }
 
@@ -23,6 +23,13 @@ class ColorWheel {
     const validIndex = this.index % this.colors.length;
     const color = this.colors[validIndex];
     localStorage.setItem('current-index', String(++this.index % this.colors.length));
+    return color;
+  }
+
+  public prev(): string {
+    const validIndex = this.index % this.colors.length;
+    const color = this.colors[validIndex];
+    localStorage.setItem('current-index', String(--this.index % this.colors.length));
     return color;
   }
 }

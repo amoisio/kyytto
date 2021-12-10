@@ -6,49 +6,43 @@
       </div>
       <div class="col-6 col-md-3 align-self-center text-end">
         <div class="position-relative mb-4 me-4">
-          <bordered-icon icon="tag" scale="2" :color="item.color" border-color="black"> </bordered-icon>
+          <bordered-icon icon="tag" scale="2" :color="project.color" border-color="black"> </bordered-icon>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <project-details :project="item" @save="save" @remove="remove" @cancel="cancel"></project-details>
+        <project-edit-form v-model="model" @remove="remove" @cancel="cancel"></project-edit-form>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import ProjectDetails from './project-details.vue';
+  import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/lib/bordered-icon.vue';
   import { IProject } from './project';
   import { IProjectService, ProjectService } from './project-service';
   import { colorWheel } from '@/lib/colorWheel';
+  import { ProjectEditFormModel } from './project-edit-form-model';
+
   export default defineComponent({
     name: 'ProjectDetailsView',
     components: {
-      ProjectDetails,
+      ProjectEditForm,
       BorderedIcon
     },
-    emits: ['save', 'remove', 'cancel'],
     props: {
       id: {
         type: String,
         required: true
       }
     },
-    created() {
-      try {
-        if (this.isNew) {
-          this.item = {} as IProject;
-          this.item.color = colorWheel.next();
-        } else {
-          this.item = this.service.getById(this.id);
-        }
-      } catch (e) {
-        console.error(e);
-        this.navigateToProjects();
-      }
+    data() {
+      return {
+        model: new ProjectEditFormModel(),
+        project: {} as IProject
+      };
     },
     computed: {
       service(): IProjectService {
@@ -58,25 +52,45 @@
         return this.id === '0';
       }
     },
-    data() {
-      return {
-        item: {} as IProject
-      };
+    created() {
+      try {
+        let project: IProject;
+        if (this.isNew) {
+          project = {} as IProject;
+          project.color = colorWheel.next();
+        } else {
+          project = this.service.getById(this.id);
+        }
+        this.project = project;
+        this.model.name = project.name;
+        this.model.description = project.description;
+      } catch (e) {
+        console.error(e);
+        this.navigateToProjects();
+      }
+    },
+    watch: {
+      model(newModel) {
+        this.save(newModel);
+      }
     },
     methods: {
-      save(project: IProject) {
+      save(model: ProjectEditFormModel) {
+        this.project.name = model.name;
+        this.project.description = model.description;
         if (this.isNew) {
-          this.service.create(project);
+          this.service.create(this.project);
         } else {
-          this.service.update(project);
+          this.service.update(this.project);
         }
         this.navigateToProjects();
       },
-      remove(project: IProject) {
-        this.service.remove(project);
+      remove() {
+        this.service.remove(this.project);
         this.navigateToProjects();
       },
       cancel() {
+        colorWheel.prev();
         this.navigateToProjects();
       },
       navigateToProjects() {

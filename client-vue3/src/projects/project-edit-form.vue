@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="save" autocomplete="off">
     <div class="mb-3">
       <label for="projectName" class="form-label">Name</label>
       <input
@@ -8,8 +8,7 @@
         id="projectName"
         v-model="item.name"
         ref="name"
-        placeholder="Project name"
-      />
+        placeholder="Project name" />
     </div>
     <div class="mb-3">
       <label for="projectDescription" class="form-label">Description</label>
@@ -19,54 +18,49 @@
         rows="5"
         v-model="item.description"
         ref="description"
-        placeholder="Project description"
-      />
+        placeholder="Project description" />
     </div>
-    <div class="row">
-      <div class="col">
-        <button @click="save" class="btn btn-outline-success me-2">Save</button>
-        <button @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <button type="submit" class="btn btn-outline-success me-2">Save</button>
+        <button type="button" @click="cancel" class="btn btn-outline-secondary">Cancel</button>
       </div>
-      <div class="col text-end">
-        <button @click="remove" class="btn btn-outline-danger">Remove</button>
+      <div class="col-auto text-end">
+        <button type="button" @click="remove" class="btn btn-outline-danger">Remove</button>
       </div>
     </div>
   </form>
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { IProject } from './project';
+  import { ProjectEditFormModel } from './project-edit-form-model';
+
   export default defineComponent({
-    name: 'ProjectDetails',
-    emits: ['save', 'remove', 'cancel'],
+    name: 'ProjectEditForm',
+    emits: ['update:modelValue', 'remove', 'cancel'],
     props: {
-      project: {
-        type: Object as PropType<IProject>,
+      modelValue: {
+        type: Object as PropType<ProjectEditFormModel>,
         required: true
       }
     },
+    data() {
+      return {
+        item: new ProjectEditFormModel()
+      };
+    },
     created() {
-      Object.assign(this.item, this.project);
+      Object.assign(this.item, this.modelValue);
     },
     mounted() {
       this.focusOnName();
     },
-    data() {
-      return {
-        item: {} as IProject
-      };
-    },
     methods: {
       save() {
-        if (this.isValid()) {
-          this.$emit('save', this.item);
-        }
-      },
-      isValid() {
-        return this.item.description.length > 0 && this.item.name.length > 0 && this.item.color.length > 0;
+        this.$emit('update:modelValue', this.item);
       },
       remove() {
-        this.$emit('remove', this.item);
+        this.$emit('remove');
       },
       cancel() {
         this.$emit('cancel');
@@ -74,12 +68,6 @@
       focusOnName() {
         const input = this.$refs.name as HTMLElement;
         input.focus();
-      },
-      openColor() {
-        const input = this.$refs.color as HTMLElement;
-        console.log(input);
-        input.focus();
-        input.click();
       }
     }
   });
