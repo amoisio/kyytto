@@ -1,7 +1,7 @@
 import BoardView from './board/board-view.vue';
 import TaskView from './board/task-view.vue';
 import ProjectsView from './projects/projects-view.vue';
-import ProjectDetailsView from './projects/project-details-view.vue';
+import ProjectView from './projects/project-view.vue';
 
 export const routes = [
   {
@@ -23,7 +23,7 @@ export const routes = [
   {
     name: 'project-form',
     path: '/projects/:id',
-    component: ProjectDetailsView,
+    component: ProjectView,
     props: true
   }
 ];

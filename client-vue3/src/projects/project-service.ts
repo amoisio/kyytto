@@ -1,70 +1,47 @@
 import { IProject } from './project';
 import { v4 as uuidv4 } from 'uuid';
-import { parse } from '@/lib/hrefParser';
+import { IRepository } from '@/irepository';
 
 export interface IProjectService {
-  create(project: IProject): void;
+  create(name: string, description: string | undefined, color: string): string;
   getAll(): IProject[];
   getById(id: string): IProject;
   update(project: IProject): void;
-  remove(project: IProject): void;
+  remove(id: string): void;
 }
 
 export class ProjectService implements IProjectService {
-  public create(project: IProject): void {
-    const item = this.createProject(project);
-    const notes = this.getAll();
-    notes.push(item);
-    this.setProjects(notes);
+  constructor(private repository: IRepository<IProject>) {}
+
+  public create(name: string, description: string | undefined, color: string): string {
+    const id = uuidv4();
+    const project = this.createProject(id, name, description, color);
+    this.repository.add(project);
+    return id;
   }
 
-  private createProject(project: IProject): IProject {
-    const id = uuidv4();
-    const item = {
+  private createProject(id: string, name: string, description: string | undefined, color: string): IProject {
+    return {
       href: `http://localhost:8080/api/projects/${id}`,
-      name: project.name,
-      description: project.description,
-      color: project.color
+      name: name,
+      description: description,
+      color: color
     } as IProject;
-    return item;
   }
 
   public getAll(): IProject[] {
-    const str = localStorage.getItem('projects');
-    return str === null ? [] : JSON.parse(str);
+    return this.repository.getAll();
   }
 
   public getById(id: string): IProject {
-    const projects = this.getAll();
-    const match = projects.find(p => parse(p.href).id === id);
-    if (match === undefined) {
-      throw new Error(`No project found for ${id}`);
-    } else {
-      return match;
-    }
+    return this.repository.getById(id);
   }
 
   public update(project: IProject): void {
-    const projects = this.getAll();
-    const match = projects.find((item) => item.href === project.href);
-    if (match !== undefined) {
-      match.name = project.name;
-      match.description = project.description;
-      match.color = project.color;
-      this.setProjects(projects);
-    } else {
-      throw new Error(`Project ${project.href} not found!`);
-    }
+    this.repository.update(project);
   }
 
-  private setProjects(projects: IProject[]) {
-    const str = JSON.stringify(projects);
-    localStorage.setItem('projects', str);
-  }
-
-  public remove(project: IProject): void {
-    const projects = this.getAll();
-    const newProjects = projects.filter((item) => item.href !== project.href);
-    this.setProjects(newProjects);
+  public remove(id: string): void {
+    this.repository.remove(id);
   }
 }

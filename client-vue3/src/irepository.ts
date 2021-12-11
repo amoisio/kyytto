@@ -7,7 +7,7 @@ export interface IRepository<TEntity> {
   getAll(): TEntity[];
   getById(id: string): TEntity;
   update(entity: TEntity): void;
-  remove(entity: TEntity): void;
+  remove(id: string): void;
 }
 
 export class LocalStorageRepository<TEntity extends IResource> implements IRepository<TEntity> {
@@ -55,9 +55,8 @@ export class LocalStorageRepository<TEntity extends IResource> implements IRepos
     }
   }
 
-  public remove(entity: TEntity): void {
+  public remove(id: string): void {
     const entities = this.readEntities();
-    const id = this.entityId(entity);
     const index = this.entityIndex(entities, id);
     entities.splice(index, 1);
     this.writeEntities(entities);

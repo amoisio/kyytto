@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="task-view">
     <div class="row pb-3 pt-3">
       <div class="col-12 col-md-6">
@@ -114,4 +114,4 @@
       }
     }
   });
-</script>
+</script> -->

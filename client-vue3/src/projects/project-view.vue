@@ -1,12 +1,12 @@
 <template>
-  <div class="project-form">
+  <div class="project-view">
     <div class="row pb-3 pt-3">
       <div class="col-6 col-md-3">
         <h1>Project</h1>
       </div>
       <div class="col-6 col-md-3 align-self-center text-end">
         <div class="position-relative mb-4 me-4">
-          <bordered-icon icon="tag" scale="2" :color="project.color" border-color="black"> </bordered-icon>
+          <bordered-icon icon="tag" scale="2" :color="color" border-color="black"></bordered-icon>
         </div>
       </div>
     </div>
@@ -18,16 +18,15 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, inject } from 'vue';
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/lib/bordered-icon.vue';
-  import { IProject } from './project';
-  import { IProjectService, ProjectService } from './project-service';
+  import { IProjectService } from './project-service';
   import { colorWheel } from '@/lib/colorWheel';
   import { ProjectEditFormModel } from './project-edit-form-model';
 
   export default defineComponent({
-    name: 'ProjectDetailsView',
+    name: 'ProjectView',
     components: {
       ProjectEditForm,
       BorderedIcon
@@ -41,12 +40,12 @@
     data() {
       return {
         model: new ProjectEditFormModel(),
-        project: {} as IProject
+        color: '' as string
       };
     },
     computed: {
       service(): IProjectService {
-        return new ProjectService();
+        return inject('projectService') as IProjectService;
       },
       isNew(): boolean {
         return this.id === '0';
@@ -54,16 +53,14 @@
     },
     created() {
       try {
-        let project: IProject;
         if (this.isNew) {
-          project = {} as IProject;
-          project.color = colorWheel.next();
+          this.color = colorWheel.next();
         } else {
-          project = this.service.getById(this.id);
+          const project = this.service.getById(this.id);
           this.model.name = project.name;
           this.model.description = project.description;
+          this.color = project.color;
         }
-        this.project = project;
       } catch (e) {
         console.error(e);
         this.navigateToProjects();
@@ -76,17 +73,22 @@
     },
     methods: {
       save(model: ProjectEditFormModel) {
-        this.project.name = model.name;
-        this.project.description = model.description;
+        if (model.name === undefined) {
+          throw new Error('Name must be given.');
+        }
+
         if (this.isNew) {
-          this.service.create(this.project);
+          this.service.create(model.name, model.description, this.color);
         } else {
-          this.service.update(this.project);
+          const project = this.service.getById(this.id);
+          project.name = model.name;
+          project.description = model.description;
+          this.service.update(project);
         }
         this.navigateToProjects();
       },
       remove() {
-        this.service.remove(this.project);
+        this.service.remove(this.id);
         this.navigateToProjects();
       },
       cancel() {

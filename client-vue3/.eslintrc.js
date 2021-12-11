@@ -14,6 +14,7 @@ module.exports = {
     'operator-linebreak': 'warn',
     'no-trailing-spaces': 'warn',
     quotes: 'warn',
+    'no-useless-constructor': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   },
