@@ -33,20 +33,20 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { ProjectEditFormModel } from './project-edit-form-model';
+  import { IProjectEditFormModel } from './project-models';
 
   export default defineComponent({
     name: 'ProjectEditForm',
     emits: ['update:modelValue', 'remove', 'cancel'],
     props: {
       modelValue: {
-        type: Object as PropType<ProjectEditFormModel>,
+        type: Object as PropType<IProjectEditFormModel>,
         required: true
       }
     },
     data() {
       return {
-        item: new ProjectEditFormModel()
+        item: {} as IProjectEditFormModel
       };
     },
     created() {

@@ -14,7 +14,7 @@
   import { defineComponent } from 'vue';
   import { LocalStorageRepository } from './irepository';
   import MenuView from './menu/menu-view.vue';
-  import { IProject } from './projects/project';
+  import { IProject } from './projects/project-models';
   import { ProjectService } from './projects/project-service';
   export default defineComponent({
     components: {

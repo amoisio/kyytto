@@ -1,4 +1,4 @@
-import { IProject } from '@/projects/project';
+import { IProject } from '@/projects/project-models';
 import { IResource } from '../iresource';
 import { TaskState } from './task-state';
 

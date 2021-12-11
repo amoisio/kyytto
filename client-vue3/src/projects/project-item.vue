@@ -19,7 +19,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { IProject } from './project';
+  import { IProject } from './project-models';
   import BorderedIcon from '@/lib/bordered-icon.vue';
 
   export default defineComponent({

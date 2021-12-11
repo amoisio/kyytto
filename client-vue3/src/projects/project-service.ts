@@ -1,4 +1,4 @@
-import { IProject } from './project';
+import { IProject } from './project-models';
 import { v4 as uuidv4 } from 'uuid';
 import { IRepository } from '@/irepository';
 

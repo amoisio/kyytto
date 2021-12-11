@@ -50,7 +50,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { IProject } from '@/projects/project';
+  import { IProject } from '@/projects/project-models';
   import { TaskEditFormModel } from './task-edit-form-model';
   import { TaskState } from './task-state';
   export default defineComponent({

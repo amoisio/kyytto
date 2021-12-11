@@ -5,10 +5,12 @@ export interface IProject extends IResource {
   description: string | undefined;
   color: string;
 }
+
 export interface IProjects extends IResource {
   projects: IProject[];
 }
-export interface INewProject {
-  name: string;
-  description: string;
+
+export interface IProjectEditFormModel {
+  name: string | undefined;
+  description: string | undefined;
 }

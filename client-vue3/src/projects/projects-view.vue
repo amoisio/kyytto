@@ -20,7 +20,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, inject } from 'vue';
-  import { IProject } from './project';
+  import { IProject } from './project-models';
   import ProjectItem from './project-item.vue';
   import { IProjectService } from './project-service';
   import { parse } from '@/lib/hrefParser';

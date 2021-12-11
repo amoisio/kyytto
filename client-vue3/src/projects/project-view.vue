@@ -18,12 +18,12 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, inject } from 'vue';
+  import { defineComponent } from 'vue';
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/lib/bordered-icon.vue';
   import { IProjectService } from './project-service';
   import { colorWheel } from '@/lib/colorWheel';
-  import { ProjectEditFormModel } from './project-edit-form-model';
+  import { IProjectEditFormModel } from './project-models';
 
   export default defineComponent({
     name: 'ProjectView',
@@ -31,6 +31,7 @@
       ProjectEditForm,
       BorderedIcon
     },
+    inject: ['projectService'],
     props: {
       id: {
         type: String,
@@ -39,13 +40,13 @@
     },
     data() {
       return {
-        model: new ProjectEditFormModel(),
+        model: {} as IProjectEditFormModel,
         color: '' as string
       };
     },
     computed: {
       service(): IProjectService {
-        return inject('projectService') as IProjectService;
+        return (this as any).projectService as IProjectService;
       },
       isNew(): boolean {
         return this.id === '0';
@@ -72,7 +73,7 @@
       }
     },
     methods: {
-      save(model: ProjectEditFormModel) {
+      save(model: IProjectEditFormModel) {
         if (model.name === undefined) {
           throw new Error('Name must be given.');
         }
