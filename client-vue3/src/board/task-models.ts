@@ -13,9 +13,9 @@ export interface ITasks extends IResource {
   tasks: ITask[];
 }
 
-export interface ITaskEditFormModel {
-  title: string | undefined;
-  description: string | undefined;
-  project: IProject | undefined;
-  state: TaskState;
+export class TaskEditFormModel {
+  public title: string | undefined = undefined;
+  public description: string | undefined = undefined;
+  public project: IProject | undefined = undefined;
+  public state: TaskState = TaskState.Todo;
 }

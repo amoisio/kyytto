@@ -17,7 +17,7 @@
   import TaskEditForm from './task-edit-form.vue';
   import { IProject } from '../projects/project-models';
   import { IProjectService } from '../projects/project-service';
-  import { ITask, ITaskEditFormModel } from './task-models';
+  import { ITask, TaskEditFormModel } from './task-models';
   import { ITaskService } from './task-service';
 
   export default defineComponent({
@@ -34,9 +34,9 @@
     },
     data() {
       return {
-        model: {} as ITaskEditFormModel,
-        task: {} as ITask,
-        projects: [] as IProject[]
+        model: new TaskEditFormModel(),
+        task: undefined as ITask | undefined,
+        projects: new Array<IProject>()
       };
     },
     computed: {
@@ -78,7 +78,7 @@
       }
     },
     methods: {
-      save(model: ITaskEditFormModel) {
+      save(model: TaskEditFormModel) {
         if (model.title === undefined) {
           throw new Error('Title must be given!');
         }
@@ -90,6 +90,10 @@
         if (this.isNew) {
           this.tService.create(model.title, model.description, model.project);
         } else {
+          if (this.task === undefined) {
+            throw new Error('Task must be defined!');
+          }
+
           this.task.title = model.title;
           this.task.description = model.description;
           this.task.state = model.state;

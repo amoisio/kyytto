@@ -10,7 +10,7 @@ export interface IProjects extends IResource {
   projects: IProject[];
 }
 
-export interface IProjectEditFormModel {
-  name: string | undefined;
-  description: string | undefined;
+export class ProjectEditFormModel {
+  public name: string | undefined = undefined;
+  public description: string | undefined = undefined;
 }

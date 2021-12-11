@@ -23,7 +23,7 @@
   import BorderedIcon from '@/lib/bordered-icon.vue';
   import { IProjectService } from './project-service';
   import { colorWheel } from '@/lib/colorWheel';
-  import { IProjectEditFormModel } from './project-models';
+  import { ProjectEditFormModel } from './project-models';
 
   export default defineComponent({
     name: 'ProjectView',
@@ -40,7 +40,7 @@
     },
     data() {
       return {
-        model: {} as IProjectEditFormModel,
+        model: new ProjectEditFormModel(),
         color: '' as string
       };
     },
@@ -73,7 +73,7 @@
       }
     },
     methods: {
-      save(model: IProjectEditFormModel) {
+      save(model: ProjectEditFormModel) {
         if (model.name === undefined) {
           throw new Error('Name must be given.');
         }
