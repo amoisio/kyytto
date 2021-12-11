@@ -1,3 +1,4 @@
+export type ResourceReference = string;
 export interface IResource {
-    href : string;
+    href : ResourceReference;
 }

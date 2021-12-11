@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div class="task-view">
     <div class="row pb-3 pt-3">
       <div class="col-12 col-md-6">
@@ -15,17 +15,17 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import TaskEditForm from './task-edit-form.vue';
-  import { IProject } from '../projects/project';
-  import { IProjectService, ProjectService } from '../projects//project-service';
-  import { TaskEditFormModel } from './task-edit-form-model';
-  import { ITaskService, TaskService } from './task-service';
-  import { ITask } from './task-item';
+  import { IProject } from '../projects/project-models';
+  import { IProjectService } from '../projects/project-service';
+  import { ITask, ITaskEditFormModel } from './task-models';
+  import { ITaskService } from './task-service';
 
   export default defineComponent({
     name: 'TaskView',
     components: {
       TaskEditForm
     },
+    inject: ['taskService', 'projectService'],
     props: {
       id: {
         type: String,
@@ -34,42 +34,39 @@
     },
     data() {
       return {
-        model: new TaskEditFormModel(),
+        model: {} as ITaskEditFormModel,
         task: {} as ITask,
         projects: [] as IProject[]
       };
     },
     computed: {
-      projectService(): IProjectService {
-        return new ProjectService();
+      tService(): ITaskService {
+        return (this as any).taskService as ITaskService;
       },
-      taskService(): ITaskService {
-        return new TaskService();
+      pService(): IProjectService {
+        return (this as any).projectService as IProjectService;
       },
       isNew(): boolean {
         return this.id === '0';
       },
       color(): string {
-        return this.isNew
+        return this.isNew || this.model.project === undefined
           ? 'white'
-          : this.task.project.color;
+          : this.model.project.color;
       }
     },
     created() {
       try {
-        this.projects = this.projectService.getAll();
-        console.table(this.projects);
-        let task: ITask;
-        if (this.isNew) {
-          task = {} as ITask;
-        } else {
-          task = this.taskService.getById(this.id);
+        this.projects = this.pService.getAll();
+        if (!this.isNew) {
+          const task = this.tService.getById(this.id);
+          const project = this.projects.find(p => p.href === task.projectHref);
           this.model.title = task.title;
           this.model.description = task.description;
-          this.model.project = task.project;
+          this.model.project = project;
           this.model.state = task.state;
+          this.task = task;
         }
-        this.task = task;
       } catch (e) {
         console.error(e);
         this.navigateToBoard();
@@ -81,7 +78,7 @@
       }
     },
     methods: {
-      save(model: TaskEditFormModel) {
+      save(model: ITaskEditFormModel) {
         if (model.title === undefined) {
           throw new Error('Title must be given!');
         }
@@ -90,20 +87,19 @@
           throw new Error('Project must be given!');
         }
 
-        this.task.title = model.title;
-        this.task.description = model.description;
-        this.task.state = model.state;
-        this.task.project = model.project;
-
         if (this.isNew) {
-          this.taskService.create(this.task);
+          this.tService.create(model.title, model.description, model.project);
         } else {
-          this.taskService.update(this.task);
+          this.task.title = model.title;
+          this.task.description = model.description;
+          this.task.state = model.state;
+          this.task.projectHref = model.project.href;
+          this.tService.update(this.task);
         }
         this.navigateToBoard();
       },
       remove() {
-        this.taskService.remove(this.task);
+        this.tService.remove(this.id);
         this.navigateToBoard();
       },
       cancel() {
@@ -114,4 +110,4 @@
       }
     }
   });
-</script> -->
+</script>

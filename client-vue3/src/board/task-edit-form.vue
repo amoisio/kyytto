@@ -51,14 +51,14 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { IProject } from '@/projects/project-models';
-  import { TaskEditFormModel } from './task-edit-form-model';
+  import { ITaskEditFormModel } from './task-models';
   import { TaskState } from './task-state';
   export default defineComponent({
     name: 'TaskEditForm',
     emits: ['update:modelValue', 'remove', 'cancel'],
     props: {
       modelValue: {
-        type: Object as PropType<TaskEditFormModel>,
+        type: Object as PropType<ITaskEditFormModel>,
         required: true
       },
       projects: {
@@ -68,7 +68,7 @@
     },
     data() {
       return {
-        item: new TaskEditFormModel()
+        item: {} as ITaskEditFormModel
       };
     },
     computed: {

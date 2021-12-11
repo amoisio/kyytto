@@ -54,7 +54,7 @@
 <script lang="ts">
   import { parse } from '@/lib/hrefParser';
   import { defineComponent } from 'vue';
-  import { ITask } from './task-item';
+  import { ITask } from './task-models';
 
   export default defineComponent({
     name: 'BoardView',

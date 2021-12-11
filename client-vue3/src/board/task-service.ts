@@ -1,31 +1,51 @@
-import { ITask } from "./task-item";
+import { IRepository } from "@/irepository";
+import { v4 as uuidv4 } from 'uuid';
+import { ResourceReference } from "@/iresource";
+import { IProject } from "@/projects/project-models";
+import { ITask } from "./task-models";
+import { TaskState } from "./task-state";
 
 export interface ITaskService {
-  create(project: ITask): void;
+  create(title: string, description: string | undefined, project: IProject): string;
   getAll(): ITask[];
   getById(id: string): ITask;
   update(task: ITask): void;
-  remove(task: ITask): void;
+  remove(id: string): void;
 }
 
 export class TaskService implements ITaskService {
-  create(project: ITask): void {
-    throw new Error("Method not implemented.");
+  constructor(private taskRepository: IRepository<ITask>) {}
+
+  create(title: string, description: string | undefined, project: IProject): string {
+    const id = uuidv4();
+    const task = this.createTask(id, title, description, project.href);
+    this.taskRepository.add(task);
+    return id;
   }
 
-  getAll(): ITask[] {
-    throw new Error("Method not implemented.");
+  private createTask(id: string, title: string, description: string | undefined, projectHref: ResourceReference): ITask {
+    return {
+      href: `http://localhost:8080/api/tasks/${id}`,
+      title: title,
+      description: description,
+      projectHref: projectHref,
+      state: TaskState.Todo
+    } as ITask;
   }
 
-  getById(id: string): ITask {
-    throw new Error("Method not implemented.");
+  public getAll(): ITask[] {
+    return this.taskRepository.getAll();
   }
 
-  update(task: ITask): void {
-    throw new Error("Method not implemented.");
+  public getById(id: string): ITask {
+    return this.taskRepository.getById(id);
   }
 
-  remove(task: ITask): void {
-    throw new Error("Method not implemented.");
+  public update(task: ITask): void {
+    this.taskRepository.update(task);
+  }
+
+  public remove(id: string): void {
+    this.remove(id);
   }
 }

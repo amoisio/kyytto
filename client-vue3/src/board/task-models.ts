@@ -1,20 +1,21 @@
 import { IProject } from '@/projects/project-models';
-import { IResource } from '../iresource';
+import { IResource, ResourceReference } from '../iresource';
 import { TaskState } from './task-state';
 
 export interface ITask extends IResource {
   title: string;
   description: string | undefined;
   state: TaskState;
-  project: IProject;
+  projectHref: ResourceReference;
 }
 
 export interface ITasks extends IResource {
   tasks: ITask[];
 }
 
-export interface INewTask {
-  title: string;
-  description: string;
-  project: IProject;
+export interface ITaskEditFormModel {
+  title: string | undefined;
+  description: string | undefined;
+  project: IProject | undefined;
+  state: TaskState;
 }
