@@ -2,7 +2,9 @@
   <nav class="menu">
     <div class="row pb-3 pt-3">
       <div class="col">
-        <span class="logo">K</span>
+        <router-link to="/" class="logo">
+          K
+        </router-link>
       </div>
     </div>
     <div class="row" v-for="link of links" :key="link.href">
