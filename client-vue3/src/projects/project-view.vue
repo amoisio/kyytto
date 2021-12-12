@@ -18,7 +18,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, inject } from 'vue';
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/lib/bordered-icon.vue';
   import { IProjectService } from './project-service';
@@ -31,12 +31,18 @@
       ProjectEditForm,
       BorderedIcon
     },
-    inject: ['projectService'],
     props: {
       id: {
         type: String,
         required: true
       }
+    },
+    setup() {
+      const projectService = inject('projectService') as IProjectService;
+
+      return {
+        projectService
+      };
     },
     data() {
       return {
@@ -45,9 +51,6 @@
       };
     },
     computed: {
-      service(): IProjectService {
-        return (this as any).projectService as IProjectService;
-      },
       isNew(): boolean {
         return this.id === '0';
       }
@@ -57,7 +60,7 @@
         if (this.isNew) {
           this.color = colorWheel.next();
         } else {
-          const project = this.service.getById(this.id);
+          const project = this.projectService.getById(this.id);
           this.model.name = project.name;
           this.model.description = project.description;
           this.color = project.color;
@@ -79,17 +82,17 @@
         }
 
         if (this.isNew) {
-          this.service.create(model.name, model.description, this.color);
+          this.projectService.create(model.name, model.description, this.color);
         } else {
-          const project = this.service.getById(this.id);
+          const project = this.projectService.getById(this.id);
           project.name = model.name;
           project.description = model.description;
-          this.service.update(project);
+          this.projectService.update(project);
         }
         this.navigateToProjects();
       },
       remove() {
-        this.service.remove(this.id);
+        this.projectService.remove(this.id);
         this.navigateToProjects();
       },
       cancel() {

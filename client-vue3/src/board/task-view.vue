@@ -13,7 +13,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, inject } from 'vue';
   import TaskEditForm from './task-edit-form.vue';
   import { IProject } from '../projects/project-models';
   import { IProjectService } from '../projects/project-service';
@@ -25,12 +25,19 @@
     components: {
       TaskEditForm
     },
-    inject: ['taskService', 'projectService'],
     props: {
       id: {
         type: String,
         required: true
       }
+    },
+    setup() {
+      const projectService = inject('projectService') as IProjectService;
+      const taskService = inject('taskService') as ITaskService;
+      return {
+        projectService,
+        taskService
+      };
     },
     data() {
       return {
@@ -40,12 +47,6 @@
       };
     },
     computed: {
-      tService(): ITaskService {
-        return (this as any).taskService as ITaskService;
-      },
-      pService(): IProjectService {
-        return (this as any).projectService as IProjectService;
-      },
       isNew(): boolean {
         return this.id === '0';
       },
@@ -57,9 +58,9 @@
     },
     created() {
       try {
-        this.projects = this.pService.getAll();
+        this.projects = this.projectService.getAll();
         if (!this.isNew) {
-          const task = this.tService.getById(this.id);
+          const task = this.taskService.getById(this.id);
           const project = this.projects.find(p => p.href === task.projectHref);
           this.model.title = task.title;
           this.model.description = task.description;
@@ -88,7 +89,7 @@
         }
 
         if (this.isNew) {
-          this.tService.create(model.title, model.description, model.project);
+          this.taskService.create(model.title, model.description, model.project);
         } else {
           if (this.task === undefined) {
             throw new Error('Task must be defined!');
@@ -98,12 +99,12 @@
           this.task.description = model.description;
           this.task.state = model.state;
           this.task.projectHref = model.project.href;
-          this.tService.update(this.task);
+          this.taskService.update(this.task);
         }
         this.navigateToBoard();
       },
       remove() {
-        this.tService.remove(this.id);
+        this.taskService.remove(this.id);
         this.navigateToBoard();
       },
       cancel() {
