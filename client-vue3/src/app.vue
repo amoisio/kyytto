@@ -11,7 +11,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, provide } from 'vue';
   import { ITask } from './board/task-models';
   import { TaskService } from './board/task-service';
   import { LocalStorageRepository } from './irepository';
@@ -22,9 +22,9 @@
     components: {
       MenuView
     },
-    provide: {
-      projectService: new ProjectService(new LocalStorageRepository<IProject>('projects')),
-      taskService: new TaskService(new LocalStorageRepository<ITask>('tasks'))
+    setup() {
+      provide('projectService', new ProjectService(new LocalStorageRepository<IProject>('projects')));
+      provide('taskService', new TaskService(new LocalStorageRepository<ITask>('tasks')));
     }
   });
 </script>

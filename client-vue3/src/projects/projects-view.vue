@@ -30,13 +30,15 @@
     components: {
       ProjectItem
     },
-    created() {
-      this.projects = this.service.getAll();
+    setup() {
+      const projectService = inject('projectService') as IProjectService;
+
+      return {
+        projectService
+      };
     },
-    computed: {
-      service(): IProjectService {
-        return inject('projectService') as IProjectService;
-      }
+    created() {
+      this.projects = this.projectService.getAll();
     },
     data() {
       return {
