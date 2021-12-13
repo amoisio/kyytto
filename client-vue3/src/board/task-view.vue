@@ -16,16 +16,13 @@
   import { defineComponent } from 'vue';
   import TaskEditForm from './task-edit-form.vue';
   import { IProject } from '../projects/project-models';
-  import { IProjectService } from '../projects/project-service';
   import { ITask, TaskEditFormModel } from './task-models';
-  import { ITaskService } from './task-service';
 
   export default defineComponent({
     name: 'TaskView',
     components: {
       TaskEditForm
     },
-    inject: ['taskService', 'projectService'],
     props: {
       id: {
         type: String,
@@ -40,12 +37,6 @@
       };
     },
     computed: {
-      tService(): ITaskService {
-        return (this as any).taskService as ITaskService;
-      },
-      pService(): IProjectService {
-        return (this as any).projectService as IProjectService;
-      },
       isNew(): boolean {
         return this.id === '0';
       },
@@ -57,9 +48,9 @@
     },
     created() {
       try {
-        this.projects = this.pService.getAll();
+        this.projects = this.$services.projectService.getAll();
         if (!this.isNew) {
-          const task = this.tService.getById(this.id);
+          const task = this.$services.taskService.getById(this.id);
           const project = this.projects.find(p => p.href === task.projectHref);
           this.model.title = task.title;
           this.model.description = task.description;
@@ -88,7 +79,7 @@
         }
 
         if (this.isNew) {
-          this.tService.create(model.title, model.description, model.project);
+          this.$services.taskService.create(model.title, model.description, model.project);
         } else {
           if (this.task === undefined) {
             throw new Error('Task must be defined!');
@@ -98,12 +89,12 @@
           this.task.description = model.description;
           this.task.state = model.state;
           this.task.projectHref = model.project.href;
-          this.tService.update(this.task);
+          this.$services.taskService.update(this.task);
         }
         this.navigateToBoard();
       },
       remove() {
-        this.tService.remove(this.id);
+        this.$services.taskService.remove(this.id);
         this.navigateToBoard();
       },
       cancel() {

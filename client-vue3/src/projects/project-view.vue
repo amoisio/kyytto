@@ -21,7 +21,6 @@
   import { defineComponent } from 'vue';
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/lib/bordered-icon.vue';
-  import { IProjectService } from './project-service';
   import { colorWheel } from '@/lib/colorWheel';
   import { ProjectEditFormModel } from './project-models';
 
@@ -31,7 +30,6 @@
       ProjectEditForm,
       BorderedIcon
     },
-    inject: ['projectService'],
     props: {
       id: {
         type: String,
@@ -45,9 +43,6 @@
       };
     },
     computed: {
-      service(): IProjectService {
-        return (this as any).projectService as IProjectService;
-      },
       isNew(): boolean {
         return this.id === '0';
       }
@@ -57,7 +52,7 @@
         if (this.isNew) {
           this.color = colorWheel.next();
         } else {
-          const project = this.service.getById(this.id);
+          const project = this.$services.projectService.getById(this.id);
           this.model.name = project.name;
           this.model.description = project.description;
           this.color = project.color;
@@ -79,17 +74,17 @@
         }
 
         if (this.isNew) {
-          this.service.create(model.name, model.description, this.color);
+          this.$services.projectService.create(model.name, model.description, this.color);
         } else {
-          const project = this.service.getById(this.id);
+          const project = this.$services.projectService.getById(this.id);
           project.name = model.name;
           project.description = model.description;
-          this.service.update(project);
+          this.$services.projectService.update(project);
         }
         this.navigateToProjects();
       },
       remove() {
-        this.service.remove(this.id);
+        this.$services.projectService.remove(this.id);
         this.navigateToProjects();
       },
       cancel() {

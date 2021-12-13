@@ -1,16 +1,7 @@
 import { IResource } from './iresource';
-import { parse } from '@/lib/hrefParser';
+import { parse } from './lib/hrefParser';
 
-export interface IRepository<TEntity> {
-  add(entity: TEntity): void;
-  exists(id: string): boolean;
-  getAll(): TEntity[];
-  getById(id: string): TEntity;
-  update(entity: TEntity): void;
-  remove(id: string): void;
-}
-
-export class LocalStorageRepository<TEntity extends IResource> implements IRepository<TEntity> {
+export class LocalStorageRepository<TEntity extends IResource> {
   constructor(private storageKey: string) {}
 
   public add(entity: TEntity): void {

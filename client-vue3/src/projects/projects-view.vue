@@ -19,10 +19,9 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, inject } from 'vue';
+  import { defineComponent } from 'vue';
   import { IProject } from './project-models';
   import ProjectItem from './project-item.vue';
-  import { IProjectService } from './project-service';
   import { parse } from '@/lib/hrefParser';
 
   export default defineComponent({
@@ -31,12 +30,7 @@
       ProjectItem
     },
     created() {
-      this.projects = this.service.getAll();
-    },
-    computed: {
-      service(): IProjectService {
-        return inject('projectService') as IProjectService;
-      }
+      this.projects = this.$services.projectService.getAll();
     },
     data() {
       return {

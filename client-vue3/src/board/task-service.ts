@@ -1,29 +1,29 @@
-import { IRepository } from "@/irepository";
 import { v4 as uuidv4 } from 'uuid';
 import { ResourceReference } from "@/iresource";
 import { IProject } from "@/projects/project-models";
 import { ITask } from "./task-models";
 import { TaskState } from "./task-state";
-
-export interface ITaskService {
-  create(title: string, description: string | undefined, project: IProject): string;
-  getAll(): ITask[];
-  getById(id: string): ITask;
-  update(task: ITask): void;
-  remove(id: string): void;
-}
-
-export class TaskService implements ITaskService {
-  constructor(private taskRepository: IRepository<ITask>) {}
-
-  create(title: string, description: string | undefined, project: IProject): string {
-    const id = uuidv4();
-    const task = this.createTask(id, title, description, project.href);
-    this.taskRepository.add(task);
-    return id;
+import { ITaskService } from "./itask-service";
+import { LocalStorageRepository } from "@/local-storage-repository";
+export class LocalStorageTaskService implements ITaskService {
+  private repository: LocalStorageRepository<ITask>;
+  constructor() {
+    this.repository = new LocalStorageRepository<ITask>('tasks');
   }
 
-  private createTask(id: string, title: string, description: string | undefined, projectHref: ResourceReference): ITask {
+  create(title: string, description: string | undefined, project: IProject): ITask {
+    const id = uuidv4();
+    const task = this.createTask(id, title, description, project.href);
+    this.repository.add(task);
+    return task;
+  }
+
+  private createTask(
+    id: string,
+    title: string,
+    description: string | undefined,
+    projectHref: ResourceReference
+  ): ITask {
     return {
       href: `http://localhost:8080/api/tasks/${id}`,
       title: title,
@@ -34,18 +34,18 @@ export class TaskService implements ITaskService {
   }
 
   public getAll(): ITask[] {
-    return this.taskRepository.getAll();
+    return this.repository.getAll();
   }
 
   public getById(id: string): ITask {
-    return this.taskRepository.getById(id);
+    return this.repository.getById(id);
   }
 
   public update(task: ITask): void {
-    this.taskRepository.update(task);
+    this.repository.update(task);
   }
 
   public remove(id: string): void {
-    this.remove(id);
+    this.repository.remove(id);
   }
 }

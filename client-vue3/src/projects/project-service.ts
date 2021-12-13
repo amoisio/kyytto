@@ -1,23 +1,19 @@
 import { IProject } from './project-models';
 import { v4 as uuidv4 } from 'uuid';
-import { IRepository } from '@/irepository';
+import { IProjectService } from './iproject-service';
+import { LocalStorageRepository } from '@/local-storage-repository';
 
-export interface IProjectService {
-  create(name: string, description: string | undefined, color: string): string;
-  getAll(): IProject[];
-  getById(id: string): IProject;
-  update(project: IProject): void;
-  remove(id: string): void;
-}
+export class LocalStorageProjectService implements IProjectService {
+  private repository: LocalStorageRepository<IProject>;
+  constructor() {
+    this.repository = new LocalStorageRepository<IProject>('projects');
+  }
 
-export class ProjectService implements IProjectService {
-  constructor(private repository: IRepository<IProject>) {}
-
-  public create(name: string, description: string | undefined, color: string): string {
+  public create(name: string, description: string | undefined, color: string): IProject {
     const id = uuidv4();
     const project = this.createProject(id, name, description, color);
     this.repository.add(project);
-    return id;
+    return project;
   }
 
   private createProject(id: string, name: string, description: string | undefined, color: string): IProject {
