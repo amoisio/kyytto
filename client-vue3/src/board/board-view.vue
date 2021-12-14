@@ -18,9 +18,9 @@
             <span>Todo</span>
           </div>
         </div>
-        <div class="row task-list">
+        <div class="row mb-1" v-for="task of todoTasks" :key="task.id">
           <div class="col">
-            Todo Item goes here
+            <task-item :task="task"></task-item>
           </div>
         </div>
       </div>
@@ -30,9 +30,9 @@
             <span>In Progress</span>
           </div>
         </div>
-        <div class="row task-list">
+        <div class="row mb-1" v-for="task of startedTasks" :key="task.id">
           <div class="col">
-            In Progress Item goes here
+            <task-item :task="task"></task-item>
           </div>
         </div>
       </div>
@@ -42,9 +42,9 @@
             <span>Completed</span>
           </div>
         </div>
-        <div class="row task-list">
+        <div class="row mb-1  " v-for="task of completedTasks" :key="task.id">
           <div class="col">
-            Completed Item goes here
+            <task-item :task="task"></task-item>
           </div>
         </div>
       </div>
@@ -53,15 +53,30 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
+  import TaskItem from './task-item.vue';
   import { ITask } from './task-models';
   import { NEWID } from '@/utilities';
 
   export default defineComponent({
     name: 'BoardView',
+    components: {
+      TaskItem
+    },
     data() {
       return {
         tasks: [] as ITask[]
       };
+    },
+    computed: {
+      todoTasks(): ITask[] {
+        return this.tasks.filter(task => !task.isCompleted() && !task.isStarted());
+      },
+      startedTasks(): ITask[] {
+        return this.tasks.filter(task => task.isStarted());
+      },
+      completedTasks(): ITask[] {
+        return this.tasks.filter(task => task.isCompleted());
+      }
     },
     created() {
       this.tasks = this.$services.taskService.getAll();
