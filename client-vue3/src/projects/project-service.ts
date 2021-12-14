@@ -1,40 +1,34 @@
-import { IProject } from './project-models';
-import { v4 as uuidv4 } from 'uuid';
-import { IProjectService } from './iproject-service';
+import { IProject, IProjectResource, Project } from './project-models';
 import { LocalStorageRepository } from '@/local-storage-repository';
+import { IService } from '@/iservice';
+import { LocalStorage } from '@/local-storage';
+import * as mappers from '@/mappers';
 
-export class LocalStorageProjectService implements IProjectService {
-  private repository: LocalStorageRepository<IProject>;
-  constructor() {
-    this.repository = new LocalStorageRepository<IProject>('projects');
+export class LocalStorageProjectService implements IService<IProject> {
+  private readonly repository: LocalStorageRepository<IProjectResource>;
+  constructor(store: LocalStorage) {
+    this.repository = store.projectRepository;
   }
 
-  public create(name: string, description: string | undefined, color: string): IProject {
-    const id = uuidv4();
-    const project = this.createProject(id, name, description, color);
-    this.repository.add(project);
-    return project;
-  }
-
-  private createProject(id: string, name: string, description: string | undefined, color: string): IProject {
-    return {
-      href: `http://localhost:8080/api/projects/${id}`,
-      name: name,
-      description: description,
-      color: color
-    } as IProject;
+  public create(newProject: IProject): IProject {
+    const item = mappers.projectResourceMapper(newProject);
+    const id = this.repository.add(item);
+    return this.getById(id);
   }
 
   public getAll(): IProject[] {
-    return this.repository.getAll();
+    const items = this.repository.getAll();
+    return items.map(item => Project.createFrom(item));
   }
 
   public getById(id: string): IProject {
-    return this.repository.getById(id);
+    const item = this.repository.getById(id);
+    return Project.createFrom(item);
   }
 
   public update(project: IProject): void {
-    this.repository.update(project);
+    const item = mappers.projectResourceMapper(project);
+    this.repository.update(item);
   }
 
   public remove(id: string): void {

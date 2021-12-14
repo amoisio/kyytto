@@ -1,83 +1,81 @@
 import { IResource } from './iresource';
 import { parse } from './lib/hrefParser';
+import { v4 as uuidv4 } from 'uuid';
 
-export class LocalStorageRepository<TEntity extends IResource> {
-  constructor(private storageKey: string) {}
+export class LocalStorageRepository<TResouce extends IResource> {
+  constructor(private storageKey: string, private baseUrl: string) {}
 
-  public add(entity: TEntity): void {
-    const entities = this.readEntities();
-    const id = this.entityId(entity);
-    if (this.existsIn(entities, id)) {
-      throw new Error(`Entity already exists with id ${id}.`);
-    } else {
-      entities.push(entity);
-      this.writeEntities(entities);
-    }
+  public add(item: TResouce): string {
+    const items = this.readItems();
+    const id = uuidv4();
+    item.href = `${this.baseUrl}/${id}`;
+    items.push(item);
+    this.writeItems(items);
+    return id;
   }
 
   public exists(id: string): boolean {
-    const entities = this.readEntities();
-    return this.existsIn(entities, id);
+    const items = this.readItems();
+    return this.existsIn(items, id);
   }
 
-  public getAll(): TEntity[] {
-    return this.readEntities();
+  public getAll(): TResouce[] {
+    return this.readItems();
   }
 
-  public getById(id: string): TEntity {
-    const entities = this.readEntities();
-    const entity = this.selectFrom(entities, id);
-    if (entity === undefined) {
+  public getById(id: string): TResouce {
+    const items = this.readItems();
+    const item = this.selectFrom(items, id);
+    if (item === undefined) {
       throw new Error(`No item exists with id ${id}.`);
     } else {
-      return entity;
+      return item;
     }
   }
 
-  public update(entity: TEntity): void {
-    const entities = this.readEntities();
-    const id = this.entityId(entity);
+  public update(item: TResouce): void {
+    const entities = this.readItems();
+    const id = this.entityId(item);
     if (!this.existsIn(entities, id)) {
       throw new Error(`No item exists with id ${id}.`);
     } else {
       const index = this.entityIndex(entities, id);
-      entities.splice(index, 1, entity);
-      this.writeEntities(entities);
+      entities.splice(index, 1, item);
+      this.writeItems(entities);
     }
   }
 
   public remove(id: string): void {
-    const entities = this.readEntities();
-    const index = this.entityIndex(entities, id);
-    entities.splice(index, 1);
-    this.writeEntities(entities);
+    const items = this.readItems();
+    const index = this.entityIndex(items, id);
+    items.splice(index, 1);
+    this.writeItems(items);
   }
 
-  private entityId(entity: TEntity): string {
-    const href = parse(entity.href);
-    return href.id;
+  private entityId(item: TResouce): string {
+    return parse(item.href).id;
   }
 
-  private readEntities(): TEntity[] {
+  private readItems(): TResouce[] {
     const str = localStorage.getItem(this.storageKey);
     return str === null ? [] : JSON.parse(str);
   }
 
-  private writeEntities(entities: TEntity[]) {
-    const str = JSON.stringify(entities);
+  private writeItems(items: TResouce[]) {
+    const str = JSON.stringify(items);
     localStorage.setItem(this.storageKey, str);
   }
 
-  private existsIn(entities: TEntity[], id: string): boolean {
-    const match = this.selectFrom(entities, id);
+  private existsIn(items: TResouce[], id: string): boolean {
+    const match = this.selectFrom(items, id);
     return match !== undefined;
   }
 
-  private selectFrom(entities: TEntity[], id: string): TEntity | undefined {
-    return entities.find((entity) => this.entityId(entity) === id);
+  private selectFrom(items: TResouce[], id: string): TResouce | undefined {
+    return items.find((item) => this.entityId(item) === id);
   }
 
-  private entityIndex(entities: TEntity[], id: string): number {
-    return entities.findIndex((entity) => this.entityId(entity) === id);
+  private entityIndex(items: TResouce[], id: string): number {
+    return items.findIndex((item) => this.entityId(item) === id);
   }
 }

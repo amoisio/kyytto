@@ -1,9 +1,10 @@
-import { ITaskService } from './board/itask-service';
-import { IProjectService } from './projects/iproject-service';
+import { ITask } from './board/task-models';
+import { IService } from './iservice';
+import { IProject } from './projects/project-models';
 
 export interface IServiceProvider {
-  projectService: IProjectService;
-  taskService: ITaskService;
+  projectService: IService<IProject>;
+  taskService: IService<ITask>;
 }
 
 export const provider = {} as IServiceProvider;

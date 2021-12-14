@@ -11,7 +11,7 @@
         </button>
       </div>
     </div>
-    <div class="row" v-for="project of projects" :key="project.href">
+    <div class="row" v-for="project of projects" :key="project.id">
       <div class="col-12 col-md-6">
         <project-item :project="project" @edit="navigateToProjectForm(project)"></project-item>
       </div>
@@ -22,7 +22,7 @@
   import { defineComponent } from 'vue';
   import { IProject } from './project-models';
   import ProjectItem from './project-item.vue';
-  import { parse } from '@/lib/hrefParser';
+  import { NEWID } from '@/utilities';
 
   export default defineComponent({
     name: 'ProjectsView',
@@ -39,9 +39,7 @@
     },
     methods: {
       navigateToProjectForm(project?: IProject) {
-        const id = project
-          ? parse(project.href).id
-          : '0';
+        const id = project?.id ?? NEWID;
         this.$router.push({ name: 'project-form', params: { id: id } });
       }
     }

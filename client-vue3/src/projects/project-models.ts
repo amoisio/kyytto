@@ -1,16 +1,43 @@
-import { IResource } from '../iresource';
+import { parse } from '@/lib/hrefParser';
+import { IEntity, IResource } from '../iresource';
 
-export interface IProject extends IResource {
-  name: string | undefined;
-  description: string | undefined;
+export interface IProjectResource extends IResource {
+  name: string;
+  description?: string;
   color: string;
 }
 
-export interface IProjects extends IResource {
-  projects: IProject[];
+export interface IProject extends IEntity {
+  name: string;
+  description?: string;
+  color: string;
+}
+
+export class Project implements IProject {
+  public constructor(id: string, name: string, description: string | undefined, color: string) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.color = color;
+  }
+
+  public static createFrom(resource: IProjectResource): IProject {
+    return new Project(
+      parse(resource.href).id,
+      resource.name,
+      resource.description,
+      resource.color);
+  }
+
+  public readonly id: string;
+  public name: string;
+  public description?: string;
+  public color: string;
 }
 
 export class ProjectEditFormModel {
-  public name: string | undefined = undefined;
-  public description: string | undefined = undefined;
+  public id ?: string;
+  public name ?: string;
+  public description ?: string;
+  public color ?: string;
 }

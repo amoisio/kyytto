@@ -16,7 +16,9 @@
   import { defineComponent } from 'vue';
   import TaskEditForm from './task-edit-form.vue';
   import { IProject } from '../projects/project-models';
-  import { ITask, TaskEditFormModel } from './task-models';
+  import { Task, TaskEditFormModel } from './task-models';
+  import { isNew } from '@/utilities';
+  import { validate as uuidValidate } from 'uuid';
 
   export default defineComponent({
     name: 'TaskView',
@@ -26,37 +28,31 @@
     props: {
       id: {
         type: String,
-        required: true
+        required: true,
+        validator: uuidValidate
       }
     },
     data() {
       return {
         model: new TaskEditFormModel(),
-        task: undefined as ITask | undefined,
         projects: new Array<IProject>()
       };
     },
     computed: {
       isNew(): boolean {
-        return this.id === '0';
-      },
-      color(): string {
-        return this.isNew || this.model.project === undefined
-          ? 'white'
-          : this.model.project.color;
+        return isNew(this.id);
       }
     },
     created() {
       try {
         this.projects = this.$services.projectService.getAll();
+        this.model.id = this.id;
         if (!this.isNew) {
           const task = this.$services.taskService.getById(this.id);
-          const project = this.projects.find(p => p.href === task.projectHref);
           this.model.title = task.title;
           this.model.description = task.description;
-          this.model.project = project;
           this.model.state = task.state;
-          this.task = task;
+          this.model.project = task.project;
         }
       } catch (e) {
         console.error(e);
@@ -70,27 +66,30 @@
     },
     methods: {
       save(model: TaskEditFormModel) {
+        if (model.id === undefined) {
+          throw new Error('Id must be provided.');
+        }
+
         if (model.title === undefined) {
-          throw new Error('Title must be given!');
+          throw new Error('Title must be given.');
+        }
+
+        if (model.state === undefined) {
+          throw new Error('State must be set.');
         }
 
         if (model.project === undefined) {
-          throw new Error('Project must be given!');
+          throw new Error('Project must be given.');
         }
+
+        const task = new Task(model.id, model.title, model.description, model.state, model.project);
 
         if (this.isNew) {
-          this.$services.taskService.create(model.title, model.description, model.project);
+          this.$services.taskService.create(task);
         } else {
-          if (this.task === undefined) {
-            throw new Error('Task must be defined!');
-          }
-
-          this.task.title = model.title;
-          this.task.description = model.description;
-          this.task.state = model.state;
-          this.task.projectHref = model.project.href;
-          this.$services.taskService.update(this.task);
+          this.$services.taskService.update(task);
         }
+
         this.navigateToBoard();
       },
       remove() {

@@ -1,51 +1,53 @@
-import { v4 as uuidv4 } from 'uuid';
-import { ResourceReference } from "@/iresource";
-import { IProject } from "@/projects/project-models";
-import { ITask } from "./task-models";
-import { TaskState } from "./task-state";
-import { ITaskService } from "./itask-service";
-import { LocalStorageRepository } from "@/local-storage-repository";
-export class LocalStorageTaskService implements ITaskService {
-  private repository: LocalStorageRepository<ITask>;
-  constructor() {
-    this.repository = new LocalStorageRepository<ITask>('tasks');
+import { IProject, IProjectResource, Project } from '@/projects/project-models';
+import { ITask, ITaskResource, Task } from './task-models';
+import { LocalStorageRepository } from '@/local-storage-repository';
+import { IService } from '@/iservice';
+import { parse } from '@/lib/hrefParser';
+import { LocalStorage } from '@/local-storage';
+import * as mappers from '@/mappers';
+
+export class LocalStorageTaskService implements IService<ITask> {
+  private readonly taskRepository: LocalStorageRepository<ITaskResource>;
+  private readonly projectRepository: LocalStorageRepository<IProjectResource>;
+
+  constructor(store: LocalStorage) {
+    this.taskRepository = store.taskRepository;
+    this.projectRepository = store.projectRepository;
   }
 
-  create(title: string, description: string | undefined, project: IProject): ITask {
-    const id = uuidv4();
-    const task = this.createTask(id, title, description, project.href);
-    this.repository.add(task);
-    return task;
-  }
-
-  private createTask(
-    id: string,
-    title: string,
-    description: string | undefined,
-    projectHref: ResourceReference
-  ): ITask {
-    return {
-      href: `http://localhost:8080/api/tasks/${id}`,
-      title: title,
-      description: description,
-      projectHref: projectHref,
-      state: TaskState.Todo
-    } as ITask;
+  public create(newTask: ITask): ITask {
+    const item = mappers.taskResourceMapper(newTask);
+    const id = this.taskRepository.add(item);
+    return this.getById(id);
   }
 
   public getAll(): ITask[] {
-    return this.repository.getAll();
+    const items = this.taskRepository.getAll();
+    return items.map(item => this.getTask(item));
   }
 
   public getById(id: string): ITask {
-    return this.repository.getById(id);
+    const item = this.taskRepository.getById(id);
+    return this.getTask(item);
+  }
+
+  private getTask(taskItem: ITaskResource) : ITask {
+    let project: IProject | undefined;
+    if (taskItem.projectHref) {
+      const projectId = parse(taskItem.projectHref).id;
+      const projectItem = this.projectRepository.getById(projectId);
+      project = Project.createFrom(projectItem);
+    }
+
+    return Task.createFrom(taskItem, project);
   }
 
   public update(task: ITask): void {
-    this.repository.update(task);
+    const item = mappers.taskResourceMapper(task);
+    this.taskRepository.update(item);
   }
 
   public remove(id: string): void {
-    this.repository.remove(id);
+    this.taskRepository.remove(id);
   }
 }

@@ -7,6 +7,7 @@ import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import { provider } from './iservice-provider';
 import { LocalStorageProjectService } from './projects/project-service';
 import { LocalStorageTaskService } from './board/task-service';
+import { LocalStorage } from './local-storage';
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
@@ -18,8 +19,9 @@ app.use(router);
 app.use(BootstrapVue3);
 
 // DI services via a custom '$service' global property
-provider.projectService = new LocalStorageProjectService();
-provider.taskService = new LocalStorageTaskService();
-app.config.globalProperties.$services = provider
+const store = new LocalStorage();
+provider.projectService = new LocalStorageProjectService(store);
+provider.taskService = new LocalStorageTaskService(store);
+app.config.globalProperties.$services = provider;
 
 app.mount('#app');

@@ -6,7 +6,7 @@
       </div>
       <div class="col-6 col-md-3 align-self-center text-end">
         <div class="position-relative mb-4 me-4">
-          <bordered-icon icon="tag" scale="2" :color="color" border-color="black"></bordered-icon>
+          <bordered-icon icon="tag" scale="2" :color="model.color" border-color="black"></bordered-icon>
         </div>
       </div>
     </div>
@@ -22,7 +22,9 @@
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/lib/bordered-icon.vue';
   import { colorWheel } from '@/lib/colorWheel';
-  import { ProjectEditFormModel } from './project-models';
+  import { Project, ProjectEditFormModel } from './project-models';
+  import { isNew } from '@/utilities';
+  import { validate as uuidValidate } from 'uuid';
 
   export default defineComponent({
     name: 'ProjectView',
@@ -33,29 +35,30 @@
     props: {
       id: {
         type: String,
-        required: true
+        required: true,
+        validator: uuidValidate
       }
     },
     data() {
       return {
-        model: new ProjectEditFormModel(),
-        color: '' as string
+        model: new ProjectEditFormModel()
       };
     },
     computed: {
       isNew(): boolean {
-        return this.id === '0';
+        return isNew(this.id);
       }
     },
     created() {
       try {
+        this.model.id = this.id;
         if (this.isNew) {
-          this.color = colorWheel.next();
+          this.model.color = colorWheel.next();
         } else {
           const project = this.$services.projectService.getById(this.id);
           this.model.name = project.name;
           this.model.description = project.description;
-          this.color = project.color;
+          this.model.color = project.color;
         }
       } catch (e) {
         console.error(e);
@@ -69,18 +72,26 @@
     },
     methods: {
       save(model: ProjectEditFormModel) {
+        if (model.id === undefined) {
+          throw new Error('Id must be provided.');
+        }
+
         if (model.name === undefined) {
           throw new Error('Name must be given.');
         }
 
+        if (model.color === undefined) {
+          throw new Error('Color must be given');
+        }
+
+        const project = new Project(model.id, model.name, model.description, model.color);
+
         if (this.isNew) {
-          this.$services.projectService.create(model.name, model.description, this.color);
+          this.$services.projectService.create(project);
         } else {
-          const project = this.$services.projectService.getById(this.id);
-          project.name = model.name;
-          project.description = model.description;
           this.$services.projectService.update(project);
         }
+
         this.navigateToProjects();
       },
       remove() {

@@ -21,7 +21,7 @@
         <div class="row task-list">
           <div class="col">
             Todo Item goes here
-          </div>    
+          </div>
         </div>
       </div>
       <div class="col">
@@ -33,7 +33,7 @@
         <div class="row task-list">
           <div class="col">
             In Progress Item goes here
-          </div>    
+          </div>
         </div>
       </div>
       <div class="col">
@@ -45,30 +45,30 @@
         <div class="row task-list">
           <div class="col">
             Completed Item goes here
-          </div>    
-        </div>  
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-  import { parse } from '@/lib/hrefParser';
   import { defineComponent } from 'vue';
   import { ITask } from './task-models';
+  import { NEWID } from '@/utilities';
 
   export default defineComponent({
     name: 'BoardView',
-    computed: {},
-    // data() {
-    //   return {
-    //     projects: [] as IProject[]
-    //   };
-    // },
+    data() {
+      return {
+        tasks: [] as ITask[]
+      };
+    },
+    created() {
+      this.tasks = this.$services.taskService.getAll();
+    },
     methods: {
       navigateToTaskForm(task?: ITask) {
-        const id = task
-          ? parse(task.href).id
-          : '0';
+        const id = task?.id ?? NEWID;
         this.$router.push({ name: 'task', params: { id: id } });
       }
     }
