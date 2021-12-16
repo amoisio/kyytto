@@ -24,7 +24,7 @@
       <label for="task-project" class="form-label">Project</label>
       <select class="form-select" v-model="item.project">
         <option disabled value="">Please select one</option>
-        <option v-for="project in projects" :key="project.href" :value="project">{{ project.name }}</option>
+        <option v-for="project in projects" :key="project.id" :value="project">{{ project.name }}</option>
       </select>
     </div>
     <div class="row mb-3 justify-content-between">

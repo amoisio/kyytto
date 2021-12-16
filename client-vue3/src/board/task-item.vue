@@ -1,31 +1,86 @@
 <template>
-  <div class="card">
-    <div class="card-body px-2 py-1">
-      <div class="row">
-          <div class="col-auto">
-              <bordered-icon icon="star" scale="1" :color="task.project?.color" border-color="black"></bordered-icon>
-          </div>
-          <div class="col">{{ task.title }}</div>
-          <div class="col"></div>
+  <b-card
+    no-body
+    class="task-item"
+    bg-variant="light"
+    tabindex="0"
+    @dblclick="$emit('edit', task)"
+    @keyup.enter="$emit('edit', task)"
+    @keyup.up="$emit('up', task)"
+    @keyup.down="$emit('down', task)"
+    @keyup.left="$emit('left', task)"
+    @keyup.right="$emit('right', task)"
+  >
+    <b-card-body class="p-2 pt-1">
+      <div class="row mx-0">
+        <div class="col-12 px-0">
+          {{ task.title }}
+        </div>
       </div>
-    </div>
-  </div>
+      <div class="row align-items-end mx-0">
+        <div class="col px-0">
+          <span class="badge rounded-pill" :style="{ 'background-color': color }">
+            {{ task.project?.name }}
+          </span>
+        </div>
+        <div class="col-auto text-end px-0">
+          <b-button
+            v-if="!task.isStarted() && !task.isCompleted()"
+            variant="outline-success"
+            class="ms-2 px-1 py-0"
+            @click.stop="$emit('start', task)"
+            @keyup.enter.stop.prevent="$emit('start', task)"
+          >
+            Start
+          </b-button>
+          <b-button
+            v-if="task.isStarted() && !task.isCompleted()"
+            variant="outline-danger"
+            class="ms-2 px-1 py-0"
+            @click.stop="$emit('stop', task)"
+            @keyup.enter.stop.prevent="$emit('stop', task)"
+          >
+            Stop
+          </b-button>
+          <b-button
+            v-if="task.isStarted() && !task.isCompleted()"
+            variant="outline-success"
+            class="ms-2 px-1 py-0"
+            @click.stop="$emit('complete', task)"
+            @keyup.enter.stop.prevent="$emit('complete', task)"
+          >
+            Complete
+          </b-button>
+        </div>
+      </div>
+    </b-card-body>
+  </b-card>
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { ITask } from './task-models';
-  import BorderedIcon from '@/lib/bordered-icon.vue';
 
   export default defineComponent({
     name: 'TaskItem',
-    components: {
-      BorderedIcon
-    },
+    emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],
     props: {
       task: {
         type: Object as PropType<ITask>,
         required: true
       }
+    },
+    computed: {
+      color(): string {
+        return this.task.project?.color ?? 'white';
+      }
     }
   });
 </script>
+<style lang="scss">
+  @use '@/custom';
+  .task-item {
+    &:hover {
+      border-color: custom.$dark1;
+    }
+  }
+</style>

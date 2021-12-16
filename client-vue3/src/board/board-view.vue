@@ -6,61 +6,45 @@
       </div>
       <div class="col align-self-center">
         <button id="new-item" class="btn btn-outline-primary" @click="navigateToTaskForm()">
-          <b-icon icon="star" size="2x"></b-icon>
           <span class="fs-5">New Item</span>
         </button>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <div class="row task-state-title">
-          <div class="col">
-            <span>Todo</span>
-          </div>
-        </div>
-        <div class="row mb-1" v-for="task of todoTasks" :key="task.id">
-          <div class="col">
-            <task-item :task="task"></task-item>
-          </div>
-        </div>
+        <task-list
+          :tasks="todoTasks"
+          @right="start"
+          @edit="edit"
+          @start="start">Todos</task-list>
       </div>
       <div class="col">
-        <div class="row task-state-title">
-          <div class="col">
-            <span>In Progress</span>
-          </div>
-        </div>
-        <div class="row mb-1" v-for="task of startedTasks" :key="task.id">
-          <div class="col">
-            <task-item :task="task"></task-item>
-          </div>
-        </div>
+        <task-list
+          :tasks="startedTasks"
+          @left="stop"
+          @right="complete"
+          @edit="edit"
+          @stop="stop"
+          @complete="complete">In Progress</task-list>
       </div>
       <div class="col">
-        <div class="row task-state-title">
-          <div class="col">
-            <span>Completed</span>
-          </div>
-        </div>
-        <div class="row mb-1  " v-for="task of completedTasks" :key="task.id">
-          <div class="col">
-            <task-item :task="task"></task-item>
-          </div>
-        </div>
+        <task-list
+          :tasks="completedTasks"
+          @edit="edit">Completed</task-list>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import TaskItem from './task-item.vue';
+  import TaskList from './task-list.vue';
   import { ITask } from './task-models';
   import { NEWID } from '@/utilities';
 
   export default defineComponent({
     name: 'BoardView',
     components: {
-      TaskItem
+      TaskList
     },
     data() {
       return {
@@ -69,13 +53,13 @@
     },
     computed: {
       todoTasks(): ITask[] {
-        return this.tasks.filter(task => !task.isCompleted() && !task.isStarted());
+        return this.tasks.filter((task) => !task.isCompleted() && !task.isStarted());
       },
       startedTasks(): ITask[] {
-        return this.tasks.filter(task => task.isStarted());
+        return this.tasks.filter((task) => task.isStarted());
       },
       completedTasks(): ITask[] {
-        return this.tasks.filter(task => task.isCompleted());
+        return this.tasks.filter((task) => task.isCompleted());
       }
     },
     created() {
@@ -85,6 +69,42 @@
       navigateToTaskForm(task?: ITask) {
         const id = task?.id ?? NEWID;
         this.$router.push({ name: 'task', params: { id: id } });
+      },
+      moveUp(task: ITask) {
+        alert('moveUp' + task.id);
+        // const index = this.items.findIndex(task => task.id === id);
+        // if (index > 0) {
+        //   this.swap(index, index - 1);
+        // }
+      },
+      moveDown(task: ITask) {
+        alert('moveDown' + task.id);
+        // const index = this.items.findIndex(task => task.id === id);
+        // const lastIndex = this.items.length - 1;
+        // if (index < lastIndex) {
+        //   this.swap(index, index + 1);
+        // }
+      },
+      edit(task: ITask) {
+        this.$router.push({ name: 'task', params: { id: task.id } });
+      },
+      start(task: ITask) {
+        task.startWork();
+        this.$services.taskService.update(task);
+      },
+      stop(task: ITask) {
+        task.stopWork();
+        this.$services.taskService.update(task);
+      },
+      complete(task: ITask) {
+        task.complete();
+        this.$services.taskService.update(task);
+      },
+      swap(ind1: number, ind2: number) {
+        const temp = this.tasks[ind1];
+        this.tasks[ind1] = this.tasks[ind2];
+        this.tasks[ind2] = temp;
+        this.$nextTick();
       }
     }
   });
