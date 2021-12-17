@@ -14,3 +14,7 @@ export {
 export {
   TaskState
 } from './task-state';
+
+export {
+  Link
+} from './link';
