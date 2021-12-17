@@ -1,20 +1,9 @@
-export {
-  ResourceReference,
-  Resource
-} from './resource';
+export { ResourceReference, Resource } from "./models/resource";
+export { ProjectResource } from "./models/project-resource";
+export { TaskResource } from "./models/task-resource";
+export { TaskState } from "./models/task-state";
+export { Link } from "./models/link";
+export { Href } from "./models/href";
 
-export {
-  ProjectResource
-} from './project-resource';
-
-export {
-  TaskResource
-} from './task-resource';
-
-export {
-  TaskState
-} from './task-state';
-
-export {
-  Link
-} from './link';
+export { ColorWheel } from './utilities/colorWheel';
+export { parse } from './utilities/hrefParser';

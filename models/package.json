@@ -2,7 +2,7 @@
   "name": "kyytto-models",
   "displayName": "Kyyttö models",
   "description": "Kyyttö shared models and utilities",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "files": [
     "src",
     "dist/*.js",
