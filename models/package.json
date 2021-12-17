@@ -2,11 +2,11 @@
   "name": "kyytto-models",
   "displayName": "Kyyttö models",
   "description": "Kyyttö shared models and utilities",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "files": [
     "src",
-    "dist/*.js",
-    "dist/*.d.ts"
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
   ],
   "typings": "dist/index.d.ts",
   "scripts": {
