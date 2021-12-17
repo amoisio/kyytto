@@ -5,6 +5,8 @@
 4.  Detect if external storage already has a database with a specific name, and if it does then continue
 4.1. Yes, then continue
 4.2. No, then then run 0_schema.sql
+4.3. 
 4. Run migrations
+
 
 2. Apply scripts to set up 

@@ -1,42 +1,22 @@
-CREATE TABLE todos
+CREATE TABLE projects
 (
-  id              VARCHAR(64) NOT NULL,
-  description     VARCHAR(256) NOT NULL,
-  done            TINYINT NOT NULL,
+  id              VARCHAR(36) NOT NULL,
+  name            NVARCHAR(50) NOT NULL,
+  description     NVARCHAR(8000) NULL,
+  color           VARCHAR(8),
   PRIMARY KEY     (id)
 );
 
-CREATE TABLE hours
+CREATE TABLE tasks
 (
-  id              VARCHAR(64) NOT NULL,
-  date            DATETIME NOT NULL,
-  PRIMARY KEY     (id)
-);
-
-CREATE TABLE hour_details
-(
-  hour_id         VARCHAR(64) NOT NULL,
-  description     VARCHAR(64) NOT NULL,
-  estimate        INT NULL,
-  INDEX hour_par  (hour_id),
-  FOREIGN KEY     (hour_id)
-    REFERENCES    hours(id)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE learning
-(
-  id              VARCHAR(64) NOT NULL,
-  topic           VARCHAR(100) NOT NULL,
-  PRIMARY KEY     (id)
-);
-
-CREATE TABLE learning_details
-(
-  learn_id        VARCHAR(64) NOT NULL,
-  description     VARCHAR(100) NOT NULL,
-  INDEX learn_par (learn_id),
-  FOREIGN KEY     (learn_id)
-    REFERENCES    learning(id)
+  id              VARCHAR(36) NOT NULL,
+  title           NVARCHAR(500) NOT NULL,
+  description     NVARCHAR(8000) NULL,
+  state           TINYINT,
+  project_id      VARCHAR(36) NOT NULL,
+  PRIMARY KEY     (id),
+  INDEX IX_task_project  (project_id),
+  FOREIGN KEY     (project_id)
+    REFERENCES    projects(id)
     ON DELETE CASCADE
 );
