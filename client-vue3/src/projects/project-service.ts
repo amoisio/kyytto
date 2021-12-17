@@ -1,11 +1,12 @@
-import { IProject, IProjectResource, Project } from './project-models';
+import { IProject, Project } from './project-models';
 import { LocalStorageRepository } from '@/local-storage-repository';
 import { IService } from '@/iservice';
 import { LocalStorage } from '@/local-storage';
 import * as mappers from '@/mappers';
+import { ProjectResource } from 'kyytto-models';
 
 export class LocalStorageProjectService implements IService<IProject> {
-  private readonly repository: LocalStorageRepository<IProjectResource>;
+  private readonly repository: LocalStorageRepository<ProjectResource>;
   constructor(store: LocalStorage) {
     this.repository = store.projectRepository;
   }

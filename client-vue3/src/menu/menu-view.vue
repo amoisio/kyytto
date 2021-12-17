@@ -20,8 +20,9 @@
   import { defineComponent } from 'vue';
   import MenuButton from './menu-button.vue';
   import { parse } from '@/lib/hrefParser';
-  import { ILink } from '@/ilink';
   import { IMenuService, MenuService } from './menu-service';
+  import { Link } from 'kyytto-models';
+  
   export default defineComponent({
     name: 'MenuView',
     components: {
@@ -32,7 +33,7 @@
     },
     data() {
       return {
-        links: [] as ILink[]
+        links: [] as Link[]
       };
     },
     computed: {

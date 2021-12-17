@@ -1,11 +1,10 @@
-import { IProjectResource } from './projects/project-models';
 import { LocalStorageRepository } from './local-storage-repository';
-import { ITaskResource } from './board/task-models';
 import * as api from '@/api';
+import { ProjectResource, TaskResource } from 'kyytto-models';
 
 export class LocalStorage {
-  public readonly projectRepository: LocalStorageRepository<IProjectResource>;
-  public readonly taskRepository: LocalStorageRepository<ITaskResource>;
+  public readonly projectRepository: LocalStorageRepository<ProjectResource>;
+  public readonly taskRepository: LocalStorageRepository<TaskResource>;
 
   constructor() {
     const projectUrl = api.endPoints.get(api.projectsKey);

@@ -1,13 +1,8 @@
 import { parse } from '@/lib/hrefParser';
-import { IEntity, IResource } from '../iresource';
+import { ProjectResource } from 'kyytto-models';
+import { Entity } from '../entity';
 
-export interface IProjectResource extends IResource {
-  name: string;
-  description?: string;
-  color: string;
-}
-
-export interface IProject extends IEntity {
+export interface IProject extends Entity {
   name: string;
   description?: string;
   color: string;
@@ -21,7 +16,7 @@ export class Project implements IProject {
     this.color = color;
   }
 
-  public static createFrom(resource: IProjectResource): IProject {
+  public static createFrom(resource: ProjectResource): IProject {
     return new Project(
       parse(resource.href).id,
       resource.name,

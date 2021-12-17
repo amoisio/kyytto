@@ -1,8 +1,8 @@
-import { IResource } from './iresource';
 import { parse } from './lib/hrefParser';
 import { v4 as uuidv4 } from 'uuid';
+import { Resource } from 'kyytto-models';
 
-export class LocalStorageRepository<TResouce extends IResource> {
+export class LocalStorageRepository<TResouce extends Resource> {
   constructor(private storageKey: string, private baseUrl: string) {}
 
   public add(item: TResouce): string {

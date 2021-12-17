@@ -1,14 +1,15 @@
-import { IProject, IProjectResource, Project } from '@/projects/project-models';
-import { ITask, ITaskResource, Task } from './task-models';
+import { IProject, Project } from '@/projects/project-models';
+import { ITask, Task } from './task-models';
 import { LocalStorageRepository } from '@/local-storage-repository';
 import { IService } from '@/iservice';
 import { parse } from '@/lib/hrefParser';
 import { LocalStorage } from '@/local-storage';
 import * as mappers from '@/mappers';
+import { ProjectResource, TaskResource } from 'kyytto-models';
 
 export class LocalStorageTaskService implements IService<ITask> {
-  private readonly taskRepository: LocalStorageRepository<ITaskResource>;
-  private readonly projectRepository: LocalStorageRepository<IProjectResource>;
+  private readonly taskRepository: LocalStorageRepository<TaskResource>;
+  private readonly projectRepository: LocalStorageRepository<ProjectResource>;
 
   constructor(store: LocalStorage) {
     this.taskRepository = store.taskRepository;
@@ -31,7 +32,7 @@ export class LocalStorageTaskService implements IService<ITask> {
     return this.getTask(item);
   }
 
-  private getTask(taskItem: ITaskResource) : ITask {
+  private getTask(taskItem: TaskResource) : ITask {
     let project: IProject | undefined;
     if (taskItem.projectHref) {
       const projectId = parse(taskItem.projectHref).id;

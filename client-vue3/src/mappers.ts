@@ -1,8 +1,9 @@
-import { ITask, ITaskResource } from './board/task-models';
-import { IProject, IProjectResource } from './projects/project-models';
+import { ITask } from './board/task-models';
+import { IProject } from './projects/project-models';
 import * as api from '@/api';
+import { ProjectResource, TaskResource } from 'kyytto-models';
 
-export const taskResourceMapper = (task: ITask): ITaskResource => {
+export const taskResourceMapper = (task: ITask): TaskResource => {
     const projectItem = task.project 
         ? projectResourceMapper(task.project)
         : undefined;
@@ -16,7 +17,7 @@ export const taskResourceMapper = (task: ITask): ITaskResource => {
     };
 };
 
-export const projectResourceMapper = (project: IProject): IProjectResource => {
+export const projectResourceMapper = (project: IProject): ProjectResource => {
   return {
     href: `${api.endPoints.get(api.projectsKey)}/${project.id}`,
     name: project.name,

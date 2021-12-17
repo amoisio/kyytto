@@ -1,10 +1,11 @@
-import { ILink } from '@/ilink';
+import { Link } from 'kyytto-models';
+
 export interface IMenuService {
-  getAll(): ILink[];
+  getAll(): Link[];
 }
 
 export class MenuService implements IMenuService {
-  public getAll(): ILink[] {
+  public getAll(): Link[] {
     return [
       {
         href: 'http://localhost:8080/board',
