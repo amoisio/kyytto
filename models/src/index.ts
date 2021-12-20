@@ -7,3 +7,4 @@ export { Href } from "./models/href";
 
 export { ColorWheel } from './utilities/colorWheel';
 export { parse } from './utilities/hrefParser';
+export { buildApi, Api, EndPoint } from './utilities/api';

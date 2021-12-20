@@ -1,7 +1,7 @@
-import { Resource } from "./resource";
+import { Resource, ResourceReference } from "./resource";
 
 export interface Link extends Resource {
-  href: string;
+  href: ResourceReference;
   title: string;
   icon: string;
 }
