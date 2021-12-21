@@ -15,6 +15,11 @@ export interface Api {
   baseUrl: string;
 
   /**
+   * Menu end-point
+   */
+  menu: EndPoint;
+
+  /**
    * Projects end-point.
    */
   projects: EndPoint;
@@ -72,11 +77,13 @@ export interface EndPoint {
 class KyyttoApi implements Api {
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
+    this.menu = new KyyttoEndPoint(baseUrl, '/api/menu');
     this.projects = new KyyttoEndPoint(baseUrl, '/api/projects');
     this.tasks = new KyyttoEndPoint(baseUrl, '/api/tasks');
   }
   
   public baseUrl: string;
+  public menu: EndPoint;
   public projects: EndPoint;
   public tasks: EndPoint;
   public resolveId(href: string): string {
