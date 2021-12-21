@@ -1,8 +1,8 @@
-import { Connection, RowDataPacket } from "mysql2/promise";
-import IRepository from "../../lib/iRepository";
-import { Project } from "./project";
+import { Connection, RowDataPacket } from 'mysql2/promise';
+import Repository from '../repository';
+import { Project } from '../../cases/projects/project';
 
-export default class ProjectRepository implements IRepository<Project> {
+export default class ProjectRepository implements Repository<Project> {
   constructor(private connection: Connection) {}
 
   public async getAll(): Promise<Project[]> {

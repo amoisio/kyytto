@@ -1,10 +1,10 @@
-import { Connection } from "mysql2/promise";
-import { connectionFactory } from './connectionFactory';
-import IUnitOfWork from "../iUnitOfWork";
-import ProjectRepository from "../../cases/projects/repository";
-import TaskRepository from "../../cases/tasks/repository";
+import { Connection } from 'mysql2/promise';
+import { connectionFactory } from './connection-factory';
+import UnitOfWork from '../unitOfWork';
+import ProjectRepository from './project-repository';
+import TaskRepository from './task-repository';
 
-export default class UnitOfWork implements IUnitOfWork {
+export class MySqlUnitOfWork implements UnitOfWork {
 
     private _connection !: Connection;
     private readonly _connectionFactory !: () => Promise<Connection>;
@@ -27,4 +27,4 @@ export default class UnitOfWork implements IUnitOfWork {
     }
 }
 
-export const unitOfWork = () => new UnitOfWork(connectionFactory);
+export const builder = (): UnitOfWork => new MySqlUnitOfWork(connectionFactory);

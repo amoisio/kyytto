@@ -1,17 +1,9 @@
 import express from 'express';
-import { unitOfWork } from '../../lib/mysql/unitOfWork';
 import { Project } from './project';
 import { ProjectResource } from 'kyytto-models';
 import { api } from '../../api';
 
 export const router = express.Router();
-
-router.use(async (req, res, next) => {
-  req.unitOfWork = unitOfWork();
-  await req.unitOfWork.startSession();
-  res.once('finish', async () => await req.unitOfWork.closeSession());
-  next();
-});
 
 router.route(api.projects.path)
   .get(async (req, res) => {

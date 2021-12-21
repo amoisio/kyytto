@@ -1,11 +1,9 @@
-import { Api } from 'kyytto-models';
-import IUnitOfWork from '../lib/iUnitOfWork';
+import UnitOfWork from '../lib/unitOfWork';
 
 declare global {
   namespace Express {
     interface Request {
-      api: Api;
-      unitOfWork: IUnitOfWork;
+      unitOfWork: UnitOfWork;
     }
   }
 }

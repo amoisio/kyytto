@@ -1,10 +1,10 @@
 import { Project } from "../cases/projects/project";
 import { Task } from "../cases/tasks/task";
-import IRepository from "./iRepository";
+import Repository from "./repository";
 
-export default interface IUnitOfWork {
-    projectRepository: IRepository<Project>;
-    taskRepository: IRepository<Task>;
+export default interface UnitOfWork {
+    projectRepository: Repository<Project>;
+    taskRepository: Repository<Task>;
     startSession(): Promise<void>;
     closeSession(): Promise<void>;
 }

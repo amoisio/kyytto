@@ -1,9 +1,9 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import IRepository from '../../lib/iRepository';
-import { Project } from '../projects/project';
-import { Task } from './task';
+import Repository from '../repository';
+import { Project } from '../../cases/projects/project';
+import { Task } from '../../cases/tasks/task';
 
-export default class TaskRepository implements IRepository<Task>{
+export default class TaskRepository implements Repository<Task>{
 
   constructor(private connection: Connection) { }
 

@@ -1,6 +1,6 @@
 import { TaskResource, TaskState } from "kyytto-models";
 import { v4 as uuidv4, NIL } from "uuid";
-import IUnitOfWork from "../../lib/iUnitOfWork";
+import UnitOfWork from "../../lib/unitOfWork";
 import { Project } from "../projects/project";
 import { api } from '../../api';
 
@@ -22,7 +22,7 @@ export class Task {
     this.project = project;
   }
     
-  public static async createFrom(resource: TaskResource, uow: IUnitOfWork): Promise<Task> {
+  public static async createFrom(resource: TaskResource, uow: UnitOfWork): Promise<Task> {
     if (resource.projectHref === undefined) {
       throw new Error('Project reference must be given.');
     }
