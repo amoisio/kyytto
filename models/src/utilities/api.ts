@@ -46,14 +46,6 @@ export interface Api {
 export interface EndPoint {
 
   /**
-   * End-point base url.
-   * Example, 
-   *  url = http://domain:port/api/resource
-   *  baseUrl = http://domain:port
-   */
-  baseUrl: string;
-
-  /**
    * End-point url path.
    * Example,
    *  url = http://domain:port/api/resource
@@ -82,10 +74,10 @@ class KyyttoApi implements Api {
     this.tasks = new KyyttoEndPoint(baseUrl, '/api/tasks');
   }
   
-  public baseUrl: string;
-  public menu: EndPoint;
-  public projects: EndPoint;
-  public tasks: EndPoint;
+  public readonly baseUrl: string;
+  public readonly menu: EndPoint;
+  public readonly projects: EndPoint;
+  public readonly tasks: EndPoint;
   public resolveId(href: string): string {
     return parse(href).id;
   }
@@ -104,8 +96,8 @@ class KyyttoEndPoint implements EndPoint {
     }
   }
 
-  public baseUrl: string;
-  public path: string;
+  private readonly baseUrl: string;
+  public readonly path: string;
   public resolveHref(id: string): string {
     return `${this.baseUrl}${this.path}/${id}`;
   }
