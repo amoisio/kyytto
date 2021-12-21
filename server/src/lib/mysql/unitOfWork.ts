@@ -1,9 +1,8 @@
 import { Connection } from "mysql2/promise";
 import { connectionFactory } from './connectionFactory';
-import HourNoteRepository from "../../cases/hours/hourNoteRepository";
-import LearningNoteRepository from "../../cases/learning/learningNoteRepository";
-import TodoNoteRepository from "../../cases/todos/todoNoteRepository";
 import IUnitOfWork from "../iUnitOfWork";
+import ProjectRepository from "../../cases/projects/repository";
+import TaskRepository from "../../cases/tasks/repository";
 
 export default class UnitOfWork implements IUnitOfWork {
 
@@ -14,16 +13,13 @@ export default class UnitOfWork implements IUnitOfWork {
         this._connectionFactory = connectionFactory;
     }
 
-    public hourNoteRepository !: HourNoteRepository;
-    public learningNoteRepository !: LearningNoteRepository;
-    public todoNoteRepository !: TodoNoteRepository;
-
+    public projectRepository !: ProjectRepository;
+    public taskRepository !: TaskRepository;
+    
     public async startSession(): Promise<void> {
         this._connection = await this._connectionFactory();
         await this._connection.connect();
-        this.hourNoteRepository = new HourNoteRepository(this._connection);
-        this.learningNoteRepository = new LearningNoteRepository(this._connection);
-        this.todoNoteRepository = new TodoNoteRepository(this._connection);
+        this.projectRepository = new ProjectRepository(this._connection);
     }
 
     public async closeSession() : Promise<void> {
