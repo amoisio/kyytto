@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import logger from 'morgan';
 import { router as mySqlUnitOfWorkMiddleware } from './lib/mysql/unit-of-work-middleware';
+import { router as lowDbUnitOfWorkMiddleware } from './lib/lowdb/unit-of-work-middleware';
 import { router as menuRoutes } from './cases/menu/routes';
 import { router as projectRoutes } from './cases/projects/routes';
 import { router as taskRoutes } from './cases/tasks/routes';
@@ -15,7 +16,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(mySqlUnitOfWorkMiddleware);
+// app.use(mySqlUnitOfWorkMiddleware);
+app.use(lowDbUnitOfWorkMiddleware);
 app.use(menuRoutes);
 app.use(projectRoutes);
 app.use(taskRoutes);
