@@ -63,7 +63,7 @@ export interface EndPoint {
    * 
    * @param id entity id.
    */
-  resolveHref(id: string): string;
+  resolveHref(id?: string): string;
 }
 
 class KyyttoApi implements Api {
@@ -98,8 +98,12 @@ class KyyttoEndPoint implements EndPoint {
 
   private readonly baseUrl: string;
   public readonly path: string;
-  public resolveHref(id: string): string {
-    return `${this.baseUrl}${this.path}/${id}`;
+  public resolveHref(id?: string): string {
+    let href = `${this.baseUrl}${this.path}`;
+    if (id !== undefined) {
+      href = `${href}/${id}`;
+    }
+    return href;
   }
 }
 
