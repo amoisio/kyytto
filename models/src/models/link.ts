@@ -1,4 +1,4 @@
-import { Resource, ResourceReference } from "./resource";
+import { Resource, ResourceReference } from './resource.js';
 
 export interface Link extends Resource {
   href: ResourceReference;

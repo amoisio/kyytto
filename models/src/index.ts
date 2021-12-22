@@ -1,11 +1,11 @@
-export { ResourceReference, Resource } from './models/resource';
-export { MenuResource, MenuItemResource } from './models/menu-resource';
-export { ProjectResource } from './models/project-resource';
-export { TaskResource } from './models/task-resource';
-export { TaskState } from './models/task-state';
-export { Link } from './models/link';
-export { Href } from './models/href';
+export { ResourceReference, Resource } from './models/resource.js';
+export { MenuResource, MenuItemResource } from './models/menu-resource.js';
+export { ProjectResource } from './models/project-resource.js';
+export { TaskResource } from './models/task-resource.js';
+export { TaskState } from './models/task-state.js';
+export { Link } from './models/link.js';
+export { Href } from './models/href.js';
 
-export { ColorWheel } from './utilities/colorWheel';
-export { parse } from './utilities/hrefParser';
-export { buildApi, Api, EndPoint } from './utilities/api';
+export { ColorWheel } from './utilities/colorWheel.js';
+export { parse } from './utilities/hrefParser.js';
+export { buildApi, Api, EndPoint } from './utilities/api.js';

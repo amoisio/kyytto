@@ -1,4 +1,4 @@
-import { Href } from "../models/href";
+import { Href } from '../models/href.js';
 
 export const parse = (path: string): Href => {
   const url = new URL(path);

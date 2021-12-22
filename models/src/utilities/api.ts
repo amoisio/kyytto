@@ -1,4 +1,4 @@
-import { parse } from './hrefParser';
+import { parse } from './hrefParser.js';
 
 export const buildApi = (baseUrl: string): Api => {
   return new KyyttoApi(baseUrl);
