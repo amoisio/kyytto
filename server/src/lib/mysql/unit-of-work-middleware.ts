@@ -1,5 +1,5 @@
 import express from 'express';
-import { builder } from './unit-of-work';
+import { builder } from './unit-of-work.js';
 
 export const router = express.Router();
 

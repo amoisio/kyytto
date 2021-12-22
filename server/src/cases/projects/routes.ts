@@ -1,7 +1,7 @@
 import express from 'express';
-import { Project } from './project';
+import { Project } from './project.js';
 import { ProjectResource } from 'kyytto-models';
-import { api } from '../../api';
+import { api } from '../../api.js';
 
 export const router = express.Router();
 

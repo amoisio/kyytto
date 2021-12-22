@@ -1,8 +1,8 @@
-import Repository from '../repository';
-import { Project } from '../../cases/projects/project';
-import { Task } from '../../cases/tasks/task';
+import Repository from '../repository.js';
+import { Project } from '../../cases/projects/project.js';
+import { Task } from '../../cases/tasks/task.js';
 import { Low, JSONFile } from 'lowdb'
-import { DataDb, ProjectDb, TaskDb } from './db-model';
+import { DataDb, ProjectDb, TaskDb } from './db-model.js';
 
 export default class TaskRepository implements Repository<Task> {
   private readonly db: Low<DataDb>;

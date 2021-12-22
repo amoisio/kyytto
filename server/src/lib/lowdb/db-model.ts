@@ -1,4 +1,4 @@
-import { TaskState } from "kyytto-models";
+import { TaskState } from 'kyytto-models';
 
 export interface DataDb {
   projects: ProjectDb[];

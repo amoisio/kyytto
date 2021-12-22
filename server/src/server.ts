@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import { app } from './app';
-import { debug } from 'debug';
+import { app } from './app.js';
+import pkg from 'debug';
 import http from 'http';
 
+const { debug } = pkg;
 const logger = debug('api-svr:server');
 
 /**

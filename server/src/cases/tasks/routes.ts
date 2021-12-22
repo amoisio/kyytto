@@ -1,7 +1,7 @@
 import express from 'express';
-import { api } from '../../api';
+import { api } from '../../api.js';
 import { TaskResource } from 'kyytto-models';
-import { Task } from './task';
+import { Task } from './task.js';
 
 export const router = express.Router();
 

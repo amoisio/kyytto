@@ -1,8 +1,8 @@
 import { Connection } from 'mysql2/promise';
-import { connectionFactory } from './connection-factory';
-import UnitOfWork from '../unitOfWork';
-import ProjectRepository from './project-repository';
-import TaskRepository from './task-repository';
+import { connectionFactory } from './connection-factory.js';
+import UnitOfWork from '../unitOfWork.js';
+import ProjectRepository from './project-repository.js';
+import TaskRepository from './task-repository.js';
 
 export class MySqlUnitOfWork implements UnitOfWork {
 

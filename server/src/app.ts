@@ -1,10 +1,10 @@
 import express, { Express } from 'express';
 import logger from 'morgan';
-import { router as mySqlUnitOfWorkMiddleware } from './lib/mysql/unit-of-work-middleware';
-import { router as lowDbUnitOfWorkMiddleware } from './lib/lowdb/unit-of-work-middleware';
-import { router as menuRoutes } from './cases/menu/routes';
-import { router as projectRoutes } from './cases/projects/routes';
-import { router as taskRoutes } from './cases/tasks/routes';
+import { router as mySqlUnitOfWorkMiddleware } from './lib/mysql/unit-of-work-middleware.js';
+import { router as lowDbUnitOfWorkMiddleware } from './lib/lowdb/unit-of-work-middleware.js';
+import { router as menuRoutes } from './cases/menu/routes.js';
+import { router as projectRoutes } from './cases/projects/routes.js';
+import { router as taskRoutes } from './cases/tasks/routes.js';
 
 export const app: Express = express();
 

@@ -1,8 +1,8 @@
-import { TaskResource, TaskState } from "kyytto-models";
-import { v4 as uuidv4, NIL } from "uuid";
-import UnitOfWork from "../../lib/unitOfWork";
-import { Project } from "../projects/project";
-import { api } from '../../api';
+import { TaskResource, TaskState } from 'kyytto-models';
+import { v4 as uuidv4, NIL } from 'uuid';
+import UnitOfWork from '../../lib/unitOfWork.js';
+import { Project } from '../projects/project.js';
+import { api } from '../../api.js';
 
 export class Task {
   public id: string;
