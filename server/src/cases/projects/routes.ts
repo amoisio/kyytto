@@ -34,4 +34,10 @@ router.route(`${api.projects.path}/:id`)
     const repo = req.unitOfWork.projectRepository;
     await repo.update(project);
     res.end();
+  })
+  .delete(async (req, res) => {
+    const id = req.params['id'];
+    const repo = req.unitOfWork.projectRepository;
+    await repo.delete(id);
+    res.end();
   });

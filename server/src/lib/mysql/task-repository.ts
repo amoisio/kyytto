@@ -116,4 +116,8 @@ export default class TaskRepository implements Repository<Task>{
     update tasks 
     set title = ?, description = ?, state = ?, project_id = ?
     where id = ?;`;
+
+  public async delete(id: string): Promise<void> {
+    throw new Error("Not implemented");
+  }
 }

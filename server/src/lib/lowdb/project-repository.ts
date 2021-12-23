@@ -48,4 +48,18 @@ export default class ProjectRepository implements Repository<Project> {
       throw new Error(`No Project found for ${project.id}.`);
     }
   }
+
+  public async delete(id: string): Promise<void> {
+    const index = this.db.data!.projects.findIndex(p => p.id === id);
+    if (index !== -1) {
+      const tasks = this.db.data!.tasks.filter(task => task.projectId === id);
+      for (const task of tasks) {
+        const taskIndex = this.db.data!.tasks.findIndex(t => t.id === task.id);
+        this.db.data!.tasks.splice(taskIndex, 1);
+      }
+      this.db.data!.projects.splice(index, 1);
+    } else {
+      throw new Error(`No Project found for ${id}.`);
+    }
+  }
 }

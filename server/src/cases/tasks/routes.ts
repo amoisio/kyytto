@@ -34,4 +34,10 @@ router.route(`${api.tasks.path}/:id`)
     const repo = req.unitOfWork.taskRepository;
     await repo.update(task);
     res.end();
+  })
+  .delete(async (req, res) => {
+    const id = req.params['id'];
+    const repo = req.unitOfWork.taskRepository;
+    await repo.delete(id);
+    res.end();
   });

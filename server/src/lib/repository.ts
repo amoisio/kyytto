@@ -3,4 +3,5 @@ export default interface Repository<T> {
     get(id: string): Promise<T>;
     create(item: T): Promise<string>;
     update(item: T): Promise<void>;
+    delete(id: string): Promise<void>;
 }

@@ -61,4 +61,13 @@ export default class TaskRepository implements Repository<Task> {
       throw new Error(`No Task found for ${task.id}.`);
     }
   }
+
+  public async delete(id: string): Promise<void> {
+    const index = this.db.data!.tasks.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.db.data!.tasks.splice(index, 1);
+    } else {
+      throw new Error(`No Task found for ${id}.`);
+    }
+  }
 }

@@ -83,4 +83,8 @@ export default class ProjectRepository implements Repository<Project> {
       row.color
     );
   }
+
+  public async delete(id: string): Promise<void> {
+    throw new Error("Not implemented");
+  }
 }
