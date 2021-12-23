@@ -6,8 +6,9 @@ export const router = express.Router();
 const fileName = process.env['LOWDB_FILENAME'];
 
 router.use(async(req, res, next) => {
-  req.unitOfWork = builder(fileName!);
-  await req.unitOfWork.startSession();
-  res.once('finish', async () => await req.unitOfWork.closeSession());
+  const unitOfWork = builder(fileName!);
+  await unitOfWork.startSession();
+  res.once('finish', async () => await unitOfWork.closeSession());
+  req.unitOfWork = unitOfWork;
   next();
 });

@@ -17,7 +17,7 @@ router.route(api.projects.path)
     const project = Project.createFrom(model);
     const repo = req.unitOfWork.projectRepository;
     const id = await repo.create(project);
-    res.redirect(`${api.projects.path}/${id}`);
+    res.json(id);
   });
 
 router.route(`${api.projects.path}:id`)

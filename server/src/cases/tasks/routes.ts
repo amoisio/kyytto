@@ -17,7 +17,7 @@ router.route(api.tasks.path)
     const task = await Task.createFrom(model, req.unitOfWork);
     const repo = req.unitOfWork.taskRepository;
     const id = await repo.create(task);
-    res.redirect(`${api.tasks.path}/${id}`);
+    res.json(id);
   });
 
 router.route(`${api.tasks.path}:id`)
