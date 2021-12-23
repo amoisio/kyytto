@@ -20,7 +20,7 @@ router.route(api.projects.path)
     res.json(id);
   });
 
-router.route(`${api.projects.path}:id`)
+router.route(`${api.projects.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const repo = req.unitOfWork.projectRepository;

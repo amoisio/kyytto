@@ -20,7 +20,7 @@ router.route(api.tasks.path)
     res.json(id);
   });
 
-router.route(`${api.tasks.path}:id`)
+router.route(`${api.tasks.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const repo = req.unitOfWork.taskRepository;
