@@ -1,6 +1,3 @@
-export const endPoints = new Map<symbol, string>();
-export const projectsKey = Symbol('projects');
-endPoints.set(projectsKey, 'http://localhost:8080/api/projects');
+import { buildApi } from 'kyytto-models';
 
-export const tasksKey = Symbol('tasks');
-endPoints.set(tasksKey, 'http://localhost:8080/api/tasks');
+export const api = buildApi(location.origin);

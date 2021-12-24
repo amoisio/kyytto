@@ -1,5 +1,5 @@
 import { LocalStorageRepository } from './local-storage-repository';
-import * as api from '@/api';
+import { api } from './api';
 import { ProjectResource, TaskResource } from 'kyytto-models';
 
 export class LocalStorage {
@@ -7,13 +7,13 @@ export class LocalStorage {
   public readonly taskRepository: LocalStorageRepository<TaskResource>;
 
   constructor() {
-    const projectUrl = api.endPoints.get(api.projectsKey);
+    const projectUrl = api.projects.resolveHref();
     if (projectUrl === undefined) {
       throw new Error('API endpoint map is ill-formed.');
     }
     this.projectRepository = new LocalStorageRepository('projects', projectUrl);
 
-    const tasksUrl = api.endPoints.get(api.tasksKey);
+    const tasksUrl = api.tasks.resolveHref();
     if (tasksUrl === undefined) {
       throw new Error('API endpoint map is ill-formed.');
     }

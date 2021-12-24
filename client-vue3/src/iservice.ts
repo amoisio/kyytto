@@ -1,6 +1,6 @@
-import { IEntity } from "./iresource";
+import { Entity } from "./entity";
 
-export interface IService<TEntity extends IEntity> {
+export interface IService<TEntity extends Entity> {
   create(newEntity: TEntity): TEntity;
   getAll(): TEntity[];
   getById(id: string): TEntity;
