@@ -2,6 +2,7 @@
 import { app } from './app.js';
 import pkg from 'debug';
 import http from 'http';
+import { options } from './options.js';
 
 const { debug } = pkg;
 const logger = debug('api-svr:server');
@@ -66,7 +67,7 @@ const onListening = () => {
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(process.env.API_SERVER_PORT || '80');
+const port = normalizePort(options.apiServerPort.toString());
 app.set('port', port);
 
 /**
