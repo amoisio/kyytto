@@ -1,6 +1,6 @@
 import { TaskResource, TaskState } from 'kyytto-models';
 import { v4 as uuidv4, NIL } from 'uuid';
-import UnitOfWork from '../../lib/unitOfWork.js';
+import UnitOfWork from '../../unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from '../../api.js';
 

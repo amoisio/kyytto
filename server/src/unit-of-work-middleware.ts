@@ -1,11 +1,11 @@
 import express from 'express';
-import { builder } from './unit-of-work.js';
-import { options } from './options.js';
+import { LowDbUnitOfWork } from './lib/lowdb/unit-of-work.js';
+// import { MySqlUnitOfWork } from './lib/mysql/unit-of-work.js';
 
 export const router = express.Router();
 
 router.use(async(req, res, next) => {
-  const unitOfWork = builder(options.fileName);
+  const unitOfWork = LowDbUnitOfWork.create();
   await unitOfWork.startSession();
   res.once('finish', async () => await unitOfWork.closeSession());
   req.unitOfWork = unitOfWork;

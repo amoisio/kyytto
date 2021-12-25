@@ -1,11 +1,16 @@
 import { join } from 'path';
-import UnitOfWork from '../unitOfWork.js';
+import UnitOfWork from '../../unit-of-work.js';
 import ProjectRepository from './project-repository.js';
 import TaskRepository from './task-repository.js';
 import { Low, JSONFile } from 'lowdb'
 import { DataDb } from './db-model.js';
+import { options } from './options.js';
 
 export class LowDbUnitOfWork implements UnitOfWork {
+
+  public static create(): UnitOfWork {
+    return new LowDbUnitOfWork(options.fileName);
+  }
 
   constructor(private readonly fileName: string) { }
 
@@ -39,5 +44,3 @@ export class LowDbUnitOfWork implements UnitOfWork {
     }
   }
 }
-
-export const builder = (filePath: string): UnitOfWork => new LowDbUnitOfWork(filePath);

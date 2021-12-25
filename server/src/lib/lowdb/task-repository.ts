@@ -1,4 +1,4 @@
-import Repository from '../repository.js';
+import Repository from '../../repository.js';
 import { Project } from '../../cases/projects/project.js';
 import { Task } from '../../cases/tasks/task.js';
 import { Low } from 'lowdb'

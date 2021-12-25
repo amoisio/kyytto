@@ -1,5 +1,5 @@
-import { Project } from '../cases/projects/project.js';
-import { Task } from '../cases/tasks/task.js';
+import { Project } from './cases/projects/project.js';
+import { Task } from './cases/tasks/task.js';
 import Repository from './repository.js';
 
 export default interface UnitOfWork {
@@ -8,3 +8,5 @@ export default interface UnitOfWork {
     startSession(): Promise<void>;
     closeSession(): Promise<void>;
 }
+
+export type builder = () => UnitOfWork;

@@ -1,5 +1,5 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import Repository from '../repository.js';
+import Repository from '../../repository.js';
 import { Project } from '../../cases/projects/project.js';
 
 export default class ProjectRepository implements Repository<Project> {
