@@ -11,4 +11,7 @@ class Options {
   }
 }
 
+/**
+ * Kyyttö back-end server application options.
+ */
 export const options = new Options();

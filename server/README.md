@@ -5,6 +5,15 @@
 ## End-points
 
 
+## Unit of work middleware
+
+ Creates and attaches a UnitOfWork type to the request so that it can be used by any downstream request handler. Before
+ doing so a startSession method is called and a closeSession method call is hooked onto the request 'finish' event. These
+ methods serve as 'init' and 'cleanup' hooks for various UnitOfWork implementations.
+
+ 
+
+
 
 
 ## Folder structure
