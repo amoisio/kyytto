@@ -1,6 +1,6 @@
 import Repository from 'storage/repository.js';
-import { Project } from 'cases/projects/project.js';
-import { Task } from 'cases/tasks/task.js';
+import { Project } from 'resources/projects/project.js';
+import { Task } from 'resources/tasks/task.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb, TaskDb } from './db-model.js';
 

@@ -1,6 +1,6 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from 'storage/repository.js';
-import { Project } from 'cases/projects/project.js';
+import { Project } from 'resources/projects/project.js';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private connection: Connection) {}

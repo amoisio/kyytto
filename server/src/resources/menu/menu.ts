@@ -1,5 +1,5 @@
 import { MenuResource } from 'kyytto-models';
-import { api } from 'api.js';
+import { api } from '../api.js';
 
 export const menu: MenuResource = {
   href: api.menu.resolveHref(),

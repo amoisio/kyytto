@@ -1,5 +1,5 @@
 import Repository from '../repository.js';
-import { Project } from 'cases/projects/project.js';
+import { Project } from 'resources/projects/project.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb } from './db-model.js';
 

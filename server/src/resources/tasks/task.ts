@@ -2,8 +2,8 @@ import { TaskResource, TaskState } from 'kyytto-models';
 import { v4 as uuidv4, NIL } from 'uuid';
 import UnitOfWork from 'storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
-import { api } from 'api.js';
-import Identifiable from 'identifiable.js';
+import { api } from '../api.js';
+import Identifiable from '../identifiable.js';
 
 export class Task implements Identifiable {
   public id: string;

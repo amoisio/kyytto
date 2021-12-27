@@ -1,5 +1,5 @@
-import { Project } from 'cases/projects/project.js';
-import { Task } from 'cases/tasks/task.js';
+import { Project } from 'resources/projects/project.js';
+import { Task } from 'resources/tasks/task.js';
 import Repository from './repository.js';
 
 /**

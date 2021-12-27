@@ -1,7 +1,7 @@
-import Identifiable from 'identifiable.js';
+import Identifiable from '../identifiable.js';
 import { ProjectResource } from 'kyytto-models';
 import { NIL, v4 as uuidv4 } from 'uuid';
-import { api } from 'api.js';
+import { api } from '../api.js';
 
 export class Project implements Identifiable {
   public id: string;

@@ -1,4 +1,4 @@
-import Identifiable from 'identifiable.js';
+import Identifiable from 'resources/identifiable.js';
 
 /**
  * Represents a repository of identifiable instances.

@@ -1,7 +1,7 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from 'storage/repository.js';
-import { Project } from 'cases/projects/project.js';
-import { Task } from 'cases/tasks/task.js';
+import { Project } from 'resources/projects/project.js';
+import { Task } from 'resources/tasks/task.js';
 
 export default class TaskRepository implements Repository<Task>{
 
