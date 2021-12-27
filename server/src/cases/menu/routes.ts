@@ -1,6 +1,6 @@
-import { api } from "../../api.js";
-import express from "express";
-import { menu } from "./menu.js";
+import { api } from 'api.js';
+import express from 'express';
+import { menu } from './menu.js';
 
 export const router = express.Router();
 
