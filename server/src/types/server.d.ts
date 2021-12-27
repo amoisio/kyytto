@@ -1,4 +1,4 @@
-import UnitOfWork from '../unit-of-work.js';
+import UnitOfWork from 'storage/unit-of-work.js';
 
 declare global {
   namespace Express {

@@ -24,7 +24,7 @@ router.route(`${api.projects.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const repo = req.unitOfWork.projectRepository;
-    const project = await repo.get(id);
+    const project = await repo.getById(id);
     const dto = project.toResource();
     res.json(dto);
   })

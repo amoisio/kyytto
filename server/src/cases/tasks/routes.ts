@@ -24,7 +24,7 @@ router.route(`${api.tasks.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const repo = req.unitOfWork.taskRepository;
-    const task = await repo.get(id);
+    const task = await repo.getById(id);
     const dto = task.toResource();
     res.json(dto);
   })

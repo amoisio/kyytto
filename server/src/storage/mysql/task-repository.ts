@@ -1,7 +1,7 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import Repository from '../../repository.js';
-import { Project } from '../../cases/projects/project.js';
-import { Task } from '../../cases/tasks/task.js';
+import Repository from 'storage/repository.js';
+import { Project } from 'cases/projects/project.js';
+import { Task } from 'cases/tasks/task.js';
 
 export default class TaskRepository implements Repository<Task>{
 
@@ -31,8 +31,8 @@ export default class TaskRepository implements Repository<Task>{
       tasks t inner join 
       projects p on t.project_id = p.id;`;
 
-  public async get(id: string): Promise<Task> {
-    const cmd = this.selectTaskById;
+  public async getById(id: string): Promise<Task> {
+    const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
       throw new Error(`No Task found for ${id}.`);
@@ -41,7 +41,7 @@ export default class TaskRepository implements Repository<Task>{
     }
   }
 
-  private selectTaskById = `
+  private selectById = `
     select
       t.id as task_id,
       t.title,
@@ -72,23 +72,14 @@ export default class TaskRepository implements Repository<Task>{
     );
   }
 
-  public async create(task: Task): Promise<string> {
-    await this.connection.beginTransaction();
-
-    try {
-      await this.connection.execute(this.insertTask, [
-        task.id,
-        task.title,
-        task.description,
-        task.state,
-        task.project.id
-      ]);
-      await this.connection.commit();
-    } catch {
-      await this.connection.rollback();
-    }
-
-    return task.id;
+  public async create(task: Task): Promise<void> {
+    await this.connection.execute(this.insertTask, [
+      task.id,
+      task.title,
+      task.description,
+      task.state,
+      task.project.id
+    ]);
   }
 
   private insertTask = `
@@ -96,20 +87,13 @@ export default class TaskRepository implements Repository<Task>{
     values (?, ?, ?, ?, ?);`;
 
   public async update(task: Task): Promise<void> {
-    await this.connection.beginTransaction();
-
-    try {
-      await this.connection.execute(this.updateTask, [
-        task.title,
-        task.description,
-        task.state,
-        task.project.id,
-        task.id
-      ]);
-      await this.connection.commit();
-    } catch {
-      await this.connection.rollback();
-    }
+    await this.connection.execute(this.updateTask, [
+      task.title,
+      task.description,
+      task.state,
+      task.project.id,
+      task.id
+    ]);
   }
 
   private updateTask = `

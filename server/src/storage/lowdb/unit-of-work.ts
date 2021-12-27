@@ -1,5 +1,5 @@
 import { join } from 'path';
-import UnitOfWork from '../../unit-of-work.js';
+import UnitOfWork from 'storage/unit-of-work.js';
 import ProjectRepository from './project-repository.js';
 import TaskRepository from './task-repository.js';
 import { Low, JSONFile } from 'lowdb'

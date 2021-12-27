@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2/promise';
 import { options } from './options.js';
 import { Connection } from 'mysql2/promise';
-import UnitOfWork from '../../unit-of-work.js';
+import UnitOfWork from 'storage/unit-of-work.js';
 import ProjectRepository from './project-repository.js';
 import TaskRepository from './task-repository.js';
 

@@ -1,5 +1,5 @@
-import Repository from '../../repository.js';
-import { Project } from '../../cases/projects/project.js';
+import Repository from '../repository.js';
+import { Project } from 'cases/projects/project.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb } from './db-model.js';
 
@@ -10,7 +10,7 @@ export default class ProjectRepository implements Repository<Project> {
     return this.db.data!.projects.map(p => this.constructProject(p));
   }
 
-  public async get(id: string): Promise<Project> {
+  public async getById(id: string): Promise<Project> {
     const match = this.db.data!.projects.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructProject(match);
@@ -28,14 +28,13 @@ export default class ProjectRepository implements Repository<Project> {
     );
   }
 
-  public async create(project: Project): Promise<string> {
+  public async create(project: Project): Promise<void> {
     this.db.data!.projects.push({
       id: project.id,
       name: project.name,
       description: project.description,
       color: project.color
     });
-    return project.id;
   }
 
   public async update(project: Project): Promise<void> {

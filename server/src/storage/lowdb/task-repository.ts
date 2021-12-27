@@ -1,6 +1,6 @@
-import Repository from '../../repository.js';
-import { Project } from '../../cases/projects/project.js';
-import { Task } from '../../cases/tasks/task.js';
+import Repository from 'storage/repository.js';
+import { Project } from 'cases/projects/project.js';
+import { Task } from 'cases/tasks/task.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb, TaskDb } from './db-model.js';
 
@@ -11,7 +11,7 @@ export default class TaskRepository implements Repository<Task> {
     return this.db.data!.tasks.map(p => this.constructTask(p));
   }
 
-  public async get(id: string): Promise<Task> {
+  public async getById(id: string): Promise<Task> {
     const match = this.db.data!.tasks.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructTask(match);
@@ -39,7 +39,7 @@ export default class TaskRepository implements Repository<Task> {
     );
   }
 
-  public async create(task: Task): Promise<string> {
+  public async create(task: Task): Promise<void> {
     this.db.data!.tasks.push({
       id: task.id,
       title: task.title,
@@ -47,7 +47,6 @@ export default class TaskRepository implements Repository<Task> {
       state: task.state,
       projectId: task.project.id
     });
-    return task.id;
   }
 
   public async update(task: Task): Promise<void> {

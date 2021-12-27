@@ -1,6 +1,6 @@
 import { TaskResource, TaskState } from 'kyytto-models';
 import { v4 as uuidv4, NIL } from 'uuid';
-import UnitOfWork from 'unit-of-work.js';
+import UnitOfWork from 'storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from 'api.js';
 import Identifiable from 'identifiable.js';
@@ -29,7 +29,7 @@ export class Task implements Identifiable {
     }
 
     const projectId = api.resolveId(resource.projectHref);
-    const project = await uow.projectRepository.get(projectId);
+    const project = await uow.projectRepository.getById(projectId);
     return new Task(
       api.resolveId(resource.href), 
       resource.title, 

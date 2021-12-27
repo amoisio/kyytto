@@ -1,6 +1,6 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import Repository from '../../repository.js';
-import { Project } from '../../cases/projects/project.js';
+import Repository from 'storage/repository.js';
+import { Project } from 'cases/projects/project.js';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private connection: Connection) {}
@@ -16,11 +16,11 @@ export default class ProjectRepository implements Repository<Project> {
   }
 
   private selectAll = `
-        select p.id, p.name, p.description, p.color
-        from projects p;`;
+    select p.id, p.name, p.description, p.color
+    from projects p;`;
 
-  public async get(id: string): Promise<Project> {
-    const cmd = this.selectNoteById;
+  public async getById(id: string): Promise<Project> {
+    const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
       throw new Error(`No Project found for ${id}.`);
@@ -29,51 +29,37 @@ export default class ProjectRepository implements Repository<Project> {
     }
   }
 
-  private selectNoteById = `
-        select p.id, p.name, p.description, p.color
-        from projects p
-        where
-            p.id = ?;`;
+  private selectById = `
+    select p.id, p.name, p.description, p.color
+    from projects p
+    where p.id = ?;`;
 
-  public async create(project: Project): Promise<string> {
-    await this.connection.beginTransaction();
-    try {
-      await this.connection.execute(this.insertProject, [
-        project.id,
-        project.name,
-        project.description,
-        project.color,
-      ]);
-      await this.connection.commit();
-    } catch {
-      await this.connection.rollback();
-    }
-    return project.id;
+  public async create(project: Project): Promise<void> {
+    await this.connection.execute(this.insertProject, [
+      project.id,
+      project.name,
+      project.description,
+      project.color,
+    ]);
   }
 
   private insertProject = `
-        insert into projects (id, name, description, color)
-        values (?, ?, ?, ?);`;
+    insert into projects (id, name, description, color)
+    values (?, ?, ?, ?);`;
 
   public async update(project: Project): Promise<void> {
-    await this.connection.beginTransaction();
-    try {
-      await this.connection.execute(this.updateProject, [
-        project.name,
-        project.description,
-        project.color,
-        project.id,
-      ]);
-      await this.connection.commit();
-    } catch {
-      await this.connection.rollback();
-    }
+    await this.connection.execute(this.updateProject, [
+      project.name,
+      project.description,
+      project.color,
+      project.id,
+    ]);
   }
 
   private updateProject = `
-        update projects
-        set name = ?, description = ?, color = ?
-        where id = ?;`;
+    update projects
+    set name = ?, description = ?, color = ?
+    where id = ?;`;
 
   private constructProject(row: RowDataPacket): Project {
     return new Project(
