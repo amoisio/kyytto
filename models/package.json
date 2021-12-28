@@ -2,7 +2,7 @@
   "name": "kyytto-models",
   "displayName": "Kyyttö models",
   "description": "Kyyttö shared models and utilities",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "main": "dist/index.js",
   "type": "module",
   "files": [
@@ -19,5 +19,8 @@
     "registry": "http://localhost:4873"
   },
   "author": "Aleksi Moisio <aleksi.moisio30@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0"
+  }
 }
