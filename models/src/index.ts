@@ -9,3 +9,4 @@ export { Href } from './models/href.js';
 export { ColorWheel } from './utilities/colorWheel.js';
 export { parse } from './utilities/hrefParser.js';
 export { buildApi, Api, EndPoint } from './utilities/api.js';
+export { KyyttoClient, ApiClient } from './utilities/client.js';

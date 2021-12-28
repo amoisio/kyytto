@@ -15,7 +15,7 @@ export interface ApiClient {
   deleteTask(id: string): Promise<void>;
 }
 
-class Client implements ApiClient {
+export class KyyttoClient implements ApiClient {
   constructor(private readonly api: Api) { }
 
   public async getMenu(): Promise<MenuResource> {
