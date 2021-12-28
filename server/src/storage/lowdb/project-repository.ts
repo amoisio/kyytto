@@ -1,7 +1,9 @@
 import Repository from '../repository.js';
-import { Project } from 'resources/projects/project.js';
+import { Project } from '../../resources/projects/project.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb } from './db-model.js';
+import { Identifier } from '../../utilities/identifier-generator.js';
+import { Color } from '../../utilities/color-generator.js';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private readonly db: Low<DataDb>) { }
@@ -10,7 +12,7 @@ export default class ProjectRepository implements Repository<Project> {
     return this.db.data!.projects.map(p => this.constructProject(p));
   }
 
-  public async getById(id: string): Promise<Project> {
+  public async getById(id: Identifier): Promise<Project> {
     const match = this.db.data!.projects.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructProject(match);
@@ -21,19 +23,19 @@ export default class ProjectRepository implements Repository<Project> {
 
   private constructProject(model: ProjectDb): Project {
     return new Project(
-      model.id,
+      new Identifier(model.id),
       model.name,
       model.description,
-      model.color
+      new Color(model.color, true)
     );
   }
 
-  public async create(project: Project): Promise<void> {
+  public async add(project: Project): Promise<void> {
     this.db.data!.projects.push({
-      id: project.id,
+      id: project.id.valueOf(),
       name: project.name,
       description: project.description,
-      color: project.color
+      color: project.color.valueOf()
     });
   }
 
@@ -42,13 +44,13 @@ export default class ProjectRepository implements Repository<Project> {
     if (match !== undefined) {
       match.name = project.name;
       match.description = project.description;
-      match.color = project.color;
+      match.color = project.color.valueOf();
     } else {
       throw new Error(`No Project found for ${project.id}.`);
     }
   }
 
-  public async delete(id: string): Promise<void> {
+  public async delete(id: Identifier): Promise<void> {
     const index = this.db.data!.projects.findIndex(p => p.id === id);
     if (index !== -1) {
       const tasks = this.db.data!.tasks.filter(task => task.projectId === id);

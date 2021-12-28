@@ -1,10 +1,11 @@
 import express, { Express } from 'express';
 import logger from 'morgan';
-import { router as unitOfWorkMiddleware } from 'unit-of-work-middleware.js';
-import { router as menuRoutes } from 'resources/menu/routes.js';
-import { router as projectRoutes } from 'resources/projects/routes.js';
-import { router as taskRoutes } from 'resources/tasks/routes.js';
-import { options } from 'options.js';
+import { router as unitOfWorkMiddleware } from './middlewares/unit-of-work-middleware.js';
+import { router as servicesMiddleware } from './middlewares/services-middleware.js';
+import { router as menuRoutes } from './resources/menu/routes.js';
+import { router as projectRoutes } from './resources/projects/routes.js';
+import { router as taskRoutes } from './resources/tasks/routes.js';
+import { options } from './options.js';
 
 export const app: Express = express();
 
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
 });
 
 app.use(unitOfWorkMiddleware);
+app.use(servicesMiddleware);
 app.use(menuRoutes);
 app.use(projectRoutes);
 app.use(taskRoutes);

@@ -1,5 +1,4 @@
 import express from 'express';
-import { Project } from './project.js';
 import { ProjectResource } from 'kyytto-models';
 import { api } from '../api.js';
 
@@ -7,37 +6,48 @@ export const router = express.Router();
 
 router.route(api.projects.path)
   .get(async (req, res) => {
-    const repo = req.unitOfWork.projectRepository;
-    const projects = await repo.getAll();
-    const dtos = projects.map(project => project.toResource());
-    res.json(dtos);
+    const repository = req.unitOfWork.projectRepository;
+    const projects = await repository.getAll();
+    const resources = projects.map(project => project.toResource());
+
+    res.json(resources);
   })
   .post(async (req, res) => {
-    const model = req.body as ProjectResource;
-    const project = Project.createFrom(model);
-    const repo = req.unitOfWork.projectRepository;
-    const id = await repo.create(project);
-    res.json(id);
+    const resource = req.body as ProjectResource;
+    const builder = req.projectBuilder;
+    const project = await builder.new(
+      resource.name, 
+      resource.description);
+      
+    const repository = req.unitOfWork.projectRepository;
+    await repository.add(project);
+
+    res.json(project.id);
   });
 
 router.route(`${api.projects.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
-    const repo = req.unitOfWork.projectRepository;
-    const project = await repo.getById(id);
-    const dto = project.toResource();
-    res.json(dto);
+    const repository = req.unitOfWork.projectRepository;
+    const project = await repository.getById(id);
+    const resource = project.toResource();
+
+    res.json(resource);
   })
   .put(async (req, res) => {
-    const model = req.body as ProjectResource;
-    const project = Project.createFrom(model);
-    const repo = req.unitOfWork.projectRepository;
-    await repo.update(project);
+    const resource = req.body as ProjectResource;
+    const builder = req.projectBuilder;
+    const project = await builder.from(resource);
+
+    const repository = req.unitOfWork.projectRepository;
+    await repository.update(project);
+
     res.end();
   })
   .delete(async (req, res) => {
     const id = req.params['id'];
-    const repo = req.unitOfWork.projectRepository;
-    await repo.delete(id);
+    const repository = req.unitOfWork.projectRepository;
+    await repository.delete(id);
+
     res.end();
   });

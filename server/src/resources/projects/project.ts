@@ -1,38 +1,76 @@
 import Identifiable from '../identifiable.js';
-import { ProjectResource } from 'kyytto-models';
-import { NIL, v4 as uuidv4 } from 'uuid';
+import { NIL, validate } from 'uuid';
 import { api } from '../api.js';
+import { ProjectResource } from 'kyytto-models';
+import { Color, ColorGenerator } from '../../utilities/color-generator.js';
+import { Identifier, IdentifierGenerator } from '../../utilities/identifier-generator.js';
 
-export class Project implements Identifiable {
-  public id: string;
-  public name: string;
-  public description: string | undefined;
-  public color: string;
+export class ProjectBuilder {
+  constructor(
+    private readonly idGenerator: IdentifierGenerator,
+    private readonly colorGenerator: ColorGenerator) { }
 
-  public constructor(id: string, name: string, description: string | undefined, color: string) {
-    if (id === NIL) {
-      id = uuidv4();
+  /**
+   * Creates a new Project.
+   * @param name Name of the project.
+   * @param description Desciption of the project.
+   * @returns A newly created project with generated id and color.
+   */
+  public async new(name: string, description: string | undefined): Promise<Project> {
+    if (name === null || name === undefined || name.length === 0) {
+      throw new Error('Name must be provided.');
     }
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.color = color;
+
+    const id = this.idGenerator.generate();
+    const color = await this.colorGenerator.generate();
+    return new Project(id, name, description, color);
   }
 
-  public static createFrom(resource: ProjectResource): Project {
+  /**
+   * Create a Project entity from the given resource representation.
+   * @param resource Project resource.
+   * @returns A project entity corresponding the resource representation.
+   */
+  public async from(resource: ProjectResource): Promise<Project> {
+    const id = api.resolveId(resource.href);
     return new Project(
-      api.resolveId(resource.href), 
-      resource.name, 
-      resource.description, 
-      resource.color);
+      new Identifier(id),
+      resource.name,
+      resource.description,
+      new Color(resource.color, true));
+  }
+}
+
+export class Project implements Identifiable {
+  public readonly id: Identifier;
+  public name: string;
+  public description: string | undefined;
+  public color: Color;
+
+  public constructor(id: Identifier, name: string, description: string | undefined, color: Color) {
+    if (!id || id === NIL || !validate(id.valueOf())) {
+      throw new Error(`Given id: ${id} is invalid.`);
+    }
+    this.id = id;
+    
+    if (name === null || name === undefined || name.length === 0) {
+      throw new Error('Name must not be empty.');
+    }
+    this.name = name;
+    this.description = description;
+
+    if (!color.validate()) {
+      throw new Error(`Given color: ${color} is invalid.`);
+    }
+    this.color = color;
   }
 
   public toResource(): ProjectResource {
     return {
-      href: api.projects.resolveHref(this.id),
+      href: api.projects.resolveHref(this.id.valueOf()),
       name: this.name,
       description: this.description,
-      color: this.color,
+      color: this.color.valueOf()
     };
   }
 }

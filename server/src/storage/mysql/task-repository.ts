@@ -1,7 +1,8 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import Repository from 'storage/repository.js';
-import { Project } from 'resources/projects/project.js';
-import { Task } from 'resources/tasks/task.js';
+import Repository from '../repository.js';
+import { Project } from '../../resources/projects/project.js';
+import { Task } from '../../resources/tasks/task.js';
+import { Identifier } from '../../utilities/identifier-generator.js';
 
 export default class TaskRepository implements Repository<Task>{
 
@@ -72,7 +73,7 @@ export default class TaskRepository implements Repository<Task>{
     );
   }
 
-  public async create(task: Task): Promise<void> {
+  public async add(task: Task): Promise<void> {
     await this.connection.execute(this.insertTask, [
       task.id,
       task.title,
@@ -101,7 +102,10 @@ export default class TaskRepository implements Repository<Task>{
     set title = ?, description = ?, state = ?, project_id = ?
     where id = ?;`;
 
-  public async delete(id: string): Promise<void> {
-    throw new Error("Not implemented");
+  public async delete(id: Identifier): Promise<void> {
+    await this.connection.execute(this.deleteTask, [ id ]);
   }
+
+  private deleteTask = `
+    delete from tasks where id = ?;`
 }

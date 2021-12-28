@@ -1,9 +1,10 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
-import Repository from 'storage/repository.js';
-import { Project } from 'resources/projects/project.js';
+import Repository from '../repository.js';
+import { Project } from '../../resources/projects/project.js';
+import { Identifier } from '../../utilities/identifier-generator.js';
 
 export default class ProjectRepository implements Repository<Project> {
-  constructor(private connection: Connection) {}
+  constructor(private connection: Connection) { }
 
   public async getAll(): Promise<Project[]> {
     const cmd = this.selectAll;
@@ -19,7 +20,7 @@ export default class ProjectRepository implements Repository<Project> {
     select p.id, p.name, p.description, p.color
     from projects p;`;
 
-  public async getById(id: string): Promise<Project> {
+  public async getById(id: Identifier): Promise<Project> {
     const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
@@ -34,7 +35,16 @@ export default class ProjectRepository implements Repository<Project> {
     from projects p
     where p.id = ?;`;
 
-  public async create(project: Project): Promise<void> {
+  private constructProject(row: RowDataPacket): Project {
+    return new Project(
+      row.id,
+      row.name,
+      row.description,
+      row.color
+    );
+  }
+
+  public async add(project: Project): Promise<void> {
     await this.connection.execute(this.insertProject, [
       project.id,
       project.name,
@@ -61,16 +71,10 @@ export default class ProjectRepository implements Repository<Project> {
     set name = ?, description = ?, color = ?
     where id = ?;`;
 
-  private constructProject(row: RowDataPacket): Project {
-    return new Project(
-      row.id,
-      row.name,
-      row.description,
-      row.color
-    );
+  public async delete(id: Identifier): Promise<void> {
+    await this.connection.execute(this.deleteProject, [id]);
   }
 
-  public async delete(id: string): Promise<void> {
-    throw new Error("Not implemented");
-  }
+  private deleteProject = `
+    delete from projects where id = ?;`
 }

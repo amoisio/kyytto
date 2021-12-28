@@ -1,5 +1,5 @@
 import { buildApi } from 'kyytto-models';
-import { options } from 'options.js';
+import { options } from '../options.js';
 
 /**
  * Global specification of the Kyyttö API.
