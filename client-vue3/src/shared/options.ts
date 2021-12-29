@@ -1,11 +1,12 @@
+import * as data from '../../appsettings.json';
 
 class Options {
   public readonly apiServerHost: string;
   public readonly apiServerPort: number;
 
   constructor() {
-    this.apiServerHost = process.env['API_SERVER_HOST'] || 'http://localhost';
-    this.apiServerPort = Number(process.env['API_SERVER_PORT'] || '80');
+    this.apiServerHost = data?.apiServerHost || 'http://localhost';
+    this.apiServerPort = data?.apiServerPort || 80;
   }
 }
 

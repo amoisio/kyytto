@@ -7,10 +7,17 @@
         </router-link>
       </div>
     </div>
-    <div class="row" v-for="link of links" :key="link.href">
+    <div class="row">
       <div class="col">
-        <menu-button class="mx-0 pt-3 pb-3" :routerLink="link.href" :icon="link.icon">
-          {{ link.title }}
+        <menu-button class="mx-0 pt-3 pb-3" :routerLink="board.path" :icon="board.icon">
+          {{ board.title }}
+        </menu-button>
+      </div>
+    </div> 
+    <div class="row" >
+      <div class="col">
+        <menu-button class="mx-0 pt-3 pb-3" :routerLink="projects.path" :icon="projects.icon">
+          {{ projects.title }}
         </menu-button>
       </div>
     </div>
@@ -19,19 +26,17 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import MenuButton from './menu-button.vue';
-  import { Link } from 'kyytto-models';
+  import { menuLinks, Link } from './menu-links';
   
   export default defineComponent({
     name: 'MenuView',
     components: {
       MenuButton
     },
-    async created() {
-      this.links = await this.$services.menuService.getAll();
-    },
     data() {
       return {
-        links: [] as Link[]
+        board: menuLinks.board,
+        projects: menuLinks.projects
       };
     },
     computed: {

@@ -19,7 +19,7 @@
     },
     computed: {
       isCurrentRoute(): boolean {
-        return this.routerLink === this.$route.path;
+        return this.routerLink === this.$route.name;
       }
     }
   });
