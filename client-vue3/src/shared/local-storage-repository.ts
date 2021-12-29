@@ -1,6 +1,6 @@
-import { parse } from './lib/hrefParser';
 import { v4 as uuidv4 } from 'uuid';
 import { Resource } from 'kyytto-models';
+import { api } from '@/app/api';
 
 export class LocalStorageRepository<TResouce extends Resource> {
   constructor(private storageKey: string, private baseUrl: string) {}
@@ -53,7 +53,7 @@ export class LocalStorageRepository<TResouce extends Resource> {
   }
 
   private entityId(item: TResouce): string {
-    return parse(item.href).id;
+    return api.resolveId(item.href);
   }
 
   private readItems(): TResouce[] {

@@ -22,7 +22,7 @@
   import { defineComponent } from 'vue';
   import { IProject } from './project-models';
   import ProjectItem from './project-item.vue';
-  import { NEWID } from '@/utilities';
+  import { NEWID } from '@/shared/utilities';
 
   export default defineComponent({
     name: 'ProjectsView',

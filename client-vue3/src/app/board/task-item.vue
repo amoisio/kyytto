@@ -77,7 +77,7 @@
   });
 </script>
 <style lang="scss">
-  @use '@/custom';
+  @use '@/app/custom';
   .task-item {
     &:hover {
       border-color: custom.$dark1;

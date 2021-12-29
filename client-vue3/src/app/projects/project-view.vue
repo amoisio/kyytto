@@ -20,10 +20,10 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import ProjectEditForm from './project-edit-form.vue';
-  import BorderedIcon from '@/lib/bordered-icon.vue';
-  import { colorWheel } from '@/lib/colorWheel';
+  import BorderedIcon from '@/shared/bordered-icon.vue';
+  import { colorWheel } from '@/shared/colorWheel';
   import { Project, ProjectEditFormModel } from './project-models';
-  import { isNew } from '@/utilities';
+  import { isNew } from '@/shared/utilities';
   import { validate as uuidValidate } from 'uuid';
 
   export default defineComponent({

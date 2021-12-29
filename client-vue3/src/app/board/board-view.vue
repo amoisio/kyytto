@@ -39,7 +39,7 @@
   import { defineComponent } from 'vue';
   import TaskList from './task-list.vue';
   import { ITask } from './task-models';
-  import { NEWID } from '@/utilities';
+  import { NEWID } from '@/shared/utilities';
 
   export default defineComponent({
     name: 'BoardView',

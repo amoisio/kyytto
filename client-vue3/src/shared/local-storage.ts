@@ -1,5 +1,5 @@
 import { LocalStorageRepository } from './local-storage-repository';
-import { api } from './api';
+import { api } from '../app/api';
 import { ProjectResource, TaskResource } from 'kyytto-models';
 
 export class LocalStorage {

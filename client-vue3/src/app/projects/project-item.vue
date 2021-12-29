@@ -20,7 +20,7 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { IProject } from './project-models';
-  import BorderedIcon from '@/lib/bordered-icon.vue';
+  import BorderedIcon from '@/shared/bordered-icon.vue';
 
   export default defineComponent({
     name: 'ProjectItem',
@@ -37,7 +37,7 @@
   });
 </script>
 <style lang="scss">
-  @use '@/custom';
+  @use '@/app/custom';
   .badge {
     border: custom.$border;
   }

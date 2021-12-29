@@ -1,7 +1,7 @@
-import { ITask } from './board/task-models';
-import { IProject } from './projects/project-models';
+import { ITask } from '../app/board/task-models';
+import { IProject } from '../app/projects/project-models';
 import { ProjectResource, TaskResource } from 'kyytto-models';
-import { api } from './api';
+import { api } from '../app/api';
 
 export const taskResourceMapper = (task: ITask): TaskResource => {
     const projectItem = task.project 

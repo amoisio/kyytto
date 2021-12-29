@@ -1,13 +1,17 @@
-import { IProject, Project } from '@/projects/project-models';
+import { IProject, Project } from '@/app/projects/project-models';
 import { ITask, Task } from './task-models';
-import { LocalStorageRepository } from '@/local-storage-repository';
-import { IService } from '@/iservice';
-import { parse } from '@/lib/hrefParser';
-import { LocalStorage } from '@/local-storage';
-import * as mappers from '@/mappers';
+import { LocalStorageRepository } from '@/shared/local-storage-repository';
+import { IService } from '@/shared/iservice';
+import { LocalStorage } from '@/shared/local-storage';
+import * as mappers from '@/shared/mappers';
 import { ProjectResource, TaskResource } from 'kyytto-models';
+import { api } from '../api';
 
-export class LocalStorageTaskService implements IService<ITask> {
+export interface ITaskService extends IService<ITask> {
+
+}
+
+export class LocalStorageTaskService implements ITaskService {
   private readonly taskRepository: LocalStorageRepository<TaskResource>;
   private readonly projectRepository: LocalStorageRepository<ProjectResource>;
 
@@ -35,7 +39,7 @@ export class LocalStorageTaskService implements IService<ITask> {
   private getTask(taskItem: TaskResource) : ITask {
     let project: IProject | undefined;
     if (taskItem.projectHref) {
-      const projectId = parse(taskItem.projectHref).id;
+      const projectId = api.resolveId(taskItem.projectHref);
       const projectItem = this.projectRepository.getById(projectId);
       project = Project.createFrom(projectItem);
     }

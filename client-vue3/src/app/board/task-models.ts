@@ -1,7 +1,7 @@
-import { parse } from '@/lib/hrefParser';
-import { IProject } from '@/projects/project-models';
+import { IProject } from '@/app/projects/project-models';
 import { TaskResource } from 'kyytto-models';
-import { Entity } from '../entity';
+import { Entity } from '../../shared/entity';
+import { api } from '../api';
 import { TaskState } from './task-state';
 
 export interface ITask extends Entity {
@@ -27,7 +27,7 @@ export class Task implements ITask {
 
   public static createFrom(resource: TaskResource, project?: IProject): ITask {
     return new Task(
-      parse(resource.href).id,
+      api.resolveId(resource.href),
       resource.title,
       resource.description,
       resource.state,

@@ -17,7 +17,7 @@
   import TaskEditForm from './task-edit-form.vue';
   import { IProject } from '../projects/project-models';
   import { Task, TaskEditFormModel } from './task-models';
-  import { isNew } from '@/utilities';
+  import { isNew } from '@/shared/utilities';
   import { validate as uuidValidate } from 'uuid';
 
   export default defineComponent({
