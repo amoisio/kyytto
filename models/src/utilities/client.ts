@@ -3,7 +3,7 @@ import { ProjectResource } from '../models/project-resource.js';
 import { TaskResource } from '../models/task-resource.js';
 import { Api } from './api.js';
 import axios, { AxiosInstance } from 'axios';
-import { Identifier } from 'src/index.js';
+import { Identifier } from '../models/identifier.js';
 
 export interface ApiClient {
   getMenu(): Promise<MenuResource>;

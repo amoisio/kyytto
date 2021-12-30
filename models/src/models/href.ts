@@ -1,4 +1,4 @@
-import { Identifier } from 'src';
+import { Identifier } from './identifier.js';
 
 export interface Href {
   base: string; // protocol + hostname
