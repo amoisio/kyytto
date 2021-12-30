@@ -1,10 +1,9 @@
 import { v4 as uuidv4, validate } from 'uuid';
 
-export class Identifier {
-  private readonly id: string;
+export class Identifier extends String {
 
   constructor(value: string) {
-    this.id = value;
+    super(value);
   }
 
   public static new(): Identifier {
@@ -12,10 +11,6 @@ export class Identifier {
   }
 
   public validate(): boolean {
-    return validate(this.id);
-  }
-
-  public toString(): string {
-    return this.id;
+    return validate(this.valueOf());
   }
 }

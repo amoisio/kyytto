@@ -2,7 +2,7 @@ import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
-import { Identifier } from '../../utilities/identifier-generator.js';
+import { Identifier } from 'kyytto-models';
 
 export default class TaskRepository implements Repository<Task>{
 
@@ -32,7 +32,7 @@ export default class TaskRepository implements Repository<Task>{
       tasks t inner join 
       projects p on t.project_id = p.id;`;
 
-  public async getById(id: string): Promise<Task> {
+  public async getById(id: Identifier): Promise<Task> {
     const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {

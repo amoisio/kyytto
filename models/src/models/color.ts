@@ -1,31 +1,26 @@
 /**
  * Hex color
  */
-export class Color {
-  public readonly value: string;
+export class Color extends String {
   public errorMessage?: string;
   private readonly pattern: RegExp = new RegExp('^#(?:[A-Fa-f0-9]{2}){3}$');
 
   constructor(hexValue: string) {
-    this.value = hexValue;
+    super(hexValue);
   }
 
   public validate(): boolean {
-    if (this.value === undefined || this.value === null) {
+    if (this === undefined || this === null || this.valueOf() === undefined || this.valueOf() === null) {
       this.errorMessage = 'Color is undefined';
       return false;
     }
 
-    if (!this.pattern.test(this.value)) {
-      this.errorMessage = `Color value ${this.value} is invalid.`;
+    if (!this.pattern.test(this.valueOf())) {
+      this.errorMessage = `Color value ${this} is invalid.`;
       return false;
     }
 
     this.errorMessage = undefined;
     return true;
-  }
-
-  public toString(): string {
-    return this.value;
   }
 }

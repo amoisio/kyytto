@@ -1,7 +1,7 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
-import { Identifier } from '../../utilities/identifier-generator.js';
+import { Identifier } from 'kyytto-models';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private connection: Connection) { }
