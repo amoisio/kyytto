@@ -1,3 +1,4 @@
+import { Identifier } from '../models/identifier.js';
 import { parse } from './hrefParser.js';
 
 export const buildApi = (baseUrl: string): Api => {
@@ -37,7 +38,7 @@ export interface Api {
    *
    * @param href resource href.
    */
-  resolveId(href: string): string;
+  resolveId(href: string): Identifier;
 }
 
 /**
@@ -63,7 +64,7 @@ export interface EndPoint {
    * 
    * @param id entity id.
    */
-  resolveHref(id?: string): string;
+  resolveHref(id?: string | Identifier): string;
 }
 
 class KyyttoApi implements Api {
@@ -78,7 +79,7 @@ class KyyttoApi implements Api {
   public readonly menu: EndPoint;
   public readonly projects: EndPoint;
   public readonly tasks: EndPoint;
-  public resolveId(href: string): string {
+  public resolveId(href: string): Identifier {
     return parse(href).id;
   }
 }
@@ -98,7 +99,7 @@ class KyyttoEndPoint implements EndPoint {
 
   private readonly baseUrl: string;
   public readonly path: string;
-  public resolveHref(id?: string): string {
+  public resolveHref(id?: string | Identifier): string {
     let href = `${this.baseUrl}${this.path}`;
     if (id !== undefined) {
       href = `${href}/${id}`;

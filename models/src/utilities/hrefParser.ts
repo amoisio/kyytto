@@ -1,3 +1,4 @@
+import { Identifier } from '../models/identifier.js';
 import { Href } from '../models/href.js';
 
 export const parse = (path: string): Href => {
@@ -52,7 +53,7 @@ export const parse = (path: string): Href => {
     segments: segments,
     query: query,
     rel: rel,
-    id: segments[segments.length - 1]
+    id: new Identifier(segments[segments.length - 1])
   };
 };
 

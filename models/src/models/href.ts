@@ -1,3 +1,5 @@
+import { Identifier } from 'src';
+
 export interface Href {
   base: string; // protocol + hostname
   port: string;
@@ -5,5 +7,5 @@ export interface Href {
   segments: string[];
   query: string[][];
   rel: string;
-  id: string;
+  id: Identifier;
 }
