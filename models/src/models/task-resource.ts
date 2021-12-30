@@ -5,5 +5,5 @@ export interface TaskResource extends Resource {
   title: string;
   description?: string;
   state: TaskState;
-  projectHref?: ResourceReference;
+  projectHref: ResourceReference;
 }
