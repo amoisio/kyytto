@@ -1,6 +1,6 @@
 import express from 'express';
 import { api } from '../api.js';
-import { TaskResource } from 'kyytto-models';
+import { Identifier, TaskResource } from 'kyytto-models';
 
 export const router = express.Router();
 
@@ -15,10 +15,11 @@ router.route(api.tasks.path)
   .post(async (req, res) => {
     const resource = req.body as TaskResource;
     const builder = req.taskBuilder;
+    const projectId = api.resolveId(resource.projectHref)
     const task = await builder.new(
       resource.title, 
       resource.description,
-      resource.projectHref);
+      projectId);
 
     const repository = req.unitOfWork.taskRepository;
     await repository.add(task);
@@ -30,7 +31,7 @@ router.route(`${api.tasks.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const repository = req.unitOfWork.taskRepository;
-    const task = await repository.getById(id);
+    const task = await repository.getById(new Identifier(id));
     const resource = task.toResource();
 
     res.json(resource);
@@ -48,7 +49,7 @@ router.route(`${api.tasks.path}/:id`)
   .delete(async (req, res) => {
     const id = req.params['id'];
     const repository = req.unitOfWork.taskRepository;
-    await repository.delete(id);
+    await repository.delete(new Identifier(id));
 
     res.end();
   });

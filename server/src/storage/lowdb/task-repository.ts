@@ -3,8 +3,7 @@ import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb, TaskDb } from './db-model.js';
-import { Identifier } from '../../utilities/identifier-generator.js';
-import { Color } from '../../utilities/color-generator.js';
+import { Color, Identifier } from 'kyytto-models';
 
 export default class TaskRepository implements Repository<Task> {
   constructor(private readonly db: Low<DataDb>) { }
@@ -14,7 +13,7 @@ export default class TaskRepository implements Repository<Task> {
   }
 
   public async getById(id: Identifier): Promise<Task> {
-    const match = this.db.data!.tasks.find(p => p.id === id);
+    const match = this.db.data!.tasks.find(p => p.id === id.toString());
     if (match !== undefined) {
       return this.constructTask(match);
     } else {
@@ -37,34 +36,34 @@ export default class TaskRepository implements Repository<Task> {
       new Identifier(model.id),
       model.name,
       model.description,
-      new Color(model.color, true)
+      new Color(model.color)
     );
   }
 
   public async add(task: Task): Promise<void> {
     this.db.data!.tasks.push({
-      id: task.id.valueOf(),
+      id: task.id.toString(),
       title: task.title,
       description: task.description,
       state: task.state,
-      projectId: task.project.id.valueOf()
+      projectId: task.project.id.toString()
     });
   }
 
   public async update(task: Task): Promise<void> {
-    const match = this.db.data!.tasks.find(p => p.id === task.id);
+    const match = this.db.data!.tasks.find(p => p.id === task.id.toString());
     if (match !== undefined) {
       match.title = task.title;
       match.description = task.description;
       match.state = task.state;
-      match.projectId = task.project.id.valueOf()
+      match.projectId = task.project.id.toString()
     } else {
       throw new Error(`No Task found for ${task.id}.`);
     }
   }
 
   public async delete(id: Identifier): Promise<void> {
-    const index = this.db.data!.tasks.findIndex(t => t.id === id);
+    const index = this.db.data!.tasks.findIndex(t => t.id === id.toString());
     if (index !== -1) {
       this.db.data!.tasks.splice(index, 1);
     } else {

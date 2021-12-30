@@ -1,9 +1,9 @@
 import Identifiable from '../identifiable.js';
 import { NIL, validate } from 'uuid';
 import { api } from '../api.js';
-import { ProjectResource } from 'kyytto-models';
-import { Color, ColorGenerator } from '../../utilities/color-generator.js';
-import { Identifier, IdentifierGenerator } from '../../utilities/identifier-generator.js';
+import { Color, Identifier, ProjectResource } from 'kyytto-models';
+import { ColorGenerator } from '../../utilities/color-generator.js';
+import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 
 export class ProjectBuilder {
   constructor(
@@ -34,10 +34,10 @@ export class ProjectBuilder {
   public async from(resource: ProjectResource): Promise<Project> {
     const id = api.resolveId(resource.href);
     return new Project(
-      new Identifier(id),
+      id,
       resource.name,
       resource.description,
-      new Color(resource.color, true));
+      new Color(resource.color));
   }
 }
 
@@ -48,7 +48,7 @@ export class Project implements Identifiable {
   public color: Color;
 
   public constructor(id: Identifier, name: string, description: string | undefined, color: Color) {
-    if (!id || id === NIL || !validate(id.valueOf())) {
+    if (!id || id.toString() === NIL || !validate(id.toString())) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
     this.id = id;
@@ -67,10 +67,10 @@ export class Project implements Identifiable {
 
   public toResource(): ProjectResource {
     return {
-      href: api.projects.resolveHref(this.id.valueOf()),
+      href: api.projects.resolveHref(this.id),
       name: this.name,
       description: this.description,
-      color: this.color.valueOf()
+      color: this.color.toString()
     };
   }
 }

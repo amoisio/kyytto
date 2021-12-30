@@ -1,5 +1,5 @@
 import express from 'express';
-import { ProjectResource } from 'kyytto-models';
+import { Identifier, ProjectResource } from 'kyytto-models';
 import { api } from '../api.js';
 
 export const router = express.Router();
@@ -29,7 +29,7 @@ router.route(`${api.projects.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const repository = req.unitOfWork.projectRepository;
-    const project = await repository.getById(id);
+    const project = await repository.getById(new Identifier(id));
     const resource = project.toResource();
 
     res.json(resource);
@@ -47,7 +47,7 @@ router.route(`${api.projects.path}/:id`)
   .delete(async (req, res) => {
     const id = req.params['id'];
     const repository = req.unitOfWork.projectRepository;
-    await repository.delete(id);
+    await repository.delete(new Identifier(id));
 
     res.end();
   });

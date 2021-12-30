@@ -1,4 +1,4 @@
-import { Identifier } from '../utilities/identifier-generator.js';
+import { Identifier } from 'kyytto-models';
 
 /**
  * Represents a type whose instances as uniquely identifiable.

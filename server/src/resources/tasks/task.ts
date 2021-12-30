@@ -1,10 +1,10 @@
-import { TaskResource, TaskState } from 'kyytto-models';
+import { Identifier, TaskResource, TaskState } from 'kyytto-models';
 import { NIL, validate } from 'uuid';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from '../api.js';
 import Identifiable from '../identifiable.js';
-import { Identifier, IdentifierGenerator } from '../../utilities/identifier-generator.js';
+import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 
 export class TaskBuilder {
   constructor(
@@ -49,7 +49,7 @@ export class TaskBuilder {
     }
 
     const id = api.resolveId(resource.href);
-    if (!validate(id) || id === NIL) {
+    if (!validate(id.toString()) || id.toString() === NIL) {
       throw new Error('Task reference is invalid.');
     }
 
@@ -68,8 +68,8 @@ export class TaskBuilder {
       throw new Error('Project reference is invalid.');
     }
 
-    const projectId = api.resolveId(resource.projectHref);
-    if (!validate(projectId) || projectId === NIL) {
+    const projectId = api.resolveId(projectHref);
+    if (!validate(projectId.toString()) || projectId.toString() === NIL) {
       throw new Error('Project reference is invalid.');
     }
 
@@ -79,7 +79,7 @@ export class TaskBuilder {
     }
 
     return new Task(
-      new Identifier(id),
+      id,
       title,
       resource.description,
       state,
@@ -95,7 +95,7 @@ export class Task implements Identifiable {
   public project: Project;
 
   public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project) {
-    if (!id || id === NIL || !validate(id.valueOf())) {
+    if (!id || id.toString() === NIL || !validate(id.toString())) {
       throw new Error(`Id is invalid. Value: ${id}.`);
     }
     this.id = id;
@@ -119,11 +119,11 @@ export class Task implements Identifiable {
 
   public toResource(): TaskResource {
     return {
-      href: api.tasks.resolveHref(this.id.valueOf()),
+      href: api.tasks.resolveHref(this.id.toString()),
       title: this.title,
       description: this.description,
       state: this.state,
-      projectHref: api.projects.resolveHref(this.project.id.valueOf())
+      projectHref: api.projects.resolveHref(this.project.id.toString())
     };
   }
 }
