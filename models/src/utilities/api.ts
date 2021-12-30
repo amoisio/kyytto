@@ -99,7 +99,7 @@ class KyyttoEndPoint implements EndPoint {
 
   private readonly baseUrl: string;
   public readonly path: string;
-  public resolveHref(id?: string | Identifier): string {
+  public resolveHref(id?: Identifier): string {
     let href = `${this.baseUrl}${this.path}`;
     if (id !== undefined) {
       href = `${href}/${id}`;
