@@ -49,7 +49,7 @@ export class TaskBuilder {
     }
 
     const id = api.resolveId(resource.href);
-    if (!validate(id.toString()) || id.toString() === NIL) {
+    if (!validate(id.value) || id.value === NIL) {
       throw new Error('Task reference is invalid.');
     }
 
@@ -69,7 +69,7 @@ export class TaskBuilder {
     }
 
     const projectId = api.resolveId(projectHref);
-    if (!validate(projectId.toString()) || projectId.toString() === NIL) {
+    if (!validate(projectId.value) || projectId.value === NIL) {
       throw new Error('Project reference is invalid.');
     }
 
@@ -95,7 +95,7 @@ export class Task implements Identifiable {
   public project: Project;
 
   public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project) {
-    if (!id || id.toString() === NIL || !validate(id.toString())) {
+    if (!id || id.value === NIL || !validate(id.value)) {
       throw new Error(`Id is invalid. Value: ${id}.`);
     }
     this.id = id;
@@ -119,11 +119,11 @@ export class Task implements Identifiable {
 
   public toResource(): TaskResource {
     return {
-      href: api.tasks.resolveHref(this.id.toString()),
+      href: api.tasks.resolveHref(this.id.value),
       title: this.title,
       description: this.description,
       state: this.state,
-      projectHref: api.projects.resolveHref(this.project.id.toString())
+      projectHref: api.projects.resolveHref(this.project.id.value)
     };
   }
 }

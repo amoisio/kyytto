@@ -48,7 +48,7 @@ export class Project implements Identifiable {
   public color: Color;
 
   public constructor(id: Identifier, name: string, description: string | undefined, color: Color) {
-    if (!id || id.toString() === NIL || !validate(id.toString())) {
+    if (!id || id.value === NIL || !validate(id.value)) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
     this.id = id;
@@ -70,7 +70,7 @@ export class Project implements Identifiable {
       href: api.projects.resolveHref(this.id),
       name: this.name,
       description: this.description,
-      color: this.color.toString()
+      color: this.color.value
     };
   }
 }

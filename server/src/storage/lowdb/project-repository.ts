@@ -12,7 +12,7 @@ export default class ProjectRepository implements Repository<Project> {
   }
 
   public async getById(id: Identifier): Promise<Project> {
-    const match = this.db.data!.projects.find(p => p.id === id.toString());
+    const match = this.db.data!.projects.find(p => p.id === id.value);
     if (match !== undefined) {
       return this.constructProject(match);
     } else {
@@ -31,28 +31,28 @@ export default class ProjectRepository implements Repository<Project> {
 
   public async add(project: Project): Promise<void> {
     this.db.data!.projects.push({
-      id: project.id.toString(),
+      id: project.id.value,
       name: project.name,
       description: project.description,
-      color: project.color.toString()
+      color: project.color.value
     });
   }
 
   public async update(project: Project): Promise<void> {
-    const match = this.db.data!.projects.find(p => p.id === project.id.toString());
+    const match = this.db.data!.projects.find(p => p.id === project.id.value);
     if (match !== undefined) {
       match.name = project.name;
       match.description = project.description;
-      match.color = project.color.toString();
+      match.color = project.color.value;
     } else {
       throw new Error(`No Project found for ${project.id}.`);
     }
   }
 
   public async delete(id: Identifier): Promise<void> {
-    const index = this.db.data!.projects.findIndex(p => p.id === id.toString());
+    const index = this.db.data!.projects.findIndex(p => p.id === id.value);
     if (index !== -1) {
-      const tasks = this.db.data!.tasks.filter(task => task.projectId === id.toString());
+      const tasks = this.db.data!.tasks.filter(task => task.projectId === id.value);
       for (const task of tasks) {
         const taskIndex = this.db.data!.tasks.findIndex(t => t.id === task.id);
         this.db.data!.tasks.splice(taskIndex, 1);

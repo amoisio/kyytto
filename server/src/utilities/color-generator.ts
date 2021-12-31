@@ -30,7 +30,7 @@ export class NextUnusedColorGenerator implements ColorGenerator {
     const colors = this.getAllColors();
     const usedColors = await this.getUsedColors();
     for (let usedColor of usedColors) {
-      const index = colors.findIndex(color => color.toString() === usedColor.toString());
+      const index = colors.findIndex(color => color.value === usedColor.value);
       if (index !== -1) {
         colors.splice(index, 1);
       } 
