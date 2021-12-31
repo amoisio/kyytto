@@ -3,11 +3,9 @@ export { MenuResource, MenuItemResource } from './models/menu-resource.js';
 export { ProjectResource } from './models/project-resource.js';
 export { TaskResource } from './models/task-resource.js';
 export { TaskState } from './models/task-state.js';
-export { Href } from './models/href.js';
-export { Color } from './models/color.js';
-export { Identifier } from './models/identifier.js';
 
-export { ColorWheel } from './utilities/colorWheel.js';
-export { parse } from './utilities/hrefParser.js';
-export { buildApi, Api, EndPoint } from './utilities/api.js';
-export { KyyttoClient, ApiClient } from './utilities/client.js';
+export { hrefBuilder, Href } from './models/href.js';
+export { idBuilder, Identifier } from './models/identifier.js';
+export { colorBuilder, Color } from './models/color.js';
+export { apiBuilder, Api, EndPoint } from './api.js';
+export { clientBuilder, ApiClient } from './client.js';

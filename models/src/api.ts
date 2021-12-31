@@ -1,33 +1,10 @@
-import { Identifier } from '../models/identifier.js';
-import { parse } from './hrefParser.js';
+import { Href, hrefBuilder } from './models/href.js';
+import { Identifier } from './models/identifier.js';
 
-export const buildApi = (baseUrl: string): Api => {
-  return new KyyttoApi(baseUrl);
-}
-
-/**
- * Kyytto API
- */
 export interface Api {
-
-  /**
-   * Api base url.
-   */
   baseUrl: string;
-
-  /**
-   * Menu end-point
-   */
   menu: EndPoint;
-
-  /**
-   * Projects end-point.
-   */
   projects: EndPoint;
-
-  /**
-   * Tasks end-point.
-   */
   tasks: EndPoint;
 
   /**
@@ -38,14 +15,10 @@ export interface Api {
    *
    * @param href resource href.
    */
-  resolveId(href: string): Identifier;
+  resolveId(href: string | Href): Identifier;
 }
 
-/**
- * A kyytto API end-point.
- */
 export interface EndPoint {
-
   /**
    * End-point url path.
    * Example,
@@ -67,6 +40,8 @@ export interface EndPoint {
   resolveHref(id?: string | Identifier): string;
 }
 
+export const apiBuilder = (baseUrl: string): Api => new KyyttoApi(baseUrl);
+
 class KyyttoApi implements Api {
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -79,8 +54,12 @@ class KyyttoApi implements Api {
   public readonly menu: EndPoint;
   public readonly projects: EndPoint;
   public readonly tasks: EndPoint;
-  public resolveId(href: string): Identifier {
-    return parse(href).id;
+  public resolveId(href: string | Href): Identifier {
+    if (typeof href === "string") {
+      return hrefBuilder(href).id;
+    } else {
+      return href.id;
+    }
   }
 }
 

@@ -1,9 +1,9 @@
-import { MenuResource } from '../models/menu-resource.js';
-import { ProjectResource } from '../models/project-resource.js';
-import { TaskResource } from '../models/task-resource.js';
+import { MenuResource } from './models/menu-resource.js';
+import { ProjectResource } from './models/project-resource.js';
+import { TaskResource } from './models/task-resource.js';
 import { Api } from './api.js';
 import axios, { AxiosInstance } from 'axios';
-import { Identifier } from '../models/identifier.js';
+import { idBuilder, Identifier } from './models/identifier.js';
 
 export interface ApiClient {
   getMenu(): Promise<MenuResource>;
@@ -19,7 +19,9 @@ export interface ApiClient {
   deleteTask(id: Identifier): Promise<void>;
 }
 
-export class KyyttoClient implements ApiClient {
+export const clientBuilder = (api: Api): ApiClient => new KyyttoClient(api);
+
+class KyyttoClient implements ApiClient {
   private readonly ax: AxiosInstance;
   constructor(private readonly api: Api) { 
     this.ax = axios.create({
@@ -48,7 +50,7 @@ export class KyyttoClient implements ApiClient {
   public async postProject(project: ProjectResource): Promise<Identifier> {
     const response = await this.ax.post<string>(
       `${this.api.projects.path}`, project);
-    return new Identifier(response.data);
+    return idBuilder(response.data);
   }
 
   public async putProject(project: ProjectResource): Promise<void> {
@@ -77,7 +79,7 @@ export class KyyttoClient implements ApiClient {
   public async postTask(task: TaskResource): Promise<Identifier> {
     const response = await this.ax.post<string>(
       `${this.api.tasks.path}`, task);
-    return new Identifier(response.data);
+    return idBuilder(response.data);
   }
 
   public async putTask(task: TaskResource): Promise<void> {
