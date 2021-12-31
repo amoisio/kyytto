@@ -53,7 +53,7 @@ export class LocalStorageRepository<TResouce extends Resource> {
   }
 
   private entityId(item: TResouce): string {
-    return api.resolveId(item.href);
+    return api.resolveId(item.href).value;
   }
 
   private readItems(): TResouce[] {

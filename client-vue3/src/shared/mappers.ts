@@ -4,17 +4,14 @@ import { ProjectResource, TaskResource } from 'kyytto-models';
 import { api } from '../app/api';
 
 export const taskResourceMapper = (task: ITask): TaskResource => {
-    const projectItem = task.project 
-        ? projectResourceMapper(task.project)
-        : undefined;
-
-    return {
-      href: api.tasks.resolveHref(task.id),
-      title: task.title,
-      description: task.description,
-      state: task.state,
-      projectHref: projectItem?.href
-    };
+  const projectItem = projectResourceMapper(task.project);
+  return {
+    href: api.tasks.resolveHref(task.id),
+    title: task.title,
+    description: task.description,
+    state: task.state,
+    projectHref: projectItem.href
+  };
 };
 
 export const projectResourceMapper = (project: IProject): ProjectResource => {

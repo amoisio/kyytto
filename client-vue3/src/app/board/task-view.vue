@@ -19,6 +19,7 @@
   import { Task, TaskEditFormModel } from './task-models';
   import { isNew } from '@/shared/utilities';
   import { validate as uuidValidate } from 'uuid';
+import { idBuilder, Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'TaskView',
@@ -43,12 +44,12 @@
         return isNew(this.id);
       }
     },
-    created() {
+    async created() {
       try {
-        this.projects = this.$services.projectService.getAll();
+        this.projects = await this.$services.projectService.getAll();
         this.model.id = this.id;
         if (!this.isNew) {
-          const task = this.$services.taskService.getById(this.id);
+          const task = await this.$services.taskService.getById(idBuilder(this.id));
           this.model.title = task.title;
           this.model.description = task.description;
           this.model.state = task.state;
@@ -82,7 +83,7 @@
           throw new Error('Project must be given.');
         }
 
-        const task = new Task(model.id, model.title, model.description, model.state, model.project);
+        const task = new Task(idBuilder(model.id), model.title, model.description, model.state, model.project);
 
         if (this.isNew) {
           this.$services.taskService.create(task);
@@ -93,7 +94,7 @@
         this.navigateToBoard();
       },
       remove() {
-        this.$services.taskService.remove(this.id);
+        this.$services.taskService.delete(idBuilder(this.id));
         this.navigateToBoard();
       },
       cancel() {

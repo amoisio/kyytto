@@ -1,13 +1,13 @@
 import { IProject } from '@/app/projects/project-models';
-import { TaskResource } from 'kyytto-models';
-import { Entity } from '../../shared/entity';
+import { Identifier, TaskResource } from 'kyytto-models';
 import { api } from '../api';
 import { TaskState } from './task-state';
 
-export interface ITask extends Entity {
+export interface ITask {
+  id: Identifier,
   title: string;
   description ?: string;
-  project ?: IProject;
+  project: IProject;
   state: TaskState;
   isStarted(): boolean;
   isCompleted(): boolean;
@@ -17,7 +17,7 @@ export interface ITask extends Entity {
 }
 
 export class Task implements ITask {
-  public constructor(id: string, title: string, description: string | undefined, state: TaskState, project: IProject | undefined) {
+  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: IProject) {
     this.id = id;
     this.title = title;
     this.description = description;
@@ -25,7 +25,7 @@ export class Task implements ITask {
     this.project = project;
   }
 
-  public static createFrom(resource: TaskResource, project?: IProject): ITask {
+  public static createFrom(resource: TaskResource, project: IProject): ITask {
     return new Task(
       api.resolveId(resource.href),
       resource.title,
@@ -34,11 +34,11 @@ export class Task implements ITask {
       project);
   }
 
-  public readonly id: string;
+  public readonly id: Identifier;
   public title: string;
   public description: string | undefined;
   public state: TaskState;
-  public project: IProject | undefined;
+  public project: IProject;
 
   public isStarted(): boolean {
     return this.state === TaskState.InProgress;

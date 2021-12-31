@@ -25,6 +25,7 @@
   import { Project, ProjectEditFormModel } from './project-models';
   import { isNew } from '@/shared/utilities';
   import { validate as uuidValidate } from 'uuid';
+  import { idBuilder, Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'ProjectView',
@@ -49,13 +50,13 @@
         return isNew(this.id);
       }
     },
-    created() {
+    async created() {
       try {
         this.model.id = this.id;
         if (this.isNew) {
           this.model.color = colorWheel.next();
         } else {
-          const project = this.$services.projectService.getById(this.id);
+          const project = await this.$services.projectService.getById(idBuilder(this.id));
           this.model.name = project.name;
           this.model.description = project.description;
           this.model.color = project.color;
@@ -84,7 +85,7 @@
           throw new Error('Color must be given');
         }
 
-        const project = new Project(model.id, model.name, model.description, model.color);
+        const project = new Project(idBuilder(model.id), model.name, model.description, model.color);
 
         if (this.isNew) {
           this.$services.projectService.create(project);
@@ -95,7 +96,7 @@
         this.navigateToProjects();
       },
       remove() {
-        this.$services.projectService.remove(this.id);
+        this.$services.projectService.delete(idBuilder(this.id));
         this.navigateToProjects();
       },
       cancel() {

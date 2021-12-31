@@ -48,7 +48,7 @@
     },
     data() {
       return {
-        tasks: [] as ITask[]
+        tasks: new Array<ITask>()
       };
     },
     computed: {
@@ -62,12 +62,12 @@
         return this.tasks.filter((task) => task.isCompleted());
       }
     },
-    created() {
-      this.tasks = this.$services.taskService.getAll();
+    async created() {
+      this.tasks = await this.$services.taskService.getAll();
     },
     methods: {
       navigateToTaskForm(task?: ITask) {
-        const id = task?.id ?? NEWID;
+        const id = task?.id.value ?? NEWID;
         this.$router.push({ name: 'task', params: { id: id } });
       },
       moveUp(task: ITask) {
@@ -86,7 +86,7 @@
         // }
       },
       edit(task: ITask) {
-        this.$router.push({ name: 'task', params: { id: task.id } });
+        this.$router.push({ name: 'task', params: { id: task.id.value } });
       },
       start(task: ITask) {
         task.startWork();

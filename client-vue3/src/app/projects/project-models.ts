@@ -1,15 +1,15 @@
-import { ProjectResource } from 'kyytto-models';
-import { Entity } from '../../shared/entity';
+import { Identifier, ProjectResource } from 'kyytto-models';
 import { api } from '../api';
 
-export interface IProject extends Entity {
+export interface IProject {
+  id: Identifier,
   name: string;
   description?: string;
   color: string;
 }
 
 export class Project implements IProject {
-  public constructor(id: string, name: string, description: string | undefined, color: string) {
+  public constructor(id: Identifier, name: string, description: string | undefined, color: string) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -24,7 +24,7 @@ export class Project implements IProject {
       resource.color);
   }
 
-  public readonly id: string;
+  public readonly id: Identifier;
   public name: string;
   public description?: string;
   public color: string;

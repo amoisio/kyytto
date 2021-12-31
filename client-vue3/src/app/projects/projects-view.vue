@@ -29,8 +29,8 @@
     components: {
       ProjectItem
     },
-    created() {
-      this.projects = this.$services.projectService.getAll();
+    async created() {
+      this.projects = await this.$services.projectService.getAll();
     },
     data() {
       return {
@@ -39,7 +39,7 @@
     },
     methods: {
       navigateToProjectForm(project?: IProject) {
-        const id = project?.id ?? NEWID;
+        const id = project?.id.value ?? NEWID;
         this.$router.push({ name: 'project-form', params: { id: id } });
       }
     }

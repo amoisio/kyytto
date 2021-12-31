@@ -1,10 +1,10 @@
-import { ITaskService, LocalStorageTaskService } from './board/task-service';
+import { TaskService, LocalStorageTaskService } from './board/task-service';
 import { LocalStorage } from '../shared/local-storage';
-import { IProjectService, LocalStorageProjectService } from './projects/project-service';
+import { ProjectService, LocalStorageProjectService } from './projects/project-service';
 
 export interface ServiceProvider {
-  projectService: IProjectService;
-  taskService: ITaskService;
+  projectService: ProjectService;
+  taskService: TaskService;
 }
 
 declare module '@vue/runtime-core' {
@@ -14,8 +14,8 @@ declare module '@vue/runtime-core' {
 }
 
 export class KyyttoServiceProvider implements ServiceProvider {
-  public readonly projectService: IProjectService;
-  public readonly taskService: ITaskService;
+  public readonly projectService: ProjectService;
+  public readonly taskService: TaskService;
 
   constructor() {
     const store = new LocalStorage();

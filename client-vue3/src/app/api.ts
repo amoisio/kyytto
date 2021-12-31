@@ -1,6 +1,6 @@
-import { ApiClient, buildApi, KyyttoClient } from 'kyytto-models';
+import { apiBuilder, Api, clientBuilder, ApiClient } from 'kyytto-models';
 import { options } from '../shared/options';
 
-export const api = buildApi(`${options.apiServerHost}:${options.apiServerPort}`);
+export const api: Api = apiBuilder(`${options.apiServerHost}:${options.apiServerPort}`);
 
-export const kyyttoClient: ApiClient = new KyyttoClient(api);
+export const client: ApiClient = clientBuilder(api);
