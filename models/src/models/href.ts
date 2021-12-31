@@ -1,4 +1,4 @@
-import { idBuilder, Identifier } from './identifier.js';
+import { idBuilder, Identifier } from './identifier';
 
 export interface Href {
   base: string; // protocol + hostname
