@@ -1,22 +1,23 @@
+import { validate } from 'uuid';
 import { idBuilder, Identifier } from './identifier';
 
 export interface Href {
   base: string; // protocol + hostname
   port: string;
-  extension: string;
+  extension?: string;
   segments: string[];
   query: string[][];
   rel: string;
-  id: Identifier;
+  id?: Identifier;
 }
 
 export const hrefBuilder = (urlString: string): Href => {
   const url = new URL(urlString);
   const base = `${url.protocol}//${url.hostname}`;
-  const port = url.port;
-  let extension = '';
+  const port = url.port === '' ? '80' : url.port;
+  let extension: string | undefined = undefined;
   const segments: string[] = [];
-  const query: string[][] = [[]];
+  const query: string[][] = [];
 
   if (url.pathname.length > 1) {
     const fragments = url.pathname.split('/');
@@ -48,12 +49,20 @@ export const hrefBuilder = (urlString: string): Href => {
   }
 
   let rel = '/';
+  let id = undefined;
   if (segments.length > 0) {
     rel += segments.join('/');
+    const lastSegment = segments[segments.length - 1];
+    if (validate(lastSegment)) {
+      id = idBuilder(lastSegment);
+    }
   }
-  if (extension.length > 0) {
+
+  if (!!extension && extension.length > 0) {
     rel += extension;
   }
+
+
 
   return {
     base: base,
@@ -62,7 +71,7 @@ export const hrefBuilder = (urlString: string): Href => {
     segments: segments,
     query: query,
     rel: rel,
-    id: idBuilder(segments[segments.length - 1])
+    id: id
   };
 };
 

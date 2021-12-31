@@ -55,11 +55,15 @@ class KyyttoApi implements Api {
   public readonly projects: EndPoint;
   public readonly tasks: EndPoint;
   public resolveId(href: string | Href): Identifier {
-    if (typeof href === "string") {
-      return hrefBuilder(href).id;
-    } else {
-      return href.id;
+    let id = (typeof href === "string")
+      ? hrefBuilder(href).id
+      : href.id;
+
+    if (id === undefined) {
+      throw new Error('Unable to resolve identifier from href.');
     }
+    
+    return id;
   }
 }
 
