@@ -1,4 +1,4 @@
-import { Color } from 'kyytto-models';
+import { Color, colorBuilder } from 'kyytto-models';
 import UnitOfWork from '../storage/unit-of-work.js';
 
 const allColorValues = [
@@ -39,7 +39,7 @@ export class NextUnusedColorGenerator implements ColorGenerator {
   }
 
   private getAllColors(): Color[] {
-    return allColorValues.map(color => new Color(color));
+    return allColorValues.map(color => colorBuilder(color));
   }
 
   private async getUsedColors(): Promise<Color[]> {

@@ -3,7 +3,7 @@ import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb, TaskDb } from './db-model.js';
-import { Color, Identifier } from 'kyytto-models';
+import { Color, colorBuilder, idBuilder, Identifier } from 'kyytto-models';
 
 export default class TaskRepository implements Repository<Task> {
   constructor(private readonly db: Low<DataDb>) { }
@@ -24,7 +24,7 @@ export default class TaskRepository implements Repository<Task> {
   private constructTask(model: TaskDb): Task {
     const project = this.db.data?.projects.find(p => p.id === model.projectId);
     return new Task(
-      new Identifier(model.id),
+      idBuilder(model.id),
       model.title,
       model.description,
       model.state,
@@ -33,10 +33,10 @@ export default class TaskRepository implements Repository<Task> {
 
   private constructProject(model: ProjectDb): Project {
     return new Project(
-      new Identifier(model.id),
+      idBuilder(model.id),
       model.name,
       model.description,
-      new Color(model.color)
+      colorBuilder(model.color)
     );
   }
 
