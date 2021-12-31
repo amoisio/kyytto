@@ -5,7 +5,7 @@ export { TaskResource } from './models/task-resource.js';
 export { TaskState } from './models/task-state.js';
 
 export { hrefBuilder, Href } from './models/href.js';
-export { idBuilder, Identifier } from './models/identifier.js';
+export { newId, idBuilder, Identifier } from './models/identifier.js';
 export { colorBuilder, Color } from './models/color.js';
 export { apiBuilder, Api, EndPoint } from './api.js';
 export { clientBuilder, ApiClient } from './client.js';

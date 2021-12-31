@@ -5,13 +5,11 @@ export interface Identifier {
   validate(): boolean;
 }
 
-export const idBuilder = (value?: string): Identifier => {
-  if (value === undefined) {
-    return new UuidIdentifier(uuidv4());
-  } else {
-    return new UuidIdentifier(value);
-  }
+export const idBuilder = (value: string): Identifier => {
+  return new UuidIdentifier(value);
 }
+
+export const newId = (): Identifier => new UuidIdentifier(uuidv4());
 
 class UuidIdentifier implements Identifier {
   public readonly value: string;
