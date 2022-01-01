@@ -18,7 +18,7 @@
           @edit="edit"
           @start="start">Todos</task-list>
       </div>
-      <div class="col">
+      <div class="col px-0">
         <task-list
           :tasks="startedTasks"
           @left="stop"

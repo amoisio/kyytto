@@ -8,11 +8,11 @@
     <div class="row">
       <div class="col-12 col-md-6">
         <task-edit-form 
-        v-if="isReady"
-        v-model="model" 
-        :projects="projects" 
-        @remove="remove" 
-        @cancel="cancel"></task-edit-form>
+          v-if="isReady"
+          v-model="model" 
+          :projects="projects" 
+          @remove="remove" 
+          @cancel="cancel"></task-edit-form>
       </div>
     </div>
   </div>

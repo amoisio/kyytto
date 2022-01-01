@@ -1,22 +1,29 @@
 <template>
   <div class="row task-state-title">
     <div class="col">
-      <slot></slot>
-    </div>
-    <div class="row mb-1" v-for="task of tasks" :key="task.id">
-      <div class="col">
-        <task-item
-          :task="task"
-          @up="$emit('up', task)"
-          @down="$emit('down', task)"
-          @left="$emit('left', task)"
-          @right="$emit('right', task)"
-          @edit="$emit('edit', task)"
-          @start="$emit('start', task)"
-          @stop="$emit('stop', task)"
-          @complete="$emit('complete', task)"
-        ></task-item>
+      <div class="row">
+        <div class="col-auto">
+          <slot></slot>
+        </div>
+        <div class="col text-end">
+          {{ tasks.length }}
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="row mb-2" v-for="task of tasks" :key="task.id">
+    <div class="col">
+      <task-item
+        :task="task"
+        @up="$emit('up', task)"
+        @down="$emit('down', task)"
+        @left="$emit('left', task)"
+        @right="$emit('right', task)"
+        @edit="$emit('edit', task)"
+        @start="$emit('start', task)"
+        @stop="$emit('stop', task)"
+        @complete="$emit('complete', task)"
+      ></task-item>
     </div>
   </div>
 </template>
@@ -39,6 +46,4 @@
     }
   });
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
