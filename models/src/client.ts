@@ -45,7 +45,7 @@ class KyyttoClient implements ApiClient {
 
   public async getProject(id: Identifier): Promise<ProjectResource> {
     const response = await this.ax.get<ProjectResource>(
-      `${this.api.projects.path}/${id}`);
+      `${this.api.projects.path}/${id.value}`);
     return response.data;
   }
 
@@ -58,12 +58,12 @@ class KyyttoClient implements ApiClient {
   public async putProject(project: ProjectResource): Promise<void> {
     const id = this.api.resolveId(project.href);
     await this.ax.put<void>(
-      `${this.api.projects.path}/${id}`, project);
+      `${this.api.projects.path}/${id.value}`, project);
   }
 
   public async deleteProject(id: Identifier): Promise<void> {
      await this.ax.delete<void>(
-      `${this.api.projects.path}/${id}`);
+      `${this.api.projects.path}/${id.value}`);
   }
 
   public async migrateProject(project: ProjectResource): Promise<void> {
@@ -79,7 +79,7 @@ class KyyttoClient implements ApiClient {
 
   public async getTask(id: Identifier): Promise<TaskResource> {
     const response = await this.ax.get<TaskResource>(
-      `${this.api.tasks.path}/${id}`);
+      `${this.api.tasks.path}/${id.value}`);
     return response.data;
   }
 
@@ -92,12 +92,12 @@ class KyyttoClient implements ApiClient {
   public async putTask(task: TaskResource): Promise<void> {
     const id = this.api.resolveId(task.href);
     await this.ax.put<void>(
-      `${this.api.tasks.path}/${id}`, task);
+      `${this.api.tasks.path}/${id.value}`, task);
   }
 
   public async deleteTask(id: Identifier): Promise<void> {
     await this.ax.delete<void>(
-      `${this.api.tasks.path}/${id}`);
+      `${this.api.tasks.path}/${id.value}`);
   }
 
   public async migrateTask(task: TaskResource): Promise<void> {
