@@ -51,3 +51,15 @@ router.route(`${api.projects.path}/:id`)
 
     res.end();
   });
+
+router.route(`${api.projects.path}/migration`)
+  .post(async (req, res) => {
+    const resource = req.body as ProjectResource;
+    const builder = req.projectBuilder;
+    const project = await builder.from(resource);
+
+    const repository = req.unitOfWork.projectRepository;
+    await repository.add(project);
+
+    res.end();
+  });

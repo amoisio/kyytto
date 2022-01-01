@@ -53,3 +53,15 @@ router.route(`${api.tasks.path}/:id`)
 
     res.end();
   });
+
+router.route(`${api.tasks.path}/migration`)
+  .post(async (req, res) => {
+    const resource = req.body as TaskResource;
+    const builder = req.taskBuilder;
+    const project = await builder.from(resource);
+
+    const repository = req.unitOfWork.taskRepository;
+    await repository.add(project);
+
+    res.end();
+  });
