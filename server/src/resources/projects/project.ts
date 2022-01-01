@@ -4,7 +4,7 @@ import { api } from '../api.js';
 import { Color, colorBuilder, Identifier, ProjectResource } from 'kyytto-models';
 import { ColorGenerator } from '../../utilities/color-generator.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
-import { isEmpty } from 'utilities/checks.js';
+import { isEmpty } from '../../utilities/checks.js';
 
 export class ProjectBuilder {
   constructor(

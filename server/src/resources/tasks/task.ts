@@ -5,7 +5,7 @@ import { Project } from '../projects/project.js';
 import { api } from '../api.js';
 import Identifiable from '../identifiable.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
-import { isEmpty } from 'utilities/checks.js';
+import { isEmpty } from '../../utilities/checks.js';
 
 export class TaskBuilder {
   constructor(
