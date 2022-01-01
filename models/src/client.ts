@@ -12,11 +12,13 @@ export interface ApiClient {
   postProject(project: ProjectResource): Promise<Identifier>;
   putProject(project: ProjectResource): Promise<void>;
   deleteProject(id: Identifier): Promise<void>;
+  migrateProject(project: ProjectResource): Promise<void>;
   getTasks(): Promise<TaskResource[]>;
   getTask(id: Identifier): Promise<TaskResource>;
   postTask(task: TaskResource): Promise<Identifier>;
   putTask(task: TaskResource): Promise<void>;
   deleteTask(id: Identifier): Promise<void>;
+  migrateTask(task: TaskResource): Promise<void>;
 }
 
 export const clientBuilder = (api: Api): ApiClient => new KyyttoClient(api);
@@ -64,6 +66,11 @@ class KyyttoClient implements ApiClient {
       `${this.api.projects.path}/${id}`);
   }
 
+  public async migrateProject(project: ProjectResource): Promise<void> {
+    await this.ax.post<void>(
+      `${this.api.projects.path}/migration`, project);
+  }
+
   public async getTasks(): Promise<TaskResource[]> {
     const response = await this.ax.get<TaskResource[]>(
       this.api.tasks.path);
@@ -91,5 +98,10 @@ class KyyttoClient implements ApiClient {
   public async deleteTask(id: Identifier): Promise<void> {
     await this.ax.delete<void>(
       `${this.api.tasks.path}/${id}`);
+  }
+
+  public async migrateTask(task: TaskResource): Promise<void> {
+    await this.ax.post<void>(
+      `${this.api.tasks.path}/migration`, task);
   }
 }
