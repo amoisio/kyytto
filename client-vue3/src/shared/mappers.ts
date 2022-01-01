@@ -5,6 +5,7 @@ import { api } from '../app/api';
 
 export const taskResourceMapper = (task: ITask): TaskResource => {
   const projectItem = projectResourceMapper(task.project);
+  
   return {
     href: api.tasks.resolveHref(task.id),
     title: task.title,

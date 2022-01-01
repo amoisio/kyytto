@@ -31,12 +31,10 @@ export class ApiTaskService implements TaskService {
     const projectResources = await this.client.getProjects();
     
     return taskResources.map(tr => {
-      console.log(tr.projectHref);
       const projectResource = projectResources.find(pr => pr.href === tr.projectHref);
       if (projectResource === undefined) {
         throw new Error('Project reference was missing.');
       }
-      console.log(projectResource);
       return this.getTask(tr, projectResource);
     });
   }
@@ -91,7 +89,6 @@ export class LocalStorageTaskService implements TaskService {
     const projectId = api.resolveId(taskItem.projectHref);
     const projectItem = this.projectRepository.getById(projectId.value);
     const project = Project.createFrom(projectItem);
-    console.log(project);
     return Task.createFrom(taskItem, project);
   }
 

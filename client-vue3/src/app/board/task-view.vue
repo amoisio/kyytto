@@ -7,7 +7,12 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <task-edit-form v-model="model" :projects="projects" @remove="remove" @cancel="cancel"></task-edit-form>
+        <task-edit-form 
+        v-if="isReady"
+        v-model="model" 
+        :projects="projects" 
+        @remove="remove" 
+        @cancel="cancel"></task-edit-form>
       </div>
     </div>
   </div>
@@ -19,7 +24,7 @@
   import { Task, TaskEditFormModel } from './task-models';
   import { isNew } from '@/shared/utilities';
   import { validate as uuidValidate } from 'uuid';
-import { idBuilder, Identifier } from 'kyytto-models';
+  import { idBuilder } from 'kyytto-models';
 
   export default defineComponent({
     name: 'TaskView',
@@ -35,6 +40,7 @@ import { idBuilder, Identifier } from 'kyytto-models';
     },
     data() {
       return {
+        isReady: false,
         model: new TaskEditFormModel(),
         projects: new Array<IProject>()
       };
@@ -46,6 +52,7 @@ import { idBuilder, Identifier } from 'kyytto-models';
     },
     async created() {
       try {
+        this.isReady = false;
         this.projects = await this.$services.projectService.getAll();
         this.model.id = this.id;
         if (!this.isNew) {
@@ -58,6 +65,8 @@ import { idBuilder, Identifier } from 'kyytto-models';
       } catch (e) {
         console.error(e);
         this.navigateToBoard();
+      } finally {
+        this.isReady = true;
       }
     },
     watch: {
