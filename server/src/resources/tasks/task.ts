@@ -5,6 +5,7 @@ import { Project } from '../projects/project.js';
 import { api } from '../api.js';
 import Identifiable from '../identifiable.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
+import { isEmpty } from 'utilities/checks.js';
 
 export class TaskBuilder {
   constructor(
@@ -19,7 +20,7 @@ export class TaskBuilder {
    * @returns A newly created task with a generated id and in Todo state.
    */
   public async new(title: string, description: string | undefined, projectId: Identifier): Promise<Task> {
-    if (title === null || title === undefined || title.length === 0) {
+    if (isEmpty(title)) {
       throw new Error('Title must be provided.');
     }
 
@@ -44,7 +45,7 @@ export class TaskBuilder {
    */
   public async from(resource: TaskResource): Promise<Task> {
     const href = resource.href;
-    if (href === undefined || href === null || href.length === 0) {
+    if (isEmpty(href)) {
       throw new Error('Task reference is invalid.');
     }
 
@@ -54,7 +55,7 @@ export class TaskBuilder {
     }
 
     const title = resource.title;
-    if (title === null || title === undefined || title.length === 0) {
+    if (isEmpty(title)) {
       throw new Error('Title must be provided.');
     }
 
@@ -64,7 +65,7 @@ export class TaskBuilder {
     }
 
     const projectHref = resource.projectHref;
-    if (projectHref === undefined || projectHref === null || projectHref.length === 0) {
+    if (isEmpty(projectHref)) {
       throw new Error('Project reference is invalid.');
     }
 
@@ -100,7 +101,7 @@ export class Task implements Identifiable {
     }
     this.id = id;
 
-    if (title === null || title === undefined || title.length === 0) {
+    if (isEmpty(title)) {
       throw new Error('Title must be provided.');
     }
     this.title = title;
@@ -119,11 +120,11 @@ export class Task implements Identifiable {
 
   public toResource(): TaskResource {
     return {
-      href: api.tasks.resolveHref(this.id.value),
+      href: api.tasks.resolveHref(this.id),
       title: this.title,
       description: this.description,
       state: this.state,
-      projectHref: api.projects.resolveHref(this.project.id.value)
+      projectHref: api.projects.resolveHref(this.project.id)
     };
   }
 }
