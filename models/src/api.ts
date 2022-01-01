@@ -1,5 +1,4 @@
-import { Href, hrefBuilder } from './models/href.js';
-import { Identifier } from './models/identifier.js';
+import { idParser, Identifier } from './models/identifier.js';
 
 export interface Api {
   baseUrl: string;
@@ -15,7 +14,7 @@ export interface Api {
    *
    * @param href resource href.
    */
-  resolveId(href: string | Href): Identifier;
+  resolveId(href: string): Identifier;
 }
 
 export interface EndPoint {
@@ -35,9 +34,9 @@ export interface EndPoint {
    *  id = 123  
    *  returns http://domain:port/api/resource/123
    * 
-   * @param id entity id.
+   * @param id entity identifier.
    */
-  resolveHref(id?: string | Identifier): string;
+  resolveHref(id?: Identifier): string;
 }
 
 export const apiBuilder = (baseUrl: string): Api => new KyyttoApi(baseUrl);
@@ -54,16 +53,8 @@ class KyyttoApi implements Api {
   public readonly menu: EndPoint;
   public readonly projects: EndPoint;
   public readonly tasks: EndPoint;
-  public resolveId(href: string | Href): Identifier {
-    let id = (typeof href === "string")
-      ? hrefBuilder(href).id
-      : href.id;
-
-    if (id === undefined) {
-      throw new Error('Unable to resolve identifier from href.');
-    }
-    
-    return id;
+  public resolveId(href: string): Identifier {
+    return idParser(href);
   }
 }
 
@@ -85,7 +76,7 @@ class KyyttoEndPoint implements EndPoint {
   public resolveHref(id?: Identifier): string {
     let href = `${this.baseUrl}${this.path}`;
     if (id !== undefined) {
-      href = `${href}/${id}`;
+      href = `${href}/${id.value}`;
     }
     return href;
   }

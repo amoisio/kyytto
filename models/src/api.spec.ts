@@ -1,5 +1,5 @@
-import { hrefBuilder } from './models/href.js';
 import { Api, apiBuilder } from './api.js';
+import { idBuilder } from './index.js';
 
 describe('apiBuilder', () => {
   test('builds an api map with the given baseUrl', () => {
@@ -20,13 +20,9 @@ describe('api', () => {
     expect(id.value).toBe('783d4356-c26f-4a9e-a4b0-905d73ca5edc');
   });
 
-  test('resolveId throws an error if called with a url without an id', () => {
-    expect(() => api.resolveId('http://mydomain:9000/api/tasks')).toThrow();
-  });
-
-  test('resolveId throws an error if called with an Href without an id', () => {
-    const href = hrefBuilder('http://mydomain:9000/api/tasks');
-    expect(() => api.resolveId(href)).toThrow();
+  test('resolveId resolves an invalid Identifier if called with a url without an id', () => {
+    const id = api.resolveId('http://mydomain:9000/api/tasks')
+    expect(id.validate()).toBeFalsy();
   });
 
   test('resolveHref for menu resolves the correct path', () => {
@@ -35,12 +31,14 @@ describe('api', () => {
   });
 
   test('resolveHref for tasks resolves the correct path', () => {
-    const href = api.tasks.resolveHref('52289d13-d597-4010-a78f-f3fa0690bd6d');
+    const id = idBuilder('52289d13-d597-4010-a78f-f3fa0690bd6d');
+    const href = api.tasks.resolveHref(id);
     expect(href).toBe(`http://mydomain:9000${api.tasks.path}/52289d13-d597-4010-a78f-f3fa0690bd6d`);
   });
 
   test('resolveHref for projects resolves the correct path', () => {
-    const href = api.projects.resolveHref('52289d13-d597-4010-a78f-f3fa0690bd6d');
+    const id = idBuilder('52289d13-d597-4010-a78f-f3fa0690bd6d');
+    const href = api.projects.resolveHref(id);
     expect(href).toBe(`http://mydomain:9000${api.projects.path}/52289d13-d597-4010-a78f-f3fa0690bd6d`);
   });
 });
