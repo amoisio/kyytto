@@ -1,9 +1,7 @@
 <template>
   <router-link :class="{ 'menu-button': true, 'active': isCurrentRoute }" :to="routerLink">
-    <b-icon
-      :icon="icon"
-      size="2x" >
-    </b-icon><br/>
+    <b-icon :icon="icon" size="2x"></b-icon>
+    <br/>
     <span class="slot">
       <slot></slot>
     </span>
@@ -19,7 +17,7 @@
     },
     computed: {
       isCurrentRoute(): boolean {
-        return this.routerLink === this.$route.name;
+        return this.routerLink === this.$route.path;
       }
     }
   });
