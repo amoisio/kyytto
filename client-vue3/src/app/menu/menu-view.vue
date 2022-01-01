@@ -21,17 +21,24 @@
         </menu-button>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <migration-button class="mx-0 pt-3 pb-3"></migration-button>
+      </div>
+    </div>
   </nav>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import MenuButton from './menu-button.vue';
-  import { menuLinks, Link } from './menu-links';
+  import MigrationButton from '../../plugins/migration/migration-button.vue';
+  import { menuLinks } from './menu-links';
   
   export default defineComponent({
     name: 'MenuView',
     components: {
-      MenuButton
+      MenuButton,
+      MigrationButton
     },
     data() {
       return {
