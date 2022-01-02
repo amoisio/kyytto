@@ -1,4 +1,7 @@
+import { NEWID } from '@/shared/utilities';
+
 export interface KyyttoLinks {
+  newTask: Link,
   board: Link,
   projects: Link
 }
@@ -11,6 +14,12 @@ export interface Link {
 }
 
 export const menuLinks: KyyttoLinks = {
+  newTask: {
+    name: 'task',
+    path: `/task/${NEWID}`,
+    title: 'New',
+    icon: 'plus-circle'
+  },
   board: {
     name: 'board',
     path: '/board',
@@ -22,5 +31,6 @@ export const menuLinks: KyyttoLinks = {
     path: '/projects',
     title: 'Projects',
     icon: 'tags'
-  }
+  },
+
 };

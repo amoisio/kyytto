@@ -7,41 +7,35 @@
         </router-link>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-for="link of links" :key="link.name">
       <div class="col">
-        <menu-button class="mx-0 pt-3 pb-3" :routerLink="board.path" :icon="board.icon">
-          {{ board.title }}
+        <menu-button class="mx-0 pt-3 pb-3" :routerLink="link.path" :icon="link.icon">
+          {{ link.title }}
         </menu-button>
       </div>
     </div> 
-    <div class="row" >
-      <div class="col">
-        <menu-button class="mx-0 pt-3 pb-3" :routerLink="projects.path" :icon="projects.icon">
-          {{ projects.title }}
-        </menu-button>
-      </div>
-    </div>
   </nav>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import MenuButton from './menu-button.vue';
-  import { menuLinks } from './menu-links';
+  import { Link, menuLinks } from './menu-links';
   
   export default defineComponent({
     name: 'MenuView',
     components: {
       MenuButton
     },
-    data() {
-      return {
-        board: menuLinks.board,
-        projects: menuLinks.projects
-      };
-    },
     computed: {
       eventName(): string {
         return 'keypress.q';
+      },
+      links(): Link[] {
+        return [
+          menuLinks.newTask,
+          menuLinks.board,
+          menuLinks.projects
+        ];
       }
     }
   });
