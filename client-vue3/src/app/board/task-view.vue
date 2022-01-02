@@ -22,7 +22,6 @@
   import TaskEditForm from './task-edit-form.vue';
   import { IProject } from '../projects/project-models';
   import { Task, TaskEditFormModel } from './task-models';
-  import { isNew } from '@/shared/utilities';
   import { validate as uuidValidate } from 'uuid';
   import { idBuilder } from 'kyytto-models';
 
@@ -41,27 +40,21 @@
     data() {
       return {
         isReady: false,
-        model: new TaskEditFormModel(),
+        model: new TaskEditFormModel(this.id),
         projects: new Array<IProject>()
       };
-    },
-    computed: {
-      isNew(): boolean {
-        return isNew(this.id);
-      }
     },
     async created() {
       try {
         this.isReady = false;
         this.projects = await this.$services.projectService.getAll();
-        this.model.id = this.id;
-        if (!this.isNew) {
+        if (!this.model.isNew) {
           const task = await this.$services.taskService.getById(idBuilder(this.id));
           this.model.title = task.title;
           this.model.description = task.description;
           this.model.state = task.state;
           this.model.project = task.project;
-        }
+        } 
       } catch (e) {
         console.error(e);
         this.navigateToBoard();
@@ -94,7 +87,7 @@
 
         const task = new Task(idBuilder(model.id), model.title, model.description, model.state, model.project);
 
-        if (this.isNew) {
+        if (this.model.isNew) {
           this.$services.taskService.create(task);
         } else {
           this.$services.taskService.update(task);

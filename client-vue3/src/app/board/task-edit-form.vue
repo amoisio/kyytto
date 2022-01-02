@@ -8,7 +8,9 @@
         id="task-title"
         v-model="item.title"
         ref="title"
-        placeholder="Task title" />
+        placeholder="Task title"
+        required
+      />
     </div>
     <div class="mb-3">
       <label for="task-description" class="form-label">Description</label>
@@ -18,23 +20,34 @@
         rows="5"
         v-model="item.description"
         ref="description"
-        placeholder="Task description" />
+        placeholder="Task description"
+      />
     </div>
     <div class="mb-3">
       <label for="task-project" class="form-label">Project</label>
-      <select class="form-select" v-model="item.project">
-        <option disabled value="">Please select one</option>
-        <option v-for="project in projects" :key="project.id" :value="project">{{ project.name }}</option>
+      <select class="form-select" v-model="selectedProjectId" required>
+        <option value="" disabled selected>Choose related project...</option>
+        <option v-for="project in projects" :key="project.id.value" :value="project.id.value">{{ project.name }}</option>
       </select>
     </div>
-    <div class="row mb-3 justify-content-between">
+    <div class="row mb-3 justify-content-between" v-if="!item.isNew">
       <div class="col-auto">
         <label class="form-label">State</label>
       </div>
       <div class="col-auto text-end">
-        <button type="button" @click="setTodo" :class="[{ 'active': isTodo }, 'btn btn-outline-primary me-2']">To do</button>
-        <button type="button" @click="setInProgress" :class="[{ 'active': isInProgress }, 'btn btn-outline-primary me-2']">In-progress</button>
-        <button type="button" @click="setCompleted" :class="[{ 'active': isCompleted }, 'btn btn-outline-success']">Completed</button>
+        <button type="button" @click="setTodo" :class="[{ active: isTodo }, 'btn btn-outline-primary me-2']">
+          To do
+        </button>
+        <button
+          type="button"
+          @click="setInProgress"
+          :class="[{ active: isInProgress }, 'btn btn-outline-primary me-2']"
+        >
+          In-progress
+        </button>
+        <button type="button" @click="setCompleted" :class="[{ active: isCompleted }, 'btn btn-outline-success']">
+          Completed
+        </button>
       </div>
     </div>
     <div class="row justify-content-between">
@@ -53,6 +66,7 @@
   import { IProject } from '@/app/projects/project-models';
   import { TaskEditFormModel } from './task-models';
   import { TaskState } from './task-state';
+
   export default defineComponent({
     name: 'TaskEditForm',
     emits: ['update:modelValue', 'remove', 'cancel'],
@@ -68,7 +82,7 @@
     },
     data() {
       return {
-        item: new TaskEditFormModel()
+        item: new TaskEditFormModel(this.modelValue.id)
       };
     },
     computed: {
@@ -80,6 +94,17 @@
       },
       isCompleted(): boolean {
         return this.item.state === TaskState.Completed;
+      },
+      selectedProjectId: {
+        get(): string {
+          return this.item.project?.id.value ?? '';
+        },
+        set(id: string) {
+          const match = this.projects.find((p) => p.id.value === id);
+          if (match !== undefined) {
+            this.item.project = match;
+          }
+        }
       }
     },
     created() {
@@ -115,11 +140,20 @@
   });
 </script>
 <style lang="scss">
-.hidden {
-  position: absolute;
-  width: 0px;
-  height: 0px;
-  overflow: hidden;
-  z-index: -10;
-}
+  .hidden {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    z-index: -10;
+  }
+  select:required:invalid {
+    color: gray;
+  }
+  option[value=''][disabled] {
+    display: none;
+  }
+  option {
+    color: black;
+  }
 </style>

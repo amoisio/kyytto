@@ -1,4 +1,5 @@
 import { IProject } from '@/app/projects/project-models';
+import { isNew } from '@/shared/utilities';
 import { Identifier, TaskResource } from 'kyytto-models';
 import { api } from '../api';
 import { TaskState } from './task-state';
@@ -71,12 +72,21 @@ export class Task implements ITask {
 }
 
 export class TaskEditFormModel {
-  public id ?: string
-  public title ?: string;
+  constructor (id: string) {
+    this.id = id;
+  }
+
+  public id: string
+  public title: string = '';
   public description ?: string;
   public project ?: IProject;
-  public state ?: TaskState;
+  public state: TaskState = TaskState.Todo;
+  
   public get color(): string | undefined {
     return this.project?.color;
+  }
+
+  public get isNew(): boolean {
+    return isNew(this.id);
   }
 }
