@@ -16,6 +16,7 @@ $primary-button-border: 0px custom.$border-style custom.$dark1;
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: custom.$light1!important;
 }
 
 h1 {
@@ -28,7 +29,3 @@ h1 {
   width: $width !important;
   background-color: custom.$dark1;
 }
-
-// .bootstrap-icon {
-//   margin-bottom: 0.05em!important;
-// }

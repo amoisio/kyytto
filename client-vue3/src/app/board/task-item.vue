@@ -11,15 +11,19 @@
     @keyup.left="$emit('left', task)"
     @keyup.right="$emit('right', task)"
   >
-    <b-card-body class="p-2 pt-1">
-      <div class="row mx-0">
+    <b-card-header>
+        <div class="row mx-0">
         <div class="col-12 px-0">
-          {{ task.title }}
+          <span>
+            <strong>{{ task.title }}</strong>
+            </span>
         </div>
       </div>
+    </b-card-header>
+    <b-card-body class="p-2 pt-2">
       <div class="row align-items-end mx-0">
         <div class="col px-0">
-          <span class="badge rounded-pill" :style="{ 'background-color': color }">
+          <span class="badge square-pill" :style="{ 'background-color': color }">
             {{ task.project?.name }}
           </span>
         </div>
@@ -82,5 +86,10 @@
     &:hover {
       border-color: custom.$dark1;
     }
+
+    .badge {
+      border-color: custom.$dark1;
+    }
   }
+
 </style>

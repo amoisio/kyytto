@@ -11,14 +11,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col mx-2 mb-2 task-list">
         <task-list
           :tasks="todoTasks"
           @right="start"
           @edit="edit"
           @start="start">Todos</task-list>
       </div>
-      <div class="col px-0">
+      <div class="col mx-2 mb-2 task-list">
         <task-list
           :tasks="startedTasks"
           @left="stop"
@@ -27,7 +27,7 @@
           @stop="stop"
           @complete="complete">In Progress</task-list>
       </div>
-      <div class="col">
+      <div class="col mx-2 mb-2 task-list">
         <task-list
           :tasks="completedTasks"
           @edit="edit">Completed</task-list>
@@ -110,8 +110,10 @@
   });
 </script>
 <style lang="scss">
-  #new-item .bootstrap-icon {
-    margin-right: 8px !important;
-    margin-top: -2px;
-  }
+  @use '../custom';
+  @use 'sass:color';
+
+  // .task-list {
+  //   background-color: color.scale(custom.$light1, $lightness: 40%);
+  // }
 </style>
