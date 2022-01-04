@@ -1,14 +1,23 @@
-import { v4 as uuidv4, validate } from 'uuid';
+import { NIL, v4 as uuidv4, validate } from 'uuid';
 
 export interface Identifier {
   value: string;
   validate(): boolean;
+  isNil(): boolean;
 }
 
+/**
+ * Build an Identifier from an id string.
+ * @param value id.
+ */
 export const idBuilder = (value: string): Identifier => {
   return new UuidIdentifier(value);
 }
 
+/**
+ * Parse an Identifier from an href string.
+ * @param href resource href.
+ */
 export const idParser = (href: string): Identifier => {
   try {
     const h = hrefParser(href);
@@ -18,6 +27,10 @@ export const idParser = (href: string): Identifier => {
   }
 }
 
+/**
+ * Create an Identifier with a newly generated uuid.
+ * @returns 
+ */
 export const newId = (): Identifier => new UuidIdentifier(uuidv4());
 
 class UuidIdentifier implements Identifier {
@@ -29,6 +42,10 @@ class UuidIdentifier implements Identifier {
 
   public validate(): boolean {
     return validate(this.value);
+  }
+
+  public isNil(): boolean {
+    return this.value === NIL;
   }
 }
 
