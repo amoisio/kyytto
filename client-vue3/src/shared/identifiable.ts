@@ -1,5 +1,5 @@
 import { Identifier } from 'kyytto-models';
 
-export interface Entity {
+export interface Identifiable {
   id: Identifier;
 }

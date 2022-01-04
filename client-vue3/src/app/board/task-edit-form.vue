@@ -27,7 +27,9 @@
       <label for="task-project" class="form-label">Project</label>
       <select class="form-select" v-model="selectedProjectId" required>
         <option value="" disabled selected>Choose related project...</option>
-        <option v-for="project in projects" :key="project.id.value" :value="project.id.value">{{ project.name }}</option>
+        <option v-for="project in projects" :key="project.id.value" :value="project.id.value">
+          {{ project.name }}
+        </option>
       </select>
     </div>
     <div class="row mb-3 justify-content-between" v-if="!item.isNew">
@@ -63,26 +65,27 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { IProject } from '@/app/projects/project-models';
-  import { TaskEditFormModel } from './task-models';
+  import { Project } from '@/app/projects/project-models';
   import { TaskState } from './task-state';
+  import { Task } from './task-models';
+  import { idBuilder, Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'TaskEditForm',
-    emits: ['update:modelValue', 'remove', 'cancel'],
+    emits: ['save', 'remove', 'cancel'],
     props: {
-      modelValue: {
-        type: Object as PropType<TaskEditFormModel>,
+      task: {
+        type: Object as PropType<Task>,
         required: true
       },
       projects: {
-        type: Array as PropType<IProject[]>,
+        type: Array as PropType<Project[]>,
         required: true
       }
     },
     data() {
       return {
-        item: new TaskEditFormModel(this.modelValue.id)
+        item: new TaskEditModel(this.task)
       };
     },
     computed: {
@@ -107,9 +110,6 @@
         }
       }
     },
-    created() {
-      Object.assign(this.item, this.modelValue);
-    },
     mounted() {
       this.focusOnTitle();
     },
@@ -124,10 +124,10 @@
         this.item.state = TaskState.Completed;
       },
       save() {
-        this.$emit('update:modelValue', this.item);
+        this.$emit('save', this.item.toTask());
       },
       remove() {
-        this.$emit('remove');
+        this.$emit('remove', this.item.id);
       },
       cancel() {
         this.$emit('cancel');
@@ -138,6 +138,44 @@
       }
     }
   });
+
+  class TaskEditModel {
+    public readonly id: Identifier;
+    public title: string;
+    public description?: string;
+    public state: TaskState;
+    public project?: Project;
+    
+    constructor(task: Task) {
+      this.id = idBuilder(task.id.value);
+      this.title = task.title;
+      this.description = task.description;
+      this.state = task.state;
+      this.project = task.project.id.isNil() 
+        ? undefined
+        : task.project;
+    }
+
+    public get color(): string | undefined {
+      return this.project?.color.value;
+    }
+
+    public get isNew(): boolean {
+      return this.id.isNil();
+    }
+
+    public toTask(): Task {
+      if (this.project === undefined) {
+        throw new Error("Project must be selected.");
+      }
+      return new Task(
+        idBuilder(this.id.value),
+        this.title,
+        this.description,
+        this.state,
+        this.project);
+    }
+  }
 </script>
 <style lang="scss">
   .hidden {

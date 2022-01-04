@@ -1,9 +1,9 @@
-import { ITask } from '../app/board/task-models';
-import { IProject } from '../app/projects/project-models';
+import { Task } from '../app/board/task-models';
+import { Project } from '../app/projects/project-models';
 import { ProjectResource, TaskResource } from 'kyytto-models';
 import { api } from '../app/api';
 
-export const taskResourceMapper = (task: ITask): TaskResource => {
+export const taskResourceMapper = (task: Task): TaskResource => {
   const projectItem = projectResourceMapper(task.project);
   
   return {
@@ -15,11 +15,11 @@ export const taskResourceMapper = (task: ITask): TaskResource => {
   };
 };
 
-export const projectResourceMapper = (project: IProject): ProjectResource => {
+export const projectResourceMapper = (project: Project): ProjectResource => {
   return {
     href: api.projects.resolveHref(project.id),
     name: project.name,
     description: project.description,
-    color: project.color
+    color: project.color.value
   };
 };

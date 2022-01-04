@@ -62,20 +62,20 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { ITask } from './task-models';
+  import { Task } from './task-models';
 
   export default defineComponent({
     name: 'TaskItem',
     emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],
     props: {
       task: {
-        type: Object as PropType<ITask>,
+        type: Object as PropType<Task>,
         required: true
       }
     },
     computed: {
       color(): string {
-        return this.task.project?.color ?? 'white';
+        return this.task.project.color.value;
       }
     }
   });

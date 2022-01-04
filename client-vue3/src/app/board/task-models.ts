@@ -1,45 +1,74 @@
-import { IProject } from '@/app/projects/project-models';
-import { isNew } from '@/shared/utilities';
-import { Identifier, TaskResource } from 'kyytto-models';
+import { Project } from '@/app/projects/project-models';
+import { Identifiable } from '@/shared/identifiable';
+import { isEmpty, NEWID } from '@/shared/utilities';
+import { Validatable } from '@/shared/validatable';
+import { idBuilder, Identifier, ProjectResource, TaskResource } from 'kyytto-models';
 import { api } from '../api';
 import { TaskState } from './task-state';
 
-export interface ITask {
-  id: Identifier,
-  title: string;
-  description ?: string;
-  project: IProject;
-  state: TaskState;
-  isStarted(): boolean;
-  isCompleted(): boolean;
-  startWork(): void;
-  stopWork(): void;
-  complete(): void;
-}
+export class Task implements Identifiable, Validatable {
+  public readonly id: Identifier;
+  public title: string;
+  public description?: string;
+  public state: TaskState;
+  public project: Project;
 
-export class Task implements ITask {
-  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: IProject) {
+  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.state = state;
     this.project = project;
   }
-
-  public static createFrom(resource: TaskResource, project: IProject): ITask {
+  
+  /**
+   * Creates an empty Task.
+   */
+  public static empty(): Task {
     return new Task(
-      api.resolveId(resource.href),
-      resource.title,
-      resource.description,
-      resource.state,
-      project);
+      idBuilder(NEWID), 
+      '', 
+      undefined, 
+      TaskState.Todo,
+      Project.empty());
   }
 
-  public readonly id: Identifier;
-  public title: string;
-  public description: string | undefined;
-  public state: TaskState;
-  public project: IProject;
+  /**
+   * Create a Task entity from the given resource representation.
+   * @param taskResource Task resource.
+   * @param projectResource Project resource.
+   * @returns A Task entity corresponding the resource representation.
+   */
+  public static from(taskResource: TaskResource, projectResource: ProjectResource): Task {
+    return new Task(
+      api.resolveId(taskResource.href),
+      taskResource.title,
+      taskResource.description,
+      taskResource.state,
+      Project.from(projectResource));
+  }
+
+  public validate(): string[] {
+    const errors: string[] = [];
+
+    if (!this.id.validate()) {
+      errors.push(`Id ${this.id.value} is invalid.`);
+    }
+
+    if (isEmpty(this.title)) {
+      errors.push('Title must not be empty.');
+    }
+
+    if (this.state === undefined || this.state < TaskState.Todo || this.state > TaskState.Completed) {
+      errors.push(`State ${this.state} is invalid.`)
+    }
+
+    if (this.project === undefined || this.project.id.isNil()) {
+      errors.push('Project reference is invalid.');
+    }
+
+    return errors;
+  }
 
   public isStarted(): boolean {
     return this.state === TaskState.InProgress;
@@ -68,25 +97,5 @@ export class Task implements ITask {
       throw new Error('Cannot complete a todo task.');
     }
     this.state = TaskState.Completed;
-  }
-}
-
-export class TaskEditFormModel {
-  constructor (id: string) {
-    this.id = id;
-  }
-
-  public id: string
-  public title: string = '';
-  public description ?: string;
-  public project ?: IProject;
-  public state: TaskState = TaskState.Todo;
-  
-  public get color(): string | undefined {
-    return this.project?.color;
-  }
-
-  public get isNew(): boolean {
-    return isNew(this.id);
   }
 }

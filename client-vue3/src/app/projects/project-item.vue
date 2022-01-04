@@ -7,7 +7,7 @@
           class="top-0 start-100 translate-middle"
           icon="tag"
           scale="2"
-          :color="project.color"
+          :color="project.color.value"
           border-color="black">
         </bordered-icon>
       </button>
@@ -19,7 +19,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { IProject } from './project-models';
+  import { Project } from './project-models';
   import BorderedIcon from '@/shared/bordered-icon.vue';
 
   export default defineComponent({
@@ -30,7 +30,7 @@
     },
     props: {
       project: {
-        type: Object as PropType<IProject>,
+        type: Object as PropType<Project>,
         required: true
       }
     }

@@ -20,12 +20,12 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { IProject } from './project-models';
+  import { Project } from './project-models';
   import ProjectItem from './project-item.vue';
   import { NEWID } from '@/shared/utilities';
 
   export default defineComponent({
-    name: 'ProjectsView',
+    name: 'ProjectListView',
     components: {
       ProjectItem
     },
@@ -34,13 +34,13 @@
     },
     data() {
       return {
-        projects: [] as IProject[]
+        projects: [] as Project[]
       };
     },
     methods: {
-      navigateToProjectForm(project?: IProject) {
+      async navigateToProjectForm(project?: Project): Promise<void> {
         const id = project?.id.value ?? NEWID;
-        this.$router.push({ name: 'project-form', params: { id: id } });
+        await this.$router.push({ name: 'project-form', params: { id: id } });
       }
     }
   });

@@ -9,8 +9,9 @@
       <div class="col-12 col-md-6">
         <task-edit-form 
           v-if="isReady"
-          v-model="model" 
+          :task="task" 
           :projects="projects" 
+          @save="save"
           @remove="remove" 
           @cancel="cancel"></task-edit-form>
       </div>
@@ -18,12 +19,11 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, PropType } from 'vue';
   import TaskEditForm from './task-edit-form.vue';
-  import { IProject } from '../projects/project-models';
-  import { Task, TaskEditFormModel } from './task-models';
-  import { validate as uuidValidate } from 'uuid';
-  import { idBuilder } from 'kyytto-models';
+  import { Project } from '../projects/project-models';
+  import { Task } from './task-models';
+  import { Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'TaskView',
@@ -32,78 +32,58 @@
     },
     props: {
       id: {
-        type: String,
+        type: Object as PropType<Identifier>,
         required: true,
-        validator: uuidValidate
+        validator: (uuid: Identifier) => uuid.validate()
       }
     },
     data() {
       return {
         isReady: false,
-        model: new TaskEditFormModel(this.id),
-        projects: new Array<IProject>()
-      };
+        task: {} as Task,
+        projects: [] as Project[]
+      }
     },
     async created() {
       try {
         this.isReady = false;
+
         this.projects = await this.$services.projectService.getAll();
-        if (!this.model.isNew) {
-          const task = await this.$services.taskService.getById(idBuilder(this.id));
-          this.model.title = task.title;
-          this.model.description = task.description;
-          this.model.state = task.state;
-          this.model.project = task.project;
-        } 
+        if (this.id.isNil()) {
+          this.task = Task.empty();
+        } else {
+          this.task = await this.$services.taskService.getById(this.id);
+        }
       } catch (e) {
         console.error(e);
-        this.navigateToBoard();
+        await this.navigateToBoard();
       } finally {
         this.isReady = true;
       }
     },
-    watch: {
-      model(newModel) {
-        this.save(newModel);
-      }
-    },
     methods: {
-      save(model: TaskEditFormModel) {
-        if (model.id === undefined) {
-          throw new Error('Id must be provided.');
+      async save(task: Task): Promise<void> {
+        const errors = task.validate();
+        if (errors.length > 0) {
+          throw new Error(errors.join('/n'));
         }
 
-        if (model.title === undefined) {
-          throw new Error('Title must be given.');
-        }
-
-        if (model.state === undefined) {
-          throw new Error('State must be set.');
-        }
-
-        if (model.project === undefined) {
-          throw new Error('Project must be given.');
-        }
-
-        const task = new Task(idBuilder(model.id), model.title, model.description, model.state, model.project);
-
-        if (this.model.isNew) {
-          this.$services.taskService.create(task);
+        await this.$services.taskService.save(task);
+        await this.navigateToBoard();
+      },
+      async remove(id: Identifier): Promise<void> {
+        if (id.isNil() || !id.validate()) {
+          await this.cancel();
         } else {
-          this.$services.taskService.update(task);
+          await this.$services.taskService.delete(id);
+          await this.navigateToBoard();
         }
-
-        this.navigateToBoard();
       },
-      remove() {
-        this.$services.taskService.delete(idBuilder(this.id));
-        this.navigateToBoard();
+      async cancel(): Promise<void> {
+        await this.navigateToBoard();
       },
-      cancel() {
-        this.navigateToBoard();
-      },
-      navigateToBoard() {
-        this.$router.push({ name: 'board' });
+      async navigateToBoard(): Promise<void> {
+        await this.$router.push({ name: 'board' });
       }
     }
   });

@@ -1,31 +1,36 @@
 <template>
-  <div class="project-view">
+  <div class="project-view" v-if="isReady">
     <div class="row pb-3 pt-3">
       <div class="col-6 col-md-3">
         <h1>Project</h1>
       </div>
       <div class="col-6 col-md-3 align-self-center text-end">
         <div class="position-relative mb-4 me-4">
-          <bordered-icon icon="tag" scale="2" :color="model.color" border-color="black"></bordered-icon>
+          <bordered-icon 
+            icon="tag" 
+            scale="2" 
+            :color="project.color.value" 
+            border-color="black"></bordered-icon>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <project-edit-form v-model="model" @remove="remove" @cancel="cancel"></project-edit-form>
+        <project-edit-form 
+          :project="project" 
+          @save="save"
+          @remove="remove" 
+          @cancel="cancel"></project-edit-form>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, PropType } from 'vue';
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/shared/bordered-icon.vue';
-  import { colorWheel } from '@/shared/colorWheel';
-  import { Project, ProjectEditFormModel } from './project-models';
-  import { isNew } from '@/shared/utilities';
-  import { validate as uuidValidate } from 'uuid';
-  import { idBuilder, Identifier } from 'kyytto-models';
+  import { Project } from './project-models';
+  import { Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'ProjectView',
@@ -35,76 +40,55 @@
     },
     props: {
       id: {
-        type: String,
+        type: Object as PropType<Identifier>,
         required: true,
-        validator: uuidValidate
+        validator: (uuid: Identifier) => uuid.validate()
       }
     },
     data() {
       return {
-        model: new ProjectEditFormModel()
-      };
-    },
-    computed: {
-      isNew(): boolean {
-        return isNew(this.id);
+        isReady: false,
+        project: {} as Project
       }
     },
     async created() {
       try {
-        this.model.id = this.id;
-        if (this.isNew) {
-          this.model.color = colorWheel.next();
+        this.isReady = false;
+        if (this.id.isNil()) {
+          this.project = Project.empty();
         } else {
-          const project = await this.$services.projectService.getById(idBuilder(this.id));
-          this.model.name = project.name;
-          this.model.description = project.description;
-          this.model.color = project.color;
+          this.project = await this.$services.projectService.getById(this.id);
         }
       } catch (e) {
         console.error(e);
-        this.navigateToProjects();
-      }
-    },
-    watch: {
-      model(newModel) {
-        this.save(newModel);
+        await this.navigateToProjects();
+      } finally {
+        this.isReady = true;
       }
     },
     methods: {
-      save(model: ProjectEditFormModel) {
-        if (model.id === undefined) {
-          throw new Error('Id must be provided.');
+      async save(project: Project): Promise<void> {
+        const errors = project.validate();
+        if (errors.length > 0) {
+          throw new Error(errors.join('/n'));
         }
 
-        if (model.name === undefined) {
-          throw new Error('Name must be given.');
-        }
-
-        if (model.color === undefined) {
-          throw new Error('Color must be given');
-        }
-
-        const project = new Project(idBuilder(model.id), model.name, model.description, model.color);
-
-        if (this.isNew) {
-          this.$services.projectService.create(project);
+        await this.$services.projectService.save(project);
+        await this.navigateToProjects();
+      },
+      async remove(id: Identifier) : Promise<void> {
+        if (id.isNil() || !id.validate()) {
+          await this.cancel();
         } else {
-          this.$services.projectService.update(project);
+          await this.$services.projectService.delete(id);
+          await this.navigateToProjects();
         }
-
-        this.navigateToProjects();
       },
-      remove() {
-        this.$services.projectService.delete(idBuilder(this.id));
-        this.navigateToProjects();
+      async cancel(): Promise<void> {
+        await this.navigateToProjects();
       },
-      cancel() {
-        colorWheel.prev();
-        this.navigateToProjects();
-      },
-      navigateToProjects() {
-        this.$router.push({ name: 'projects' });
+      async navigateToProjects(): Promise<void> {
+        await this.$router.push({ name: 'projects' });
       }
     }
   });

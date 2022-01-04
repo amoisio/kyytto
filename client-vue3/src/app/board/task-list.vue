@@ -34,7 +34,7 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import TaskItem from './task-item.vue';
-  import { ITask } from './task-models';
+  import { Task } from './task-models';
 
   export default defineComponent({
     name: 'TaskList',
@@ -44,7 +44,7 @@
     emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],
     props: {
       tasks: {
-        type: Array as PropType<ITask[]>,
+        type: Array as PropType<Task[]>,
         required: true
       }
     }

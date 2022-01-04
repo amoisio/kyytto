@@ -8,7 +8,8 @@
         id="projectName"
         v-model="item.name"
         ref="name"
-        placeholder="Project name" />
+        placeholder="Project name"
+      />
     </div>
     <div class="mb-3">
       <label for="projectDescription" class="form-label">Description</label>
@@ -18,7 +19,8 @@
         rows="5"
         v-model="item.description"
         ref="description"
-        placeholder="Project description" />
+        placeholder="Project description"
+      />
     </div>
     <div class="row justify-content-between">
       <div class="col-auto">
@@ -32,35 +34,33 @@
   </form>
 </template>
 <script lang="ts">
+  import { Color, colorBuilder, idBuilder, Identifier } from 'kyytto-models';
   import { defineComponent, PropType } from 'vue';
-  import { ProjectEditFormModel } from './project-models';
+  import { Project } from './project-models';
 
   export default defineComponent({
     name: 'ProjectEditForm',
-    emits: ['update:modelValue', 'remove', 'cancel'],
+    emits: ['save', 'remove', 'cancel'],
     props: {
-      modelValue: {
-        type: Object as PropType<ProjectEditFormModel>,
+      project: {
+        type: Object as PropType<Project>,
         required: true
       }
     },
     data() {
       return {
-        item: new ProjectEditFormModel()
+        item: new ProjectEditFormModel(this.project)
       };
-    },
-    created() {
-      Object.assign(this.item, this.modelValue);
     },
     mounted() {
       this.focusOnName();
     },
     methods: {
       save() {
-        this.$emit('update:modelValue', this.item);
+        this.$emit('save', this.item.toProject());
       },
       remove() {
-        this.$emit('remove');
+        this.$emit('remove', this.item.id);
       },
       cancel() {
         this.$emit('cancel');
@@ -71,13 +71,39 @@
       }
     }
   });
+
+  class ProjectEditFormModel {
+    public readonly id: Identifier;
+    public name: string;
+    public description?: string;
+    public color: Color;
+
+    constructor(project: Project) {
+      this.id = idBuilder(project.id.value);
+      this.name = project.name;
+      this.description = project.description;
+      this.color = colorBuilder(project.color.value);
+    }
+
+    public get isNew(): boolean {
+      return this.id.isNil();
+    }
+
+    public toProject(): Project {
+      return new Project(
+        idBuilder(this.id.value),
+        this.name,
+        this.description,
+        colorBuilder(this.color.value));
+    }
+  }
 </script>
 <style lang="scss">
-.hidden {
-  position: absolute;
-  width: 0px;
-  height: 0px;
-  overflow: hidden;
-  z-index: -10;
-}
+  .hidden {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    z-index: -10;
+  }
 </style>

@@ -38,7 +38,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import TaskList from './task-list.vue';
-  import { ITask } from './task-models';
+  import { Task } from './task-models';
   import { NEWID } from '@/shared/utilities';
 
   export default defineComponent({
@@ -48,17 +48,17 @@
     },
     data() {
       return {
-        tasks: new Array<ITask>()
+        tasks: new Array<Task>()
       };
     },
     computed: {
-      todoTasks(): ITask[] {
+      todoTasks(): Task[] {
         return this.tasks.filter((task) => !task.isCompleted() && !task.isStarted());
       },
-      startedTasks(): ITask[] {
+      startedTasks(): Task[] {
         return this.tasks.filter((task) => task.isStarted());
       },
-      completedTasks(): ITask[] {
+      completedTasks(): Task[] {
         return this.tasks.filter((task) => task.isCompleted());
       }
     },
@@ -66,18 +66,18 @@
       this.tasks = await this.$services.taskService.getAll();
     },
     methods: {
-      navigateToTaskForm(task?: ITask) {
+      async navigateToTaskForm(task?: Task): Promise<void> {
         const id = task?.id.value ?? NEWID;
-        this.$router.push({ name: 'task', params: { id: id } });
+        await this.$router.push({ name: 'task', params: { id: id } });
       },
-      moveUp(task: ITask) {
+      moveUp(task: Task) {
         alert('moveUp' + task.id);
         // const index = this.items.findIndex(task => task.id === id);
         // if (index > 0) {
         //   this.swap(index, index - 1);
         // }
       },
-      moveDown(task: ITask) {
+      moveDown(task: Task) {
         alert('moveDown' + task.id);
         // const index = this.items.findIndex(task => task.id === id);
         // const lastIndex = this.items.length - 1;
@@ -85,26 +85,26 @@
         //   this.swap(index, index + 1);
         // }
       },
-      edit(task: ITask) {
-        this.$router.push({ name: 'task', params: { id: task.id.value } });
+      async edit(task: Task): Promise<void> {
+        await this.$router.push({ name: 'task', params: { id: task.id.value } });
       },
-      start(task: ITask) {
+      async start(task: Task): Promise<void> {
         task.startWork();
-        this.$services.taskService.update(task);
+        await this.$services.taskService.update(task);
       },
-      stop(task: ITask) {
+      async stop(task: Task): Promise<void> {
         task.stopWork();
-        this.$services.taskService.update(task);
+        await this.$services.taskService.update(task);
       },
-      complete(task: ITask) {
+      async complete(task: Task): Promise<void> {
         task.complete();
-        this.$services.taskService.update(task);
+        await this.$services.taskService.update(task);
       },
-      swap(ind1: number, ind2: number) {
+      async swap(ind1: number, ind2: number): Promise<void> {
         const temp = this.tasks[ind1];
         this.tasks[ind1] = this.tasks[ind2];
         this.tasks[ind2] = temp;
-        this.$nextTick();
+        await this.$nextTick();
       }
     }
   });
