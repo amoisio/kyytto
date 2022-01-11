@@ -7,7 +7,17 @@ export class NotificationService {
     this._buffer = new CircularBuffer(10);
   }
 
+  public notifySuccess(message: string, title?: string) {
+    console.log(message);
+    this.dispatchNotification({
+      type: 'success',
+      text: message,
+      title: title
+    });
+  }
+
   public notifyInformation(message: string, title?: string) {
+    console.log(message);
     this.dispatchNotification({
       type: 'info', 
       text: message, 
@@ -15,7 +25,17 @@ export class NotificationService {
     });
   }
 
-  public notifyError(message: string, title?: string) {
+  public notifyWarning(message: string, title?: string) {
+    console.warn(message);
+    this.dispatchNotification({
+      type: 'warn',
+      text: message,
+      title: title
+    });
+  }
+
+  public notifyError(message: string, title?: string, exception?: any) {
+    console.error(message, exception);
     this.dispatchNotification({
       type: 'error', 
       text: message, 

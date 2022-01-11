@@ -6,21 +6,13 @@
       </div>
       <div class="col-6 col-md-3 align-self-center text-end">
         <div class="position-relative mb-4 me-4">
-          <bordered-icon 
-            icon="tag" 
-            scale="2" 
-            :color="project.color.value" 
-            border-color="black"></bordered-icon>
+          <bordered-icon icon="tag" scale="2" :color="project.color.value" border-color="black"></bordered-icon>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <project-edit-form 
-          :project="project" 
-          @save="save"
-          @remove="remove" 
-          @cancel="cancel"></project-edit-form>
+        <project-edit-form :project="project" @save="save" @remove="remove" @cancel="cancel"></project-edit-form>
       </div>
     </div>
   </div>
@@ -31,6 +23,7 @@
   import BorderedIcon from '@/shared/bordered-icon.vue';
   import { Project } from './project-models';
   import { Identifier } from 'kyytto-models';
+  import { NotificationService } from '@/shared/notification-service';
 
   export default defineComponent({
     name: 'ProjectView',
@@ -49,6 +42,11 @@
       return {
         isReady: false,
         project: {} as Project
+      };
+    },
+    computed: {
+      notificationService(): NotificationService {
+        return this.$services.notificationService;
       }
     },
     async created() {
@@ -60,7 +58,7 @@
           this.project = await this.$services.projectService.getById(this.id);
         }
       } catch (e) {
-        console.error(e);
+        this.notificationService.notifyError(`Loading a project with id ${this.id} failed.`, 'Error', e);
         await this.navigateToProjects();
       } finally {
         this.isReady = true;
@@ -70,18 +68,31 @@
       async save(project: Project): Promise<void> {
         const errors = project.validate();
         if (errors.length > 0) {
-          throw new Error(errors.join('/n'));
+          this.notificationService.notifyWarning(errors.join('\n'), 'Validation error');
+          return;
         }
 
-        await this.$services.projectService.save(project);
-        await this.navigateToProjects();
-      },
-      async remove(id: Identifier) : Promise<void> {
-        if (id.isNil() || !id.validate()) {
-          await this.cancel();
-        } else {
-          await this.$services.projectService.delete(id);
+        try {
+          await this.$services.projectService.save(project);
+          this.notificationService.notifySuccess('Project saved.');
           await this.navigateToProjects();
+        } catch (e) {
+          this.notificationService.notifyError('Save failed.', 'Error', e);
+        }
+      },
+      async remove(id: Identifier): Promise<void> {
+        if (id.isNil() || !id.validate()) {
+          this.notificationService.notifyWarning(`Unable to remove project. Id ${id} is invalid.`);
+          await this.cancel();
+          return;
+        }
+
+        try {
+          await this.$services.projectService.delete(id);
+          this.notificationService.notifySuccess('Project removed.');
+          await this.navigateToProjects();
+        } catch (e) {
+          this.notificationService.notifyError('Remove failed.', 'Error', e);
         }
       },
       async cancel(): Promise<void> {

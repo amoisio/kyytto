@@ -23,6 +23,7 @@
   import { Project } from './project-models';
   import ProjectItem from './project-item.vue';
   import { NEWID } from '@/shared/utilities';
+  import { NotificationService } from '@/shared/notification-service';
 
   export default defineComponent({
     name: 'ProjectListView',
@@ -30,12 +31,21 @@
       ProjectItem
     },
     async created() {
-      this.projects = await this.$services.projectService.getAll();
+      try {
+        this.projects = await this.$services.projectService.getAll();
+      } catch (e) {
+        this.notificationService.notifyError(`Loading projects failed.`, 'Error', e); 
+      }
     },
     data() {
       return {
         projects: [] as Project[]
       };
+    },
+    computed: {
+      notificationService(): NotificationService {
+        return this.$services.notificationService;
+      }
     },
     methods: {
       async navigateToProjectForm(project?: Project): Promise<void> {

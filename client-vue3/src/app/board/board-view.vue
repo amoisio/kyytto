@@ -12,25 +12,15 @@
     </div>
     <div class="row">
       <div class="col mx-2 mb-2 task-list">
-        <task-list
-          :tasks="todoTasks"
-          @right="start"
-          @edit="edit"
-          @start="start">Todos</task-list>
+        <task-list :tasks="todoTasks" @right="start" @edit="edit" @start="start">Todos</task-list>
       </div>
       <div class="col mx-2 mb-2 task-list">
-        <task-list
-          :tasks="startedTasks"
-          @left="stop"
-          @right="complete"
-          @edit="edit"
-          @stop="stop"
-          @complete="complete">In Progress</task-list>
+        <task-list :tasks="startedTasks" @left="stop" @right="complete" @edit="edit" @stop="stop" @complete="complete"
+          >In Progress</task-list
+        >
       </div>
       <div class="col mx-2 mb-2 task-list">
-        <task-list
-          :tasks="completedTasks"
-          @edit="edit">Completed</task-list>
+        <task-list :tasks="completedTasks" @edit="edit">Completed</task-list>
       </div>
     </div>
   </div>
@@ -40,6 +30,7 @@
   import TaskList from './task-list.vue';
   import { Task } from './task-models';
   import { NEWID } from '@/shared/utilities';
+  import { NotificationService } from '@/shared/notification-service';
 
   export default defineComponent({
     name: 'BoardView',
@@ -52,6 +43,9 @@
       };
     },
     computed: {
+      notificationService(): NotificationService {
+        return this.$services.notificationService;
+      },
       todoTasks(): Task[] {
         return this.tasks.filter((task) => !task.isCompleted() && !task.isStarted());
       },
@@ -63,7 +57,11 @@
       }
     },
     async created() {
-      this.tasks = await this.$services.taskService.getAll();
+      try {
+        this.tasks = await this.$services.taskService.getAll();
+      } catch (e) {
+        this.notificationService.notifyError(`Loading task board failed.`, 'Error', e);
+      }
     },
     methods: {
       async navigateToTaskForm(task?: Task): Promise<void> {
@@ -89,16 +87,71 @@
         await this.$router.push({ name: 'task', params: { id: task.id.value } });
       },
       async start(task: Task): Promise<void> {
-        task.startWork();
-        await this.$services.taskService.update(task);
+        const state = task.state;
+
+        if (task.isStarted()) {
+          this.notificationService.notifyWarning('Task is already started.');
+          return;
+        }
+
+        if (task.isCompleted()) {
+          this.notificationService.notifyWarning('Task cannot be started.');
+          return;
+        }
+
+        try {
+          task.startWork();
+          await this.$services.taskService.update(task);
+          console.log('hello');
+          this.notificationService.notifySuccess('Task started.');
+        } catch (e) {
+          task.state = state;
+          this.notificationService.notifyError('Task start.', 'Error', e);
+        }
       },
       async stop(task: Task): Promise<void> {
-        task.stopWork();
-        await this.$services.taskService.update(task);
+        const state = task.state;
+
+        if (task.isCompleted()) {
+          this.notificationService.notifyWarning('Task cannot be stopped.');
+          return;
+        }
+
+        if (!task.isStarted()) {
+          this.notificationService.notifyWarning('Task is already stopped.');
+          return;
+        }
+
+        try {
+          task.stopWork();
+          await this.$services.taskService.update(task);
+          this.notificationService.notifySuccess('Task stopped.');
+        } catch (e) {
+          this.notificationService.notifyError('Task start.', 'Error', e);
+          task.state = state;
+        }
       },
       async complete(task: Task): Promise<void> {
-        task.complete();
-        await this.$services.taskService.update(task);
+        const state = task.state;
+
+        if (task.isCompleted()) {
+          this.notificationService.notifyWarning('Task is already completed.');
+          return;
+        }
+
+        if (!task.isStarted()) {
+          this.notificationService.notifyWarning('Task is must be started before it is completed.');
+          return;
+        }
+
+        try {
+          task.complete();
+          await this.$services.taskService.update(task);
+          this.notificationService.notifySuccess('Task completed.');
+        } catch (e) {
+          this.notificationService.notifyError('Task completion.', 'Error', e);
+          task.state = state;
+        }
       },
       async swap(ind1: number, ind2: number): Promise<void> {
         const temp = this.tasks[ind1];
@@ -112,8 +165,4 @@
 <style lang="scss">
   @use '../custom';
   @use 'sass:color';
-
-  // .task-list {
-  //   background-color: color.scale(custom.$light1, $lightness: 40%);
-  // }
 </style>
