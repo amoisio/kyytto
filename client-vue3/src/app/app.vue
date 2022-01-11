@@ -8,6 +8,7 @@
         <router-view></router-view>
       </div>
     </div>
+    <notifications position="bottom right" />
   </div>
 </template>
 <script lang="ts">

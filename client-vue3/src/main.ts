@@ -5,6 +5,7 @@ import App from './app/app.vue';
 import { routes } from './app/routes';
 import { provider } from './app/service-provider';
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
+import Notifications from '@kyvg/vue3-notification'
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
@@ -14,6 +15,7 @@ const router = VueRouter.createRouter({
 const app = Vue.createApp(App);
 app.use(router);
 app.use(BootstrapVue3);
+app.use(Notifications);
 
 // DI services via a custom '$service' global property
 app.config.globalProperties.$services = provider;
