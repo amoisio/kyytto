@@ -5,6 +5,7 @@ export interface Api {
   menu: EndPoint;
   projects: EndPoint;
   tasks: EndPoint;
+  tags: EndPoint;
 
   /**
    * Resolves the id of the given href.
@@ -47,12 +48,14 @@ class KyyttoApi implements Api {
     this.menu = new KyyttoEndPoint(baseUrl, '/api/menu');
     this.projects = new KyyttoEndPoint(baseUrl, '/api/projects');
     this.tasks = new KyyttoEndPoint(baseUrl, '/api/tasks');
+    this.tags = new KyyttoEndPoint(baseUrl, '/api/tags');
   }
   
   public readonly baseUrl: string;
   public readonly menu: EndPoint;
   public readonly projects: EndPoint;
   public readonly tasks: EndPoint;
+  public readonly tags: EndPoint;
   public resolveId(href: string): Identifier {
     return idParser(href);
   }
