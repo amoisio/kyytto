@@ -2,7 +2,7 @@ import Repository from '../repository.js';
 import { Low } from 'lowdb'
 import { DataDb, TagDb } from './db-model.js';
 import { idBuilder, Identifier } from 'kyytto-models';
-import { Tag } from 'resources/tags/tag.js';
+import { Tag } from '../../resources/tags/tag.js';
 
 export default class TagRepository implements Repository<Tag> {
   constructor(private readonly db: Low<DataDb>) { }

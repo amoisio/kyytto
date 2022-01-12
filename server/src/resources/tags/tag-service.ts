@@ -1,6 +1,6 @@
 import { Identifier, TagType } from 'kyytto-models';
-import UnitOfWork from '../../storage/unit-of-work';
-import { Tag } from './tag';
+import UnitOfWork from '../../storage/unit-of-work.js';
+import { Tag } from './tag.js';
 
 export class TagService {
   constructor(
