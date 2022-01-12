@@ -4,6 +4,7 @@ import { isEmpty, NEWID } from '@/shared/utilities';
 import { Validatable } from '@/shared/validatable';
 import { idBuilder, Identifier, ProjectResource, TaskResource } from 'kyytto-models';
 import { api } from '../api';
+import { Tag } from '../tags/tag-models';
 import { TaskState } from './task-state';
 
 export class Task implements Identifiable, Validatable {
@@ -12,13 +13,15 @@ export class Task implements Identifiable, Validatable {
   public description?: string;
   public state: TaskState;
   public project: Project;
+  public tags: Tag[];
 
-  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project) {
+  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.state = state;
     this.project = project;
+    this.tags = tags;
   }
   
   /**
@@ -45,7 +48,8 @@ export class Task implements Identifiable, Validatable {
       taskResource.title,
       taskResource.description,
       taskResource.state,
-      Project.from(projectResource));
+      Project.from(projectResource),
+      taskResource.tags.map(tag => Tag.from(tag)));
   }
 
   public validate(): string[] {
@@ -97,5 +101,14 @@ export class Task implements Identifiable, Validatable {
       throw new Error('Cannot complete a todo task.');
     }
     this.state = TaskState.Completed;
+  }
+
+  public addTag(tag: Tag): void {
+    this.tags.push(tag);
+  }
+
+  public removeTag(tag: Tag): void {
+    const index = this.tags.findIndex(tag => tag.id.value === tag.id.value);
+    this.tags.splice(index, 1);
   }
 }

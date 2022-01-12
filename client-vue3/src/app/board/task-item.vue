@@ -23,8 +23,8 @@
     <b-card-body class="p-2 pt-2">
       <div class="row align-items-end mx-0">
         <div class="col px-0">
-          <span class="badge square-pill" :style="{ 'background-color': color }">
-            {{ task.project?.name }}
+          <span class="badge square-pill" :style="{ 'background-color': color }" v-for="tag of task.tags" :key="tag.id">
+            {{ tag.name }}
           </span>
         </div>
         <div class="col-auto text-end px-0">

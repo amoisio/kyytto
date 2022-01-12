@@ -1,6 +1,6 @@
 import { Task } from '../app/board/task-models';
 import { Project } from '../app/projects/project-models';
-import { ProjectResource, TaskResource } from 'kyytto-models';
+import { ProjectResource, TagResource, TaskResource } from 'kyytto-models';
 import { api } from '../app/api';
 
 export const taskResourceMapper = (task: Task): TaskResource => {
@@ -11,7 +11,12 @@ export const taskResourceMapper = (task: Task): TaskResource => {
     title: task.title,
     description: task.description,
     state: task.state,
-    projectHref: projectItem.href
+    projectHref: projectItem.href,
+    tags: task.tags.map(tag => ({
+      href: api.tags.resolveHref(tag.id),
+      name: tag.name,
+      type: tag.type
+    }))
   };
 };
 
