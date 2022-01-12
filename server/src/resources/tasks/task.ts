@@ -1,4 +1,4 @@
-import { Identifier, TaskResource, TaskState } from 'kyytto-models';
+import { idBuilder, Identifier, TaskResource, TaskState } from 'kyytto-models';
 import { NIL, validate } from 'uuid';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
@@ -6,6 +6,7 @@ import { api } from '../api.js';
 import Identifiable from '../identifiable.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
+import { Tag } from '../../resources/tags/tag.js';
 
 export class TaskBuilder {
   constructor(
@@ -35,7 +36,7 @@ export class TaskBuilder {
 
     const id = this.idGenerator.generate();
     const state = TaskState.Todo;
-    return new Task(id, title, description, state, project);
+    return new Task(id, title, description, state, project, [ project.toTag() ]);
   }
 
   /**
@@ -79,12 +80,20 @@ export class TaskBuilder {
       throw new Error('Project reference is invalid.');
     }
 
+    const tags = resource.tags 
+      ? resource.tags.map(tag => new Tag(
+          api.resolveId(tag.href),
+          tag.name,
+          tag.type))
+      : [];
+
     return new Task(
       id,
       title,
       resource.description,
       state,
-      project);
+      project,
+      tags);
   }
 }
 
@@ -94,8 +103,9 @@ export class Task implements Identifiable {
   public description: string | undefined;
   public state: TaskState;
   public project: Project;
+  public tags: Tag[];
 
-  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project) {
+  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
     if (!id || id.value === NIL || !validate(id.value)) {
       throw new Error(`Id is invalid. Value: ${id}.`);
     }
@@ -116,6 +126,7 @@ export class Task implements Identifiable {
       throw new Error('Project must be provided.');
     }
     this.project = project;
+    this.tags = tags;
   }
 
   public toResource(): TaskResource {
@@ -124,7 +135,8 @@ export class Task implements Identifiable {
       title: this.title,
       description: this.description,
       state: this.state,
-      projectHref: api.projects.resolveHref(this.project.id)
+      projectHref: api.projects.resolveHref(this.project.id),
+      tags: this.tags.map(tag => tag.toResource())
     };
   }
 }

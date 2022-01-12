@@ -19,6 +19,7 @@ export interface TaskDb {
   description: string | undefined;
   state: TaskState;
   projectId: string;
+  tags: TagDb[];
 }
 
 export interface TagDb {
