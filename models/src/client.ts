@@ -4,6 +4,7 @@ import { TaskResource } from './models/task-resource.js';
 import { Api } from './api.js';
 import axios, { AxiosInstance } from 'axios';
 import { idBuilder, Identifier } from './models/identifier.js';
+import { TagResource } from './models/tag-resource.js';
 
 export interface ApiClient {
   getMenu(): Promise<MenuResource>;
@@ -19,6 +20,9 @@ export interface ApiClient {
   putTask(task: TaskResource): Promise<void>;
   deleteTask(id: Identifier): Promise<void>;
   migrateTask(task: TaskResource): Promise<void>;
+  getTags(): Promise<TagResource[]>;
+  postTag(tag: TagResource): Promise<Identifier>;
+  deleteTag(id: Identifier): Promise<void>;
 }
 
 export const clientBuilder = (api: Api): ApiClient => new KyyttoClient(api);
@@ -103,5 +107,22 @@ class KyyttoClient implements ApiClient {
   public async migrateTask(task: TaskResource): Promise<void> {
     await this.ax.post<void>(
       `${this.api.tasks.path}/migration`, task);
+  }
+
+  public async getTags(): Promise<TagResource[]> {
+    const response = await this.ax.get<TagResource[]>(
+      this.api.tags.path);
+    return response.data;
+  }
+
+  public async postTag(tag: TagResource): Promise<Identifier> {
+    const response = await this.ax.post<string>(
+      `${this.api.tags.path}`, tag);
+    return idBuilder(response.data);
+  }
+
+  public async deleteTag(id: Identifier): Promise<void> {
+    await this.ax.delete<void>(
+      `${this.api.tags.path}/${id.value}`);
   }
 }
