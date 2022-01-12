@@ -20,6 +20,15 @@ export default class ProjectRepository implements Repository<Project> {
     }
   }
 
+  public async findById(id: Identifier): Promise<Project | undefined> {
+    const match = this.db.data!.projects.find(p => p.id === id.value);
+    if (match !== undefined) {
+      return this.constructProject(match);
+    } else {
+      return undefined;
+    }
+  }
+
   private constructProject(model: ProjectDb): Project {
     return new Project(
       idBuilder(model.id),

@@ -42,6 +42,16 @@ export default class TaskRepository implements Repository<Task>{
     }
   }
 
+  public async findById(id: Identifier): Promise<Task | undefined> {
+    const cmd = this.selectById;
+    const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
+    if (rowData[0].length == 0) {
+      return undefined;
+    } else {
+      return this.constructTask(rowData[0][0])
+    }
+  }
+
   private selectById = `
     select
       t.id as task_id,

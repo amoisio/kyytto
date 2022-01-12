@@ -30,6 +30,16 @@ export default class ProjectRepository implements Repository<Project> {
     }
   }
 
+  public async findById(id: Identifier): Promise<Project | undefined> {
+    const cmd = this.selectById;
+    const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
+    if (rowData[0].length == 0) {
+      return undefined;
+    } else {
+      return this.constructProject(rowData[0][0]);
+    }
+  }
+
   private selectById = `
     select p.id, p.name, p.description, p.color
     from projects p

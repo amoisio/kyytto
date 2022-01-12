@@ -5,16 +5,19 @@ import TaskRepository from './task-repository.js';
 import { Low, JSONFile } from 'lowdb'
 import { DataDb } from './db-model.js';
 import { options } from './options.js';
+import TagRepository from './tag-repository.js';
 
 export class LowDbUnitOfWork implements UnitOfWork {
   private readonly db: Low<DataDb>;
   public readonly projectRepository: ProjectRepository;
   public readonly taskRepository: TaskRepository;
+  public readonly tagRepository: TagRepository;
 
   private constructor(db: Low<DataDb>) { 
     this.db = db;
     this.projectRepository = new ProjectRepository(db);
     this.taskRepository = new TaskRepository(db);
+    this.tagRepository = new TagRepository(db);
   }
 
   public static async openContext(): Promise<UnitOfWork> {
@@ -31,10 +34,12 @@ export class LowDbUnitOfWork implements UnitOfWork {
   private static initDb(db: Low<DataDb>): void {
     db.data ||= {
       projects: [],
-      tasks: []
+      tasks: [],
+      tags: []
     };
     db.data.projects ||= [];
     db.data.tasks ||= [];
+    db.data.tags ||= [];
   }
   
   public async closeContext(): Promise<void> { 

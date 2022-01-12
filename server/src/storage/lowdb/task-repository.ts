@@ -21,6 +21,15 @@ export default class TaskRepository implements Repository<Task> {
     }
   }
 
+  public async findById(id: Identifier): Promise<Task | undefined> {
+    const match = this.db.data!.tasks.find(p => p.id === id.value);
+    if (match !== undefined) {
+      return this.constructTask(match);
+    } else {
+      return undefined;
+    }
+  }
+
   private constructTask(model: TaskDb): Task {
     const project = this.db.data?.projects.find(p => p.id === model.projectId);
     return new Task(

@@ -1,8 +1,9 @@
-import { TaskState } from 'kyytto-models';
+import { TagType, TaskState } from 'kyytto-models';
 
 export interface DataDb {
   projects: ProjectDb[];
   tasks: TaskDb[];
+  tags: TagDb[];
 }
 
 export interface ProjectDb {
@@ -18,4 +19,10 @@ export interface TaskDb {
   description: string | undefined;
   state: TaskState;
   projectId: string;
+}
+
+export interface TagDb {
+  id: string;
+  name: string;
+  type: TagType;
 }
