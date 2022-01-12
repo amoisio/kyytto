@@ -47,3 +47,9 @@ describe('idParser', () => {
   });
 });
 
+describe('validation', () => {
+  test('should validate f39be201-8bd1-4959-9576-58c38b321adc as ok', () => {
+    const id = idBuilder('f39be201-8bd1-4959-9576-58c38b321adc');
+    expect(id.validate()).toBeTruthy();
+  });
+});
