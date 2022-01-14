@@ -1,5 +1,5 @@
 import express from 'express';
-import { idBuilder, TagResource, TagType } from 'kyytto-models';
+import { idBuilder, NewTag, TagResource, TagType } from 'kyytto-models';
 import { api } from '../api.js';
 
 export const router = express.Router();
@@ -12,7 +12,7 @@ router.route(api.tags.path)
     res.json(resources);
   })
   .post(async (req, res) => {
-    const name = req.body as string;
+    const name = (req.body as NewTag).name;
     const builder = req.tagBuilder;
     const tag = await builder.new(name);
     const repository = req.unitOfWork.tagRepository;
