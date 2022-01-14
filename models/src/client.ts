@@ -21,6 +21,7 @@ export interface ApiClient {
   deleteTask(id: Identifier): Promise<void>;
   migrateTask(task: TaskResource): Promise<void>;
   getTags(): Promise<TagResource[]>;
+  getTag(id: Identifier): Promise<TagResource>;
   postTag(tag: TagResource): Promise<Identifier>;
   deleteTag(id: Identifier): Promise<void>;
 }
@@ -112,6 +113,12 @@ class KyyttoClient implements ApiClient {
   public async getTags(): Promise<TagResource[]> {
     const response = await this.ax.get<TagResource[]>(
       this.api.tags.path);
+    return response.data;
+  }
+
+  public async getTag(id: Identifier): Promise<TagResource> {
+    const response = await this.ax.get<TagResource>(
+      `${this.api.tags.path}/${id.value}`);
     return response.data;
   }
 
