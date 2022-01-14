@@ -22,7 +22,7 @@ export interface ApiClient {
   migrateTask(task: TaskResource): Promise<void>;
   getTags(): Promise<TagResource[]>;
   getTag(id: Identifier): Promise<TagResource>;
-  postTag(tag: TagResource): Promise<Identifier>;
+  postTag(name: string): Promise<Identifier>;
   deleteTag(id: Identifier): Promise<void>;
 }
 
@@ -122,9 +122,9 @@ class KyyttoClient implements ApiClient {
     return response.data;
   }
 
-  public async postTag(tag: TagResource): Promise<Identifier> {
+  public async postTag(name: string): Promise<Identifier> {
     const response = await this.ax.post<string>(
-      `${this.api.tags.path}`, tag);
+      `${this.api.tags.path}`, name);
     return idBuilder(response.data);
   }
 
