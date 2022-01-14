@@ -5,6 +5,7 @@ import { Api } from './api.js';
 import axios, { AxiosInstance } from 'axios';
 import { idBuilder, Identifier } from './models/identifier.js';
 import { TagResource } from './models/tag-resource.js';
+import { NewTag } from './models/tag-new.js';
 
 export interface ApiClient {
   getMenu(): Promise<MenuResource>;
@@ -22,7 +23,7 @@ export interface ApiClient {
   migrateTask(task: TaskResource): Promise<void>;
   getTags(): Promise<TagResource[]>;
   getTag(id: Identifier): Promise<TagResource>;
-  postTag(name: string): Promise<Identifier>;
+  postTag(tag: NewTag): Promise<Identifier>;
   deleteTag(id: Identifier): Promise<void>;
 }
 
@@ -122,9 +123,9 @@ class KyyttoClient implements ApiClient {
     return response.data;
   }
 
-  public async postTag(name: string): Promise<Identifier> {
+  public async postTag(tag: NewTag): Promise<Identifier> {
     const response = await this.ax.post<string>(
-      `${this.api.tags.path}`, name);
+      `${this.api.tags.path}`, tag);
     return idBuilder(response.data);
   }
 
