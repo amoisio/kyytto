@@ -12,16 +12,12 @@ router.route(api.tags.path)
     res.json(resources);
   })
   .post(async (req, res) => {
-    const resource = req.body as TagResource;
-    if (resource.type !== TagType.UserDefined) {
-      res.sendStatus(400);
-    } else {
-      const builder = req.tagBuilder;
-      const tag = await builder.new(resource.name);
-      const repository = req.unitOfWork.tagRepository;
-      await repository.add(tag);
-      res.json(tag.id);
-    }
+    const name = req.body as string;
+    const builder = req.tagBuilder;
+    const tag = await builder.new(name);
+    const repository = req.unitOfWork.tagRepository;
+    await repository.add(tag);
+    res.json(tag.id);  
   });
 
 router.route(`${api.tags.path}/:id`)
