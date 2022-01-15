@@ -5,7 +5,7 @@ describe('colorBuilder', () => {
     const color = colorBuilder('#131313');
 
     expect(color).toBeDefined();
-    expect(color.validate()).toBeTruthy();
+    expect(color.isValid()).toBeTruthy();
     expect(color.value).toBe('#131313');
   });
 
@@ -13,7 +13,7 @@ describe('colorBuilder', () => {
     const color = colorBuilder('AFAFAF');
 
     expect(color).toBeDefined();
-    expect(color.validate()).toBeTruthy();
+    expect(color.isValid()).toBeTruthy();
     expect(color.value).toBe('#afafaf');
   });
 
@@ -21,7 +21,7 @@ describe('colorBuilder', () => {
     const color = colorBuilder('teppo');
 
     expect(color).toBeDefined();
-    expect(color.validate()).toBeFalsy();
+    expect(color.isValid()).toBeFalsy();
     expect(color.value).toBe('#teppo');
   });
 });

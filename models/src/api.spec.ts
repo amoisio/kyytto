@@ -22,7 +22,7 @@ describe('api', () => {
 
   test('resolveId resolves an invalid Identifier if called with a url without an id', () => {
     const id = api.resolveId('http://mydomain:9000/api/tasks')
-    expect(id.validate()).toBeFalsy();
+    expect(id.isValid()).toBeFalsy();
   });
 
   test('resolveHref for menu resolves the correct path', () => {

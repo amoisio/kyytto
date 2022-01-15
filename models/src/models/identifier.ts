@@ -1,8 +1,8 @@
 import { NIL, v4 as uuidv4, validate } from 'uuid';
+import { Validatable } from './validatable.js';
 
-export interface Identifier {
+export interface Identifier extends Validatable {
   value: string;
-  validate(): boolean;
   isNil(): boolean;
 }
 
@@ -40,8 +40,14 @@ class UuidIdentifier implements Identifier {
     this.value = value;
   }
 
-  public validate(): boolean {
-    return validate(this.value);
+  public isValid(): boolean {
+    return this.validationErrors().length === 0;
+  }
+
+  public validationErrors(): string[] {
+    return (validate(this.value))
+      ? []
+      : [`${this.value} is not a suitable Uuid v4 value.`]
   }
 
   public isNil(): boolean {

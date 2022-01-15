@@ -1,6 +1,7 @@
-export interface Color {
+import { Validatable } from './validatable.js';
+
+export interface Color extends Validatable {
   value: string;
-  validate(): boolean;
 }
 
 export const colorBuilder = (hexValue: string): Color => new HexColor(hexValue);
@@ -16,7 +17,13 @@ class HexColor implements Color {
     this.value = hexValue.toLowerCase();
   }
 
-  public validate(): boolean {
-    return this.pattern.test(this.value);
+  public isValid(): boolean {
+      return this.validationErrors().length === 0;
+  }
+
+  public validationErrors(): string[] {
+    return (this.pattern.test(this.value)) 
+    ? []
+    : [`${this.value} is not a valid RGB value.`];
   }
 }
