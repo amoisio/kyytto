@@ -1,5 +1,4 @@
-import { Identifier } from 'kyytto-models';
-import Identifiable from '../resources/identifiable.js';
+import { Identifiable, Identifier } from 'kyytto-models';
 
 /**
  * Represents a repository of identifiable instances.

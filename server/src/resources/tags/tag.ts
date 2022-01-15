@@ -1,7 +1,6 @@
-import Identifiable from '../identifiable.js';
 import { NIL, validate } from 'uuid';
 import { api } from '../api.js';
-import { Identifier, TagResource, TagType } from 'kyytto-models';
+import { Identifiable, Identifier, TagResource, TagType } from 'kyytto-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 

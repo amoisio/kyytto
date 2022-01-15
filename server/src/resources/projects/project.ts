@@ -1,7 +1,6 @@
-import Identifiable from '../identifiable.js';
 import { NIL, validate } from 'uuid';
 import { api } from '../api.js';
-import { Color, colorBuilder, Identifier, ProjectResource, TagType } from 'kyytto-models';
+import { Color, colorBuilder, Identifiable, Identifier, ProjectResource, TagType } from 'kyytto-models';
 import { ColorGenerator } from '../../utilities/color-generator.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
@@ -61,8 +60,8 @@ export class Project implements Identifiable {
     this.name = name;
     this.description = description;
 
-    if (!color.validate()) {
-      throw new Error(`Given color: ${color} is invalid.`);
+    if (!color.isValid()) {
+      throw new Error(color.validationErrors().join('\n'));
     }
     this.color = color;
   }

@@ -1,9 +1,8 @@
-import { idBuilder, Identifier, TaskResource, TaskState } from 'kyytto-models';
+import { idBuilder, Identifiable, Identifier, TaskResource, TaskState } from 'kyytto-models';
 import { NIL, validate } from 'uuid';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from '../api.js';
-import Identifiable from '../identifiable.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import { Tag } from '../../resources/tags/tag.js';
