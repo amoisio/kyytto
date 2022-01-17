@@ -1,29 +1,19 @@
-import { Validatable } from './validatable.js';
+export type ColorType = string;
 
-export interface Color extends Validatable {
-  value: string;
+const build = (hexValue: string): ColorType => {
+  if (!hexValue.startsWith('#')) {
+    hexValue = `#${hexValue}`;
+  }
+  return hexValue.toLowerCase();
+};
+
+const isValid = (value: ColorType): boolean => {
+  const pattern = new RegExp('^#(?:[A-Fa-f0-9]{2}){3}$');
+  return pattern.test(value);
 }
 
-export const colorBuilder = (hexValue: string): Color => new HexColor(hexValue);
+export const Color = {
+  build,
+  isValid
+};
 
-class HexColor implements Color {
-  public readonly value: string;
-  private readonly pattern: RegExp = new RegExp('^#(?:[A-Fa-f0-9]{2}){3}$');
-
-  constructor(hexValue: string) {
-    if (!hexValue.startsWith('#')) {
-      hexValue = `#${hexValue}`;
-    }
-    this.value = hexValue.toLowerCase();
-  }
-
-  public isValid(): boolean {
-      return this.validationErrors().length === 0;
-  }
-
-  public validationErrors(): string[] {
-    return (this.pattern.test(this.value)) 
-    ? []
-    : [`${this.value} is not a valid RGB value.`];
-  }
-}

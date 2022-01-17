@@ -1,4 +1,4 @@
-import { idParser, Identifier } from './models/identifier.js';
+import { Identifier, IdentifierType } from './models/identifier.js';
 
 export interface Api {
   baseUrl: string;
@@ -15,7 +15,7 @@ export interface Api {
    *
    * @param href resource href.
    */
-  resolveId(href: string): Identifier;
+  resolveId(href: string): IdentifierType | undefined;
 }
 
 export interface EndPoint {
@@ -37,7 +37,7 @@ export interface EndPoint {
    * 
    * @param id entity identifier.
    */
-  resolveHref(id?: Identifier): string;
+  resolveHref(id?: IdentifierType): string;
 }
 
 export const apiBuilder = (baseUrl: string): Api => new KyyttoApi(baseUrl);
@@ -56,8 +56,8 @@ class KyyttoApi implements Api {
   public readonly projects: EndPoint;
   public readonly tasks: EndPoint;
   public readonly tags: EndPoint;
-  public resolveId(href: string): Identifier {
-    return idParser(href);
+  public resolveId(href: string): IdentifierType | undefined {
+    return Identifier.parse(href);
   }
 }
 
@@ -76,10 +76,10 @@ class KyyttoEndPoint implements EndPoint {
 
   private readonly baseUrl: string;
   public readonly path: string;
-  public resolveHref(id?: Identifier): string {
+  public resolveHref(id?: IdentifierType): string {
     let href = `${this.baseUrl}${this.path}`;
     if (id !== undefined) {
-      href = `${href}/${id.value}`;
+      href = `${href}/${id}`;
     }
     return href;
   }

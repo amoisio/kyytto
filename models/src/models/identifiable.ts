@@ -1,5 +1,5 @@
-import { Identifier } from './identifier.js';
+import { IdentifierType } from './identifier.js';
 
 export interface Identifiable {
-  id: Identifier;
+  id: IdentifierType;
 }

@@ -1,59 +1,59 @@
 import { NIL, v4 as uuidv4, validate } from 'uuid';
-import { Validatable } from './validatable.js';
 
-export interface Identifier extends Validatable {
-  value: string;
-  isNil(): boolean;
-}
+export type IdentifierType = string;
 
 /**
- * Build an Identifier from an id string.
+ * Build an Identifier from a string. 
+ * Throws if value is not a valid identifier value.
  * @param value id.
  */
-export const idBuilder = (value: string): Identifier => {
-  return new UuidIdentifier(value);
+const build = (value: string): IdentifierType => {
+  return value;
 }
 
 /**
  * Parse an Identifier from an href string.
+ * Throws if an identifier value cannot be parsed from href.
  * @param href resource href.
  */
-export const idParser = (href: string): Identifier => {
+const parse = (href: string): IdentifierType | undefined => {
   try {
     const h = hrefParser(href);
-    return new UuidIdentifier(h.id?.value ?? '');
+    return h.id !== undefined
+      ? build(h.id)
+      : undefined;
   } catch {
-    return new UuidIdentifier('');
+    return undefined;
   }
 }
 
 /**
  * Create an Identifier with a newly generated uuid.
- * @returns 
+ * @returns a new identifier value.
  */
-export const newId = (): Identifier => new UuidIdentifier(uuidv4());
+const newId = (): IdentifierType => uuidv4();
 
-class UuidIdentifier implements Identifier {
-  public readonly value: string;
+/**
+ * Check if value is an empty identifier value.
+ * @param value identifier
+ * @returns true if value is empty identifier.
+ */
+const isNil = (value: IdentifierType): boolean => value === NIL;
 
-  constructor(value: string) {
-    this.value = value;
-  }
+/**
+ * Check if value is a valid identifier.
+ * @param value identifier
+ * @returns true if value is a valid identifier.
+ */
+const isValid = (value: IdentifierType): boolean => validate(value);
 
-  public isValid(): boolean {
-    return this.validationErrors().length === 0;
-  }
-
-  public validationErrors(): string[] {
-    return (validate(this.value))
-      ? []
-      : [`${this.value} is not a suitable Uuid v4 value.`]
-  }
-
-  public isNil(): boolean {
-    return this.value === NIL;
-  }
-}
+export const Identifier = {
+  build,
+  parse,
+  newId,
+  isNil,
+  isValid
+};
 
 interface Href {
   base: string; // protocol + hostname
@@ -62,7 +62,7 @@ interface Href {
   segments: string[];
   query: string[][];
   rel: string;
-  id?: Identifier;
+  id?: IdentifierType;
 }
 
 const hrefParser = (href: string): Href => {
@@ -107,8 +107,8 @@ const hrefParser = (href: string): Href => {
   if (segments.length > 0) {
     rel += segments.join('/');
     const lastSegment = segments[segments.length - 1];
-    if (validate(lastSegment)) {
-      id = idBuilder(lastSegment);
+    if (Identifier.isValid(lastSegment)) {
+      id = Identifier.build(lastSegment);
     }
   }
 

@@ -5,11 +5,11 @@ export { TaskResource } from './models/task-resource.js';
 export { TaskState } from './models/task-state.js';
 export { TagResource } from './models/tag-resource.js';
 export { TagType } from './models/tag-type.js';
-export { NewTag } from './models/tag-new.js';
+export { TagDto as NewTag } from './models/tag-dto.js';
 export { Identifiable } from './models/identifiable.js';
 export { Validatable } from './models/validatable.js';
 
-export { newId, idBuilder, idParser, Identifier } from './models/identifier.js';
-export { colorBuilder, Color } from './models/color.js';
+export { Identifier, IdentifierType} from './models/identifier.js';
+export { Color, ColorType } from './models/color.js';
 export { apiBuilder, Api, EndPoint } from './api.js';
 export { clientBuilder, ApiClient } from './client.js';

@@ -1,30 +1,36 @@
 import { MenuResource } from './models/menu-resource.js';
 import { ProjectResource } from './models/project-resource.js';
+import { ProjectDto } from './models/project-dto.js';
 import { TaskResource } from './models/task-resource.js';
+import { TaskDto } from './models/task-dto.js';
+import { TagResource } from './models/tag-resource.js';
+import { TagDto } from './models/tag-dto.js';
 import { Api } from './api.js';
 import axios, { AxiosInstance } from 'axios';
-import { idBuilder, Identifier } from './models/identifier.js';
-import { TagResource } from './models/tag-resource.js';
-import { NewTag } from './models/tag-new.js';
+import { Identifier, IdentifierType } from './models/identifier.js';
 
 export interface ApiClient {
+  // Menu
   getMenu(): Promise<MenuResource>;
+  // Projects
   getProjects(): Promise<ProjectResource[]>;
-  getProject(id: Identifier): Promise<ProjectResource>;
-  postProject(project: ProjectResource): Promise<Identifier>;
-  putProject(project: ProjectResource): Promise<void>;
-  deleteProject(id: Identifier): Promise<void>;
-  migrateProject(project: ProjectResource): Promise<void>;
+  getProject(id: IdentifierType): Promise<ProjectResource>;
+  postProject(project: ProjectDto): Promise<IdentifierType>;
+  putProject(id: IdentifierType, project: ProjectDto): Promise<void>;
+  deleteProject(id: IdentifierType): Promise<void>;
+
+  // Tasks
   getTasks(): Promise<TaskResource[]>;
-  getTask(id: Identifier): Promise<TaskResource>;
-  postTask(task: TaskResource): Promise<Identifier>;
-  putTask(task: TaskResource): Promise<void>;
-  deleteTask(id: Identifier): Promise<void>;
-  migrateTask(task: TaskResource): Promise<void>;
+  getTask(id: IdentifierType): Promise<TaskResource>;
+  postTask(task: TaskDto): Promise<IdentifierType>;
+  putTask(id: IdentifierType, task: TaskDto): Promise<void>;
+  deleteTask(id: IdentifierType): Promise<void>;
+
+  // Tags
   getTags(): Promise<TagResource[]>;
-  getTag(id: Identifier): Promise<TagResource>;
-  postTag(tag: NewTag): Promise<Identifier>;
-  deleteTag(id: Identifier): Promise<void>;
+  getTag(id: IdentifierType): Promise<TagResource>;
+  postTag(tag: TagDto): Promise<IdentifierType>;
+  deleteTag(id: IdentifierType): Promise<void>;
 }
 
 export const clientBuilder = (api: Api): ApiClient => new KyyttoClient(api);
@@ -49,27 +55,36 @@ class KyyttoClient implements ApiClient {
     return response.data;
   }
 
-  public async getProject(id: Identifier): Promise<ProjectResource> {
+  public async getProject(id: IdentifierType): Promise<ProjectResource> {
     const response = await this.ax.get<ProjectResource>(
-      `${this.api.projects.path}/${id.value}`);
+      `${this.api.projects.path}/${id}`);
     return response.data;
   }
 
-  public async postProject(project: ProjectResource): Promise<Identifier> {
+  public async postProject(newProject: ProjectDto): Promise<IdentifierType> {
     const response = await this.ax.post<string>(
-      `${this.api.projects.path}`, project);
-    return idBuilder(response.data);
+      `${this.api.projects.path}`, newProject);
+    
+    if (response.data === undefined) {
+      throw new Error('POST response did not include any data.');
+    } else {
+      const id = Identifier.build(response.data);
+      if (id === undefined) {
+        throw new Error('POST response did not include a valid id.');
+      } else {
+        return id;
+      }
+    }
   }
 
-  public async putProject(project: ProjectResource): Promise<void> {
-    const id = this.api.resolveId(project.href);
+  public async putProject(id: IdentifierType, project: ProjectDto): Promise<void> {
     await this.ax.put<void>(
-      `${this.api.projects.path}/${id.value}`, project);
+      `${this.api.projects.path}/${id}`, project);
   }
 
-  public async deleteProject(id: Identifier): Promise<void> {
+  public async deleteProject(id: IdentifierType): Promise<void> {
      await this.ax.delete<void>(
-      `${this.api.projects.path}/${id.value}`);
+      `${this.api.projects.path}/${id}`);
   }
 
   public async migrateProject(project: ProjectResource): Promise<void> {
@@ -83,27 +98,36 @@ class KyyttoClient implements ApiClient {
     return response.data;
   }
 
-  public async getTask(id: Identifier): Promise<TaskResource> {
+  public async getTask(id: IdentifierType): Promise<TaskResource> {
     const response = await this.ax.get<TaskResource>(
-      `${this.api.tasks.path}/${id.value}`);
+      `${this.api.tasks.path}/${id}`);
     return response.data;
   }
 
-  public async postTask(task: TaskResource): Promise<Identifier> {
+  public async postTask(task: TaskDto): Promise<IdentifierType> {
     const response = await this.ax.post<string>(
       `${this.api.tasks.path}`, task);
-    return idBuilder(response.data);
+    
+    if (response.data === undefined) {
+      throw new Error('POST response did not include any data.');
+    } else {
+      const id = Identifier.build(response.data);
+      if (id === undefined) {
+        throw new Error('POST response did not include a valid id.');
+      } else {
+        return id;
+      }
+    }
   }
 
-  public async putTask(task: TaskResource): Promise<void> {
-    const id = this.api.resolveId(task.href);
+  public async putTask(id: IdentifierType, task: TaskDto): Promise<void> {
     await this.ax.put<void>(
-      `${this.api.tasks.path}/${id.value}`, task);
+      `${this.api.tasks.path}/${id}`, task);
   }
 
-  public async deleteTask(id: Identifier): Promise<void> {
+  public async deleteTask(id: IdentifierType): Promise<void> {
     await this.ax.delete<void>(
-      `${this.api.tasks.path}/${id.value}`);
+      `${this.api.tasks.path}/${id}`);
   }
 
   public async migrateTask(task: TaskResource): Promise<void> {
@@ -117,20 +141,30 @@ class KyyttoClient implements ApiClient {
     return response.data;
   }
 
-  public async getTag(id: Identifier): Promise<TagResource> {
+  public async getTag(id: IdentifierType): Promise<TagResource> {
     const response = await this.ax.get<TagResource>(
-      `${this.api.tags.path}/${id.value}`);
+      `${this.api.tags.path}/${id}`);
     return response.data;
   }
 
-  public async postTag(tag: NewTag): Promise<Identifier> {
+  public async postTag(tag: TagDto): Promise<IdentifierType> {
     const response = await this.ax.post<string>(
       `${this.api.tags.path}`, tag);
-    return idBuilder(response.data);
+
+    if (response.data === undefined) {
+      throw new Error('POST response did not include any data.');
+    } else {
+      const id = Identifier.build(response.data);
+      if (id === undefined) {
+        throw new Error('POST response did not include a valid id.');
+      } else {
+        return id;
+      }
+    }
   }
 
-  public async deleteTag(id: Identifier): Promise<void> {
+  public async deleteTag(id: IdentifierType): Promise<void> {
     await this.ax.delete<void>(
-      `${this.api.tags.path}/${id.value}`);
+      `${this.api.tags.path}/${id}`);
   }
 }
