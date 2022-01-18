@@ -1,7 +1,7 @@
-import { apiBuilder } from 'kyytto-models';
+import { Api } from 'kyytto-models';
 import { options } from '../options.js';
 
 /**
  * Global specification of the Kyyttö API.
  */
-export const api = apiBuilder(`${options.apiServerHost}:${options.apiServerPort}`);
+export const api = new Api(`${options.apiServerHost}:${options.apiServerPort}`);
