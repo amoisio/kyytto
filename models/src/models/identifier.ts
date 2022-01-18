@@ -4,7 +4,6 @@ export type IdentifierType = string;
 
 /**
  * Build an Identifier from a string. 
- * Throws if value is not a valid identifier value.
  * @param value id.
  */
 const build = (value: string): IdentifierType => {
@@ -13,7 +12,7 @@ const build = (value: string): IdentifierType => {
 
 /**
  * Parse an Identifier from an href string.
- * Throws if an identifier value cannot be parsed from href.
+ * Returns undefined if Identiier cannot be parsed from href.
  * @param href resource href.
  */
 const parse = (href: string): IdentifierType | undefined => {
@@ -50,7 +49,8 @@ const isValid = (value: IdentifierType): boolean => validate(value);
 export const Identifier = {
   build,
   parse,
-  newId,
+  generateNew: newId,
+  nil: NIL,
   isNil,
   isValid
 };

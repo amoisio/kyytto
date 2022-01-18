@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { ResourceReference } from '../models/resource.js';
 import { Identifier, IdentifierType } from '../models/identifier.js';
 
 export abstract class BaseApi {
@@ -46,7 +47,7 @@ export abstract class BaseApi {
    *
    * @param href resource href.
    */
-  public resolveId(href: string): IdentifierType | undefined {
+  public resolveId(href: ResourceReference): IdentifierType | undefined {
     return Identifier.parse(href);
   }
 }

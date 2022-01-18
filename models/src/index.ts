@@ -11,6 +11,7 @@ export { Validatable } from './models/validatable.js';
 
 export { Identifier, IdentifierType } from './models/identifier.js';
 export { Color, ColorType } from './models/color.js';
+export { Utilities } from './utilities/util.js';
 export { Api } from './api/api.js';
 export { MenuApi } from './api/menu-api.js';
 export { ProjectsApi } from './api/projects-api.js';
