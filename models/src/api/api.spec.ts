@@ -1,9 +1,9 @@
-import { Api, apiBuilder } from './api.js';
-import { Identifier } from './models/identifier.js';
+import { Api } from './api.js';
+import { Identifier } from '../models/identifier.js';
 
 describe('apiBuilder', () => {
   test('builds an api map with the given baseUrl', () => {
-    const api = apiBuilder('http://mydomain:9000');
+    const api = new Api('http://mydomain:9000');
     expect(api.baseUrl).toBe('http://mydomain:9000');
   });
 });
@@ -12,7 +12,7 @@ describe('apiBuilder', () => {
 describe('api', () => {
   let api: Api;
   beforeEach(() => {
-    api = apiBuilder('http://mydomain:9000');
+    api = new Api('http://mydomain:9000');
   });
 
   test('resolveId succesfully resolves an id from a valid url and id', () => {
