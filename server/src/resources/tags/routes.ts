@@ -1,5 +1,5 @@
 import express from 'express';
-import { idBuilder, NewTag, TagResource, TagType } from 'kyytto-models';
+import { Identifier, NewTag, TagResource, TagType } from 'kyytto-models';
 import { api } from '../api.js';
 
 export const router = express.Router();
@@ -24,7 +24,7 @@ router.route(`${api.tags.path}/:id`)
   .get(async (req, res) => {
     const id = req.params['id'];
     const service = req.tagService;
-    const tag = await service.getById(idBuilder(id));
+    const tag = await service.getById(Identifier.build(id));
     const resource = tag.toResource();
     res.json(resource);
   })
@@ -43,6 +43,6 @@ router.route(`${api.tags.path}/:id`)
   .delete(async (req, res) => {
     const id = req.params['id'];
     const repository = req.unitOfWork.tagRepository;
-    await repository.delete(idBuilder(id));
+    await repository.delete(Identifier.build(id));
     res.end();
   });

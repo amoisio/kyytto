@@ -1,7 +1,7 @@
 import Repository from '../repository.js';
 import { Low } from 'lowdb'
 import { DataDb, TagDb } from './db-model.js';
-import { idBuilder, Identifier } from 'kyytto-models';
+import { Identifier, IdentifierType } from 'kyytto-models';
 import { Tag } from '../../resources/tags/tag.js';
 
 export default class TagRepository implements Repository<Tag> {
@@ -11,8 +11,8 @@ export default class TagRepository implements Repository<Tag> {
     return this.db.data!.tags.map(p => this.constructTag(p));
   }
 
-  public async getById(id: Identifier): Promise<Tag> {
-    const match = this.db.data!.tags.find(p => p.id === id.value);
+  public async getById(id: IdentifierType): Promise<Tag> {
+    const match = this.db.data!.tags.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructTag(match);
     } else {
@@ -20,8 +20,8 @@ export default class TagRepository implements Repository<Tag> {
     }
   }
 
-  public async findById(id: Identifier): Promise<Tag | undefined> {
-    const match = this.db.data!.tags.find(p => p.id === id.value);
+  public async findById(id: IdentifierType): Promise<Tag | undefined> {
+    const match = this.db.data!.tags.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructTag(match);
     } else {
@@ -32,21 +32,21 @@ export default class TagRepository implements Repository<Tag> {
   private constructTag(model: TagDb): Tag {
     const project = this.db.data?.tags.find(p => p.id === model.id);
     return new Tag(
-      idBuilder(model.id),
+      Identifier.build(model.id),
       model.name,
       model.type);
   }
 
   public async add(tag: Tag): Promise<void> {
     this.db.data!.tags.push({
-      id: tag.id.value,
+      id: tag.id,
       name: tag.name,
       type: tag.type
     });
   }
 
   public async update(tag: Tag): Promise<void> {
-    const match = this.db.data!.tags.find(p => p.id === tag.id.value);
+    const match = this.db.data!.tags.find(p => p.id === tag.id);
     if (match !== undefined) {
       match.name = tag.name;
       match.type = tag.type;
@@ -55,8 +55,8 @@ export default class TagRepository implements Repository<Tag> {
     }
   }
 
-  public async delete(id: Identifier): Promise<void> {
-    const index = this.db.data!.tags.findIndex(t => t.id === id.value);
+  public async delete(id: IdentifierType): Promise<void> {
+    const index = this.db.data!.tags.findIndex(t => t.id === id);
     if (index !== -1) {
       this.db.data!.tags.splice(index, 1);
     } else {

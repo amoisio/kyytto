@@ -1,6 +1,5 @@
-import { NIL, validate } from 'uuid';
 import { api } from '../api.js';
-import { Color, colorBuilder, Identifiable, Identifier, ProjectResource, TagType } from 'kyytto-models';
+import { Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectResource, TagType } from 'kyytto-models';
 import { ColorGenerator } from '../../utilities/color-generator.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
@@ -34,22 +33,25 @@ export class ProjectBuilder {
    */
   public async from(resource: ProjectResource): Promise<Project> {
     const id = api.resolveId(resource.href);
+    if (id === undefined) {
+      throw new Error('Unable to resolve resource id.');
+    }
     return new Project(
       id,
       resource.name,
       resource.description,
-      colorBuilder(resource.color));
+      Color.build(resource.color));
   }
 }
 
 export class Project implements Identifiable {
-  public readonly id: Identifier;
+  public readonly id: IdentifierType;
   public name: string;
   public description: string | undefined;
-  public color: Color;
+  public color: ColorType;
 
-  public constructor(id: Identifier, name: string, description: string | undefined, color: Color) {
-    if (!id || id.value === NIL || !validate(id.value)) {
+  public constructor(id: IdentifierType, name: string, description: string | undefined, color: ColorType) {
+    if (!id || Identifier.isNil(id) || !Identifier.isValid(id)) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
     this.id = id;
@@ -60,8 +62,8 @@ export class Project implements Identifiable {
     this.name = name;
     this.description = description;
 
-    if (!color.isValid()) {
-      throw new Error(color.validationErrors().join('\n'));
+    if (!Color.isValid(color)) {
+      throw new Error(`Value ${color} is not a valid color value.`);
     }
     this.color = color;
   }
@@ -79,7 +81,7 @@ export class Project implements Identifiable {
       href: api.projects.resolveHref(this.id),
       name: this.name,
       description: this.description,
-      color: this.color.value
+      color: this.color
     };
   }
 }

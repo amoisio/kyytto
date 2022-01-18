@@ -3,7 +3,7 @@ import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb, TagDb, TaskDb } from './db-model.js';
-import { colorBuilder, idBuilder, Identifier, TagType } from 'kyytto-models';
+import { Color, Identifier, IdentifierType, TagType } from 'kyytto-models';
 import { Tag } from '../../resources/tags/tag.js';
 
 export default class TaskRepository implements Repository<Task> {
@@ -13,8 +13,8 @@ export default class TaskRepository implements Repository<Task> {
     return this.db.data!.tasks.map(p => this.constructTask(p));
   }
 
-  public async getById(id: Identifier): Promise<Task> {
-    const match = this.db.data!.tasks.find(p => p.id === id.value);
+  public async getById(id: IdentifierType): Promise<Task> {
+    const match = this.db.data!.tasks.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructTask(match);
     } else {
@@ -22,8 +22,8 @@ export default class TaskRepository implements Repository<Task> {
     }
   }
 
-  public async findById(id: Identifier): Promise<Task | undefined> {
-    const match = this.db.data!.tasks.find(p => p.id === id.value);
+  public async findById(id: IdentifierType): Promise<Task | undefined> {
+    const match = this.db.data!.tasks.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructTask(match);
     } else {
@@ -42,7 +42,7 @@ export default class TaskRepository implements Repository<Task> {
     tags.push(project.toTag());
 
     return new Task(
-      idBuilder(model.id),
+      Identifier.build(model.id),
       model.title,
       model.description,
       model.state,
@@ -52,16 +52,16 @@ export default class TaskRepository implements Repository<Task> {
 
   private constructProject(model: ProjectDb): Project {
     return new Project(
-      idBuilder(model.id),
+      Identifier.build(model.id),
       model.name,
       model.description,
-      colorBuilder(model.color)
+      Color.build(model.color)
     );
   }
 
   private constructTags(tags: TagDb[] = []): Tag[] {
     return tags.map(tag => new Tag(
-      idBuilder(tag.id),
+      Identifier.build(tag.id),
       tag.name,
       tag.type
     ));
@@ -70,13 +70,13 @@ export default class TaskRepository implements Repository<Task> {
   public async add(task: Task): Promise<void> {
     const userTags = task.tags.filter(tag => tag.type === TagType.UserDefined);
     this.db.data!.tasks.push({
-      id: task.id.value,
+      id: task.id,
       title: task.title,
       description: task.description,
       state: task.state,
-      projectId: task.project.id.value,
+      projectId: task.project.id,
       tags: userTags.map(tag => ({
-        id: tag.id.value,
+        id: tag.id,
         name: tag.name,
         type: tag.type
       }))
@@ -84,15 +84,15 @@ export default class TaskRepository implements Repository<Task> {
   }
 
   public async update(task: Task): Promise<void> {
-    const match = this.db.data!.tasks.find(p => p.id === task.id.value);
+    const match = this.db.data!.tasks.find(p => p.id === task.id);
     if (match !== undefined) {
       const userTags = task.tags.filter(tag => tag.type === TagType.UserDefined);
       match.title = task.title;
       match.description = task.description;
       match.state = task.state;
-      match.projectId = task.project.id.value;
+      match.projectId = task.project.id;
       match.tags = userTags.map(tag => ({
-        id: tag.id.value,
+        id: tag.id,
         name: tag.name,
         type: tag.type
       }));
@@ -101,8 +101,8 @@ export default class TaskRepository implements Repository<Task> {
     }
   }
 
-  public async delete(id: Identifier): Promise<void> {
-    const index = this.db.data!.tasks.findIndex(t => t.id === id.value);
+  public async delete(id: IdentifierType): Promise<void> {
+    const index = this.db.data!.tasks.findIndex(t => t.id === id);
     if (index !== -1) {
       this.db.data!.tasks.splice(index, 1);
     } else {

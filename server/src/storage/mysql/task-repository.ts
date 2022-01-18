@@ -2,7 +2,7 @@ import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
-import { Identifier } from 'kyytto-models';
+import { IdentifierType } from 'kyytto-models';
 
 export default class TaskRepository implements Repository<Task>{
 
@@ -32,7 +32,7 @@ export default class TaskRepository implements Repository<Task>{
       tasks t inner join 
       projects p on t.project_id = p.id;`;
 
-  public async getById(id: Identifier): Promise<Task> {
+  public async getById(id: IdentifierType): Promise<Task> {
     const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
@@ -42,7 +42,7 @@ export default class TaskRepository implements Repository<Task>{
     }
   }
 
-  public async findById(id: Identifier): Promise<Task | undefined> {
+  public async findById(id: IdentifierType): Promise<Task | undefined> {
     const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
@@ -112,7 +112,7 @@ export default class TaskRepository implements Repository<Task>{
     set title = ?, description = ?, state = ?, project_id = ?
     where id = ?;`;
 
-  public async delete(id: Identifier): Promise<void> {
+  public async delete(id: IdentifierType): Promise<void> {
     await this.connection.execute(this.deleteTask, [ id ]);
   }
 

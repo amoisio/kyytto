@@ -1,11 +1,11 @@
-import { Identifier, newId } from 'kyytto-models';
+import { IdentifierType, Identifier } from 'kyytto-models';
 
 export interface IdentifierGenerator {
-  generate(): Identifier;
+  generate(): IdentifierType;
 }
 
 export class UuidGenerator implements IdentifierGenerator {
-  public generate(): Identifier {
-    return newId();
+  public generate(): IdentifierType {
+    return Identifier.newId();
   }
 }

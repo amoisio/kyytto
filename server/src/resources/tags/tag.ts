@@ -1,6 +1,5 @@
-import { NIL, validate } from 'uuid';
 import { api } from '../api.js';
-import { Identifiable, Identifier, TagResource, TagType } from 'kyytto-models';
+import { Identifiable, Identifier, IdentifierType, TagResource, TagType } from 'kyytto-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 
@@ -30,6 +29,9 @@ export class TagBuilder {
    */
   public async from(resource: TagResource): Promise<Tag> {
     const id = api.resolveId(resource.href);
+    if (id === undefined) {
+      throw new Error('Unable to resolve resource id.');
+    }
     return new Tag(
       id,
       resource.name,
@@ -38,12 +40,12 @@ export class TagBuilder {
 }
 
 export class Tag implements Identifiable {
-  public readonly id: Identifier;
+  public readonly id: IdentifierType;
   public readonly name: string;
   public readonly type: TagType;
 
-  public constructor(id: Identifier, name: string, type: TagType) {
-    if (!id || id.value === NIL || !validate(id.value)) {
+  public constructor(id: IdentifierType, name: string, type: TagType) {
+    if (!id || Identifier.isNil(id) || !Identifier.isValid(id)) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
     this.id = id;

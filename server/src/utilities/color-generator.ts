@@ -1,7 +1,7 @@
-import { Color, colorBuilder } from 'kyytto-models';
+import { ColorType } from 'kyytto-models';
 import UnitOfWork from '../storage/unit-of-work.js';
 
-const allColorValues = [
+const allColorValues: ColorType[] = [
   '#005f73',
   '#0a9396',
   '#94d2bd',
@@ -14,23 +14,23 @@ const allColorValues = [
 ];
 
 export interface ColorGenerator {
-  all(): Color[];
-  available(): Promise<Color[]>;
-  generate(): Promise<Color>;
+  all(): ColorType[];
+  available(): Promise<ColorType[]>;
+  generate(): Promise<ColorType>;
 }
 
 export class NextUnusedColorGenerator implements ColorGenerator {
   constructor(private readonly uow: UnitOfWork) { }
 
-  public all(): Color[] {
+  public all(): ColorType[] {
     return this.getAllColors();
   }
 
-  public async available(): Promise<Color[]> {
+  public async available(): Promise<ColorType[]> {
     const colors = this.getAllColors();
     const usedColors = await this.getUsedColors();
     for (let usedColor of usedColors) {
-      const index = colors.findIndex(color => color.value === usedColor.value);
+      const index = colors.findIndex(color => color === usedColor);
       if (index !== -1) {
         colors.splice(index, 1);
       } 
@@ -38,16 +38,16 @@ export class NextUnusedColorGenerator implements ColorGenerator {
     return colors;
   }
 
-  private getAllColors(): Color[] {
-    return allColorValues.map(color => colorBuilder(color));
+  private getAllColors(): ColorType[] {
+    return allColorValues;
   }
 
-  private async getUsedColors(): Promise<Color[]> {
+  private async getUsedColors(): Promise<ColorType[]> {
     const projects = await this.uow.projectRepository.getAll();
     return projects.map(project => project.color);
   }
 
-  public async generate(): Promise<Color> {
+  public async generate(): Promise<ColorType> {
     const colors = await this.available();
     return colors[0];
   }

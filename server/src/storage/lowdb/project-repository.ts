@@ -2,7 +2,7 @@ import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb } from './db-model.js';
-import { Color, colorBuilder, idBuilder, Identifier } from 'kyytto-models';
+import { Color, Identifier, IdentifierType } from 'kyytto-models';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private readonly db: Low<DataDb>) { }
@@ -11,8 +11,8 @@ export default class ProjectRepository implements Repository<Project> {
     return this.db.data!.projects.map(p => this.constructProject(p));
   }
 
-  public async getById(id: Identifier): Promise<Project> {
-    const match = this.db.data!.projects.find(p => p.id === id.value);
+  public async getById(id: IdentifierType): Promise<Project> {
+    const match = this.db.data!.projects.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructProject(match);
     } else {
@@ -20,8 +20,8 @@ export default class ProjectRepository implements Repository<Project> {
     }
   }
 
-  public async findById(id: Identifier): Promise<Project | undefined> {
-    const match = this.db.data!.projects.find(p => p.id === id.value);
+  public async findById(id: IdentifierType): Promise<Project | undefined> {
+    const match = this.db.data!.projects.find(p => p.id === id);
     if (match !== undefined) {
       return this.constructProject(match);
     } else {
@@ -31,37 +31,37 @@ export default class ProjectRepository implements Repository<Project> {
 
   private constructProject(model: ProjectDb): Project {
     return new Project(
-      idBuilder(model.id),
+      Identifier.build(model.id),
       model.name,
       model.description,
-      colorBuilder(model.color)
+      Color.build(model.color)
     );
   }
 
   public async add(project: Project): Promise<void> {
     this.db.data!.projects.push({
-      id: project.id.value,
+      id: project.id,
       name: project.name,
       description: project.description,
-      color: project.color.value
+      color: project.color
     });
   }
 
   public async update(project: Project): Promise<void> {
-    const match = this.db.data!.projects.find(p => p.id === project.id.value);
+    const match = this.db.data!.projects.find(p => p.id === project.id);
     if (match !== undefined) {
       match.name = project.name;
       match.description = project.description;
-      match.color = project.color.value;
+      match.color = project.color;
     } else {
       throw new Error(`No Project found for ${project.id}.`);
     }
   }
 
-  public async delete(id: Identifier): Promise<void> {
-    const index = this.db.data!.projects.findIndex(p => p.id === id.value);
+  public async delete(id: IdentifierType): Promise<void> {
+    const index = this.db.data!.projects.findIndex(p => p.id === id);
     if (index !== -1) {
-      const tasks = this.db.data!.tasks.filter(task => task.projectId === id.value);
+      const tasks = this.db.data!.tasks.filter(task => task.projectId === id);
       for (const task of tasks) {
         const taskIndex = this.db.data!.tasks.findIndex(t => t.id === task.id);
         this.db.data!.tasks.splice(taskIndex, 1);

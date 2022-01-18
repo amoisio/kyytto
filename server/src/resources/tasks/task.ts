@@ -1,5 +1,4 @@
-import { idBuilder, Identifiable, Identifier, TaskResource, TaskState } from 'kyytto-models';
-import { NIL, validate } from 'uuid';
+import { Identifier, Identifiable, IdentifierType, TaskResource, TaskState } from 'kyytto-models';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from '../api.js';
@@ -19,7 +18,7 @@ export class TaskBuilder {
    * @param projectId Id of the project which this task belongs to.
    * @returns A newly created task with a generated id and in Todo state.
    */
-  public async new(title: string, description: string | undefined, projectId: Identifier): Promise<Task> {
+  public async new(title: string, description: string | undefined, projectId: IdentifierType): Promise<Task> {
     if (isEmpty(title)) {
       throw new Error('Title must be provided.');
     }
@@ -50,7 +49,11 @@ export class TaskBuilder {
     }
 
     const id = api.resolveId(resource.href);
-    if (!validate(id.value) || id.value === NIL) {
+    if (id === undefined) {
+      throw new Error('Unable to resolve resource id.');
+    }
+
+    if (!Identifier.isValid(id) || Identifier.isNil(id)) {
       throw new Error('Task reference is invalid.');
     }
 
@@ -70,7 +73,7 @@ export class TaskBuilder {
     }
 
     const projectId = api.resolveId(projectHref);
-    if (!validate(projectId.value) || projectId.value === NIL) {
+    if (projectId === undefined || !Identifier.isValid(projectId) || Identifier.isNil(projectId)) {
       throw new Error('Project reference is invalid.');
     }
 
@@ -79,12 +82,10 @@ export class TaskBuilder {
       throw new Error('Project reference is invalid.');
     }
 
-    const tags = resource.tags 
-      ? resource.tags.map(tag => new Tag(
-          api.resolveId(tag.href),
-          tag.name,
-          tag.type))
-      : [];
+    const tags = resource.tags
+      .map(tag => ({ id: api.resolveId(tag.href), name: tag.name, type: tag.type }))
+      .filter(tag => tag.id !== undefined)
+      .map(tag => new Tag(tag.id!, tag.name, tag.type));
 
     return new Task(
       id,
@@ -97,15 +98,15 @@ export class TaskBuilder {
 }
 
 export class Task implements Identifiable {
-  public readonly id: Identifier;
+  public readonly id: IdentifierType;
   public title: string;
   public description: string | undefined;
   public state: TaskState;
   public project: Project;
   public tags: Tag[];
 
-  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
-    if (!id || id.value === NIL || !validate(id.value)) {
+  public constructor(id: IdentifierType, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
+    if (id === undefined || Identifier.isNil(id) || !Identifier.isValid(id)) {
       throw new Error(`Id is invalid. Value: ${id}.`);
     }
     this.id = id;

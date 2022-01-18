@@ -1,7 +1,7 @@
 import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
-import { Identifier } from 'kyytto-models';
+import { IdentifierType } from 'kyytto-models';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private connection: Connection) { }
@@ -20,7 +20,7 @@ export default class ProjectRepository implements Repository<Project> {
     select p.id, p.name, p.description, p.color
     from projects p;`;
 
-  public async getById(id: Identifier): Promise<Project> {
+  public async getById(id: IdentifierType): Promise<Project> {
     const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
@@ -30,7 +30,7 @@ export default class ProjectRepository implements Repository<Project> {
     }
   }
 
-  public async findById(id: Identifier): Promise<Project | undefined> {
+  public async findById(id: IdentifierType): Promise<Project | undefined> {
     const cmd = this.selectById;
     const rowData = await this.connection.execute<RowDataPacket[]>(cmd, [id]);
     if (rowData[0].length == 0) {
@@ -81,7 +81,7 @@ export default class ProjectRepository implements Repository<Project> {
     set name = ?, description = ?, color = ?
     where id = ?;`;
 
-  public async delete(id: Identifier): Promise<void> {
+  public async delete(id: IdentifierType): Promise<void> {
     await this.connection.execute(this.deleteProject, [id]);
   }
 

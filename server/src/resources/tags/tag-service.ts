@@ -1,4 +1,4 @@
-import { Identifier, TagType } from 'kyytto-models';
+import { IdentifierType, TagType } from 'kyytto-models';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Tag } from './tag.js';
 
@@ -23,7 +23,7 @@ export class TagService {
     })
   }
 
-  public async getById(id: Identifier): Promise<Tag> {
+  public async getById(id: IdentifierType): Promise<Tag> {
     const tag = await this.uow.tagRepository.findById(id);
     const project = await this.uow.projectRepository.findById(id);
     if (tag !== undefined) {
