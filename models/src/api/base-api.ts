@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { IdentifierType } from '../models/identifier.js';
+import { Identifier, IdentifierType } from '../models/identifier.js';
 
 export abstract class BaseApi {
   protected readonly ax: AxiosInstance;
@@ -36,5 +36,17 @@ export abstract class BaseApi {
     } else {
       return b.substring(0, b.length - 1);
     }
+  }
+
+  /**
+   * Resolves the id of the given href.
+   * Example,
+   *  href = http://domain:port/api/resource/123
+   *  returns 123
+   *
+   * @param href resource href.
+   */
+  public resolveId(href: string): IdentifierType | undefined {
+    return Identifier.parse(href);
   }
 }
