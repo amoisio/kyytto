@@ -17,9 +17,9 @@ describe('Id.buildId', () => {
   });
 });
 
-describe('newId', () => {
+describe('generateNew', () => {
   test('builds a new Identifier object with a valid uuid', () => {
-    const id = Identifier.nil;
+    const id = Identifier.generateNew();
 
     expect(id).toBeTruthy();
     expect(Identifier.isValid(id)).toBeTruthy();

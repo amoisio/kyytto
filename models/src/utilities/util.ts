@@ -1,4 +1,4 @@
-const isEmpty = (val: string): boolean => {
+const isEmpty = (val: string | undefined): boolean => {
   return val === undefined || val === null || val.trim().length === 0;
 };
 

@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { ResourceReference } from '../models/resource.js';
 import { Identifier, IdentifierType } from '../models/identifier.js';
+import { Utilities } from '../utilities/util.js';
 
 export abstract class BaseApi {
   protected readonly ax: AxiosInstance;
@@ -9,17 +10,17 @@ export abstract class BaseApi {
 
   constructor(ax: AxiosInstance, path: string) {
     this.ax = ax;
-    if (ax.defaults.baseURL === undefined) {
+    if (Utilities.isEmpty(ax.defaults.baseURL)) {
       throw new Error('Axios base url must be defined.')
     }
-    this.baseUrl = this.prepareUrl(ax.defaults.baseURL);
-    if (this.baseUrl === undefined || this.baseUrl.length === 0) {
+    this.baseUrl = this.prepareUrl(ax.defaults.baseURL!);
+    if (Utilities.isEmpty(this.baseUrl)) {
       throw new Error('baseUrl must be given.');
     }
-    this.path = this.prepareUrl(path);
-    if (this.path === undefined || this.path.length === 0) {
-      throw new Error('resourceUrl must be given.');
+    if (Utilities.isEmpty(path)) {
+      throw new Error('path must be given.');
     }
+    this.path = this.prepareUrl(path);
   }
 
   public resolveHref(id?: IdentifierType): string {
@@ -31,7 +32,7 @@ export abstract class BaseApi {
   }
 
   private prepareUrl(url: string): string {
-    const b = url.trimEnd();
+    const b = url.trim();
     if (b === undefined || b.length === 0 || !b.endsWith('/')) {
       return b;
     } else {
