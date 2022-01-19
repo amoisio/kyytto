@@ -40,11 +40,18 @@ const newId = (): IdentifierType => uuidv4();
 const isNil = (value: IdentifierType): boolean => value === NIL;
 
 /**
- * Check if value is a valid identifier.
- * @param value identifier
- * @returns true if value is a valid identifier.
+ * Check if value is a valid non-nil identifier.
+ * @param value identifier to check
+ * @returns true if value is a valid non-nil identifier.
  */
-const isValid = (value: IdentifierType): boolean => validate(value);
+const isValid = (value: IdentifierType): boolean => validate(value) && !isNil(value);
+
+/**
+ * Check if value is a valid identifier (nil or non-nil).
+ * @param value identifier to check.
+ * @returns true if value is either a valid non-nil indentifier or nil.
+ */
+const isValidOrNil = (value: IdentifierType): boolean => validate(value);
 
 export const Identifier = {
   build,
@@ -52,7 +59,8 @@ export const Identifier = {
   generateNew: newId,
   nil: NIL,
   isNil,
-  isValid
+  isValid,
+  isValidOrNil
 };
 
 interface Href {
