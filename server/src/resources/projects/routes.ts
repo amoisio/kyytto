@@ -1,5 +1,5 @@
 import express from 'express';
-import { Identifier, ProjectResource } from 'kyytto-models';
+import { Identifier, ProjectDto, Utilities } from 'kyytto-models';
 import { api } from '../api.js';
 
 export const router = express.Router();
@@ -13,12 +13,13 @@ router.route(api.projects.path)
     res.json(resources);
   })
   .post(async (req, res) => {
-    const resource = req.body as ProjectResource;
+    const dto = req.body as ProjectDto;
+    if (dto === undefined) {
+      res.sendStatus(400);
+      return;
+    }
     const builder = req.projectBuilder;
-    const project = await builder.new(
-      resource.name, 
-      resource.description);
-      
+    const project = await builder.new(dto);
     const repository = req.unitOfWork.projectRepository;
     await repository.add(project);
 
@@ -27,39 +28,39 @@ router.route(api.projects.path)
 
 router.route(`${api.projects.path}/:id`)
   .get(async (req, res) => {
-    const id = req.params['id'];
+    const id = Identifier.build(req.params['id']);
+    if (!Identifier.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
     const repository = req.unitOfWork.projectRepository;
-    const project = await repository.getById(Identifier.build(id));
+    const project = await repository.getById(id);
     const resource = project.toResource();
 
     res.json(resource);
   })
   .put(async (req, res) => {
-    const resource = req.body as ProjectResource;
+    const id = Identifier.build(req.params['id']);
+    const dto = req.body as ProjectDto;
+    if (!Identifier.isValid(id) || dto === undefined) {
+      res.sendStatus(400);
+      return;
+    }
     const builder = req.projectBuilder;
-    const project = await builder.from(resource);
-
+    const project = await builder.from(id, dto);
     const repository = req.unitOfWork.projectRepository;
     await repository.update(project);
 
     res.end();
   })
   .delete(async (req, res) => {
-    const id = req.params['id'];
+    const id = Identifier.build(req.params['id']);
+    if (!Identifier.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
     const repository = req.unitOfWork.projectRepository;
-    await repository.delete(Identifier.build(id));
-
-    res.end();
-  });
-
-router.route(`${api.projects.path}/migration`)
-  .post(async (req, res) => {
-    const resource = req.body as ProjectResource;
-    const builder = req.projectBuilder;
-    const project = await builder.from(resource);
-
-    const repository = req.unitOfWork.projectRepository;
-    await repository.add(project);
+    await repository.delete(id);
 
     res.end();
   });

@@ -1,4 +1,4 @@
-import { Identifier, Identifiable, IdentifierType, TaskResource, TaskState } from 'kyytto-models';
+import { Identifier, Identifiable, IdentifierType, TaskResource, TaskState, TaskDto } from 'kyytto-models';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from '../api.js';
@@ -13,20 +13,19 @@ export class TaskBuilder {
 
   /**
    * Create a new Task.
-   * @param title Title of the task.
-   * @param description Description of the task.
-   * @param projectId Id of the project which this task belongs to.
-   * @returns A newly created task with a generated id and in Todo state.
+   * @param dto task data.
+   * @returns A newly created Todo task with a generated id.
    */
-  public async new(title: string, description: string | undefined, projectId: IdentifierType): Promise<Task> {
+  public async new(dto: TaskDto): Promise<Task> {
+    const title = dto.title;
+    const description = dto.description;
+    const projectId = dto.projectId;
     if (isEmpty(title)) {
       throw new Error('Title must be provided.');
     }
-
     if (!projectId) {
       throw new Error('Project id must be provided.');
     }
-
     const project = await this.unitOfWork.projectRepository.getById(projectId);
     if (!project) {
       throw new Error('Project reference is invalid.');
@@ -38,62 +37,45 @@ export class TaskBuilder {
   }
 
   /**
-   * Create a Project entity from the given resource representation.
-   * @param resource Project resource.
-   * @returns A project entity corresponding the resource representation.
+   * Create a Task entity.
+   * @param id task identifier.
+   * @param dto task data.
+   * @returns A task entity.
    */
-  public async from(resource: TaskResource): Promise<Task> {
-    const href = resource.href;
-    if (isEmpty(href)) {
-      throw new Error('Task reference is invalid.');
+  public async from(id: IdentifierType, dto: TaskDto): Promise<Task> {
+    if (!Identifier.isValid(id)) {
+      throw new Error(`Task id ${id} is invalid.`);
     }
-
-    const id = api.resolveId(resource.href);
-    if (id === undefined) {
-      throw new Error('Unable to resolve resource id.');
-    }
-
-    if (!Identifier.isValid(id) || Identifier.isNil(id)) {
-      throw new Error('Task reference is invalid.');
-    }
-
-    const title = resource.title;
+    const title = dto.title;
     if (isEmpty(title)) {
       throw new Error('Title must be provided.');
     }
 
-    const state = resource.state;
+    const state = dto.state;
     if (state === null || state === undefined || state < 0 || state > TaskState.Completed) {
       throw new Error(`State is invalid. Value: ${state}`);
     }
 
-    const projectHref = resource.projectHref;
-    if (isEmpty(projectHref)) {
-      throw new Error('Project reference is invalid.');
+    const projectId = dto.projectId;
+    if (!Identifier.isValid(projectId)) {
+      throw new Error(`Project id ${projectId} is invalid.`);
     }
 
-    const projectId = api.resolveId(projectHref);
-    if (projectId === undefined || !Identifier.isValid(projectId) || Identifier.isNil(projectId)) {
-      throw new Error('Project reference is invalid.');
-    }
-
-    const project = await this.unitOfWork.projectRepository.getById(projectId);
+    const project = await this.unitOfWork.projectRepository.findById(projectId);
     if (!project) {
-      throw new Error('Project reference is invalid.');
+      throw new Error(`Project id ${projectId} is invalid.`);
     }
 
-    const tags = resource.tags
-      .map(tag => ({ id: api.resolveId(tag.href), name: tag.name, type: tag.type }))
-      .filter(tag => tag.id !== undefined)
-      .map(tag => new Tag(tag.id!, tag.name, tag.type));
+    const tags: Tag[] = [];
+    for(const tagId of dto.tagIds) {
+      const tag = await this.unitOfWork.tagRepository.findById(tagId);
+      if (!tag) {
+        throw new Error(`Tag id ${tagId} is invalid.`);
+      }
+      tags.push(tag);
+    }
 
-    return new Task(
-      id,
-      title,
-      resource.description,
-      state,
-      project,
-      tags);
+    return new Task(id, title, dto.description, state, project, tags);
   }
 }
 
@@ -102,11 +84,11 @@ export class Task implements Identifiable {
   public title: string;
   public description: string | undefined;
   public state: TaskState;
-  public project: Project;
-  public tags: Tag[];
+  public readonly project: Project;
+  public readonly tags: Tag[];
 
   public constructor(id: IdentifierType, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
-    if (id === undefined || Identifier.isNil(id) || !Identifier.isValid(id)) {
+    if (!Identifier.isValid(id)) {
       throw new Error(`Id is invalid. Value: ${id}.`);
     }
     this.id = id;

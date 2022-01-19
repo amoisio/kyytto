@@ -1,6 +1,6 @@
 import express from 'express';
 import { api } from '../api.js';
-import { Identifier, TaskResource } from 'kyytto-models';
+import { Identifier, TaskDto, Utilities } from 'kyytto-models';
 
 export const router = express.Router();
 
@@ -13,19 +13,13 @@ router.route(api.tasks.path)
     res.json(resources);
   })
   .post(async (req, res) => {
-    const resource = req.body as TaskResource;
-    const builder = req.taskBuilder;
-    const projectId = api.resolveId(resource.projectHref)
-    if (projectId === undefined) {
+    const dto = req.body as TaskDto;
+    if (dto === undefined || !Identifier.isValid(dto.projectId) || dto.tagIds.some(tagId => !Identifier.isValid(tagId))) {
       res.sendStatus(400);
       return;
     }
-    
-    const task = await builder.new(
-      resource.title, 
-      resource.description,
-      projectId);
-
+    const builder = req.taskBuilder;
+    const task = await builder.new(dto);
     const repository = req.unitOfWork.taskRepository;
     await repository.add(task);
 
@@ -34,39 +28,39 @@ router.route(api.tasks.path)
 
 router.route(`${api.tasks.path}/:id`)
   .get(async (req, res) => {
-    const id = req.params['id'];
+    const id = Identifier.build(req.params['id']);
+    if (!Identifier.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
     const repository = req.unitOfWork.taskRepository;
-    const task = await repository.getById(Identifier.build(id));
+    const task = await repository.getById(id);
     const resource = task.toResource();
 
     res.json(resource);
   })
   .put(async (req, res) => {
-    const resource = req.body as TaskResource;
+    const id = Identifier.build(req.params['id']);
+    const dto = req.body as TaskDto;
+    if (!Identifier.isValid(id) || dto === undefined) {
+      res.sendStatus(400);
+      return;
+    }
     const builder = req.taskBuilder;
-    const task = await builder.from(resource);
-
+    const task = await builder.from(id, dto);
     const repository = req.unitOfWork.taskRepository;
     await repository.update(task);
 
     res.end();
   })
   .delete(async (req, res) => {
-    const id = req.params['id'];
+    const id = Identifier.build(req.params['id']);
+    if (!Identifier.isValid(id)) {
+      res.sendStatus(400);
+      return;
+    }
     const repository = req.unitOfWork.taskRepository;
-    await repository.delete(Identifier.build(id));
-
-    res.end();
-  });
-
-router.route(`${api.tasks.path}/migration`)
-  .post(async (req, res) => {
-    const resource = req.body as TaskResource;
-    const builder = req.taskBuilder;
-    const project = await builder.from(resource);
-
-    const repository = req.unitOfWork.taskRepository;
-    await repository.add(project);
+    await repository.delete(id);
 
     res.end();
   });

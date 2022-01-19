@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectResource, TagType } from 'kyytto-models';
+import { Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectDto, ProjectResource, TagType } from 'kyytto-models';
 import { ColorGenerator } from '../../utilities/color-generator.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
@@ -12,35 +12,31 @@ export class ProjectBuilder {
 
   /**
    * Creates a new Project.
-   * @param name Name of the project.
-   * @param description Desciption of the project.
+   * @param dto project data.
    * @returns A newly created project with generated id and color.
    */
-  public async new(name: string, description: string | undefined): Promise<Project> {
-    if (isEmpty(name)) {
+  public async new(dto: ProjectDto): Promise<Project> {
+    if (isEmpty(dto.name)) {
       throw new Error('Name must be provided.');
     }
 
     const id = this.idGenerator.generate();
     const color = await this.colorGenerator.generate();
-    return new Project(id, name, description, color);
+    return new Project(id, dto.name, dto.description, color);
   }
 
   /**
    * Create a Project entity from the given resource representation.
-   * @param resource Project resource.
+   * @param id project identifier.
+   * @param dto project data.
    * @returns A project entity corresponding the resource representation.
    */
-  public async from(resource: ProjectResource): Promise<Project> {
-    const id = api.resolveId(resource.href);
-    if (id === undefined) {
-      throw new Error('Unable to resolve resource id.');
+  public async from(id: IdentifierType, dto: ProjectDto): Promise<Project> {
+    if (!Identifier.isValid(id)) {
+      throw new Error(`Id value ${id} is invalid.`);
     }
-    return new Project(
-      id,
-      resource.name,
-      resource.description,
-      Color.build(resource.color));
+
+    return new Project(id, dto.name, dto.description, dto.color);
   }
 }
 
@@ -51,7 +47,7 @@ export class Project implements Identifiable {
   public color: ColorType;
 
   public constructor(id: IdentifierType, name: string, description: string | undefined, color: ColorType) {
-    if (!id || Identifier.isNil(id) || !Identifier.isValid(id)) {
+    if (!Identifier.isValid(id)) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
     this.id = id;
@@ -69,11 +65,7 @@ export class Project implements Identifiable {
   }
 
   public toTag(): Tag {
-    return new Tag(
-      this.id,
-      this.name,
-      TagType.Project
-    );
+    return new Tag(this.id, this.name, TagType.Project);
   }
 
   public toResource(): ProjectResource {

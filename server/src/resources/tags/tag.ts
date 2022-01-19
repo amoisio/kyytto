@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { Identifiable, Identifier, IdentifierType, TagResource, TagType } from 'kyytto-models';
+import { Identifiable, Identifier, IdentifierType, TagDto, TagResource, TagType } from 'kyytto-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 
@@ -8,34 +8,30 @@ export class TagBuilder {
     private readonly idGenerator: IdentifierGenerator) { }
 
   /**
-   * Creates a new Tag.
-   * @param name Tag name.
-   * @param type Tag type.
+   * Creates a new user-defined tag.
+   * @param dto tag data.
    * @returns A newly created tag with generated id.
    */
-  public async new(name: string): Promise<Tag> {
-    if (isEmpty(name)) {
+  public async new(dto: TagDto): Promise<Tag> {
+    if (isEmpty(dto.name)) {
       throw new Error('Name must be provided.');
     }
 
     const id = this.idGenerator.generate();
-    return new Tag(id, name, TagType.UserDefined);
+    return new Tag(id, dto.name, TagType.UserDefined);
   }
 
   /**
-   * Create a Tag entity from the given resource representation.
-   * @param resource tag resource.
-   * @returns A tag entity corresponding the resource representation.
+   * Create a user-defined Tag entity.
+   * @param id tag identifier.
+   * @param dto tag data.
+   * @returns A tag entity.
    */
-  public async from(resource: TagResource): Promise<Tag> {
-    const id = api.resolveId(resource.href);
-    if (id === undefined) {
-      throw new Error('Unable to resolve resource id.');
+  public async from(id: IdentifierType, dto: TagDto): Promise<Tag> {
+    if (!Identifier.isValid(id)) {
+      throw new Error(`Id value ${id} is invalid.`);
     }
-    return new Tag(
-      id,
-      resource.name,
-      resource.type);
+    return new Tag(id, dto.name, TagType.UserDefined);
   }
 }
 
@@ -45,11 +41,11 @@ export class Tag implements Identifiable {
   public readonly type: TagType;
 
   public constructor(id: IdentifierType, name: string, type: TagType) {
-    if (!id || Identifier.isNil(id) || !Identifier.isValid(id)) {
+    if (!Identifier.isValid(id)) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
     this.id = id;
-    
+
     if (isEmpty(name)) {
       throw new Error('Name must not be empty.');
     }

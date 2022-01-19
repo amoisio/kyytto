@@ -6,6 +6,6 @@ export interface IdentifierGenerator {
 
 export class UuidGenerator implements IdentifierGenerator {
   public generate(): IdentifierType {
-    return Identifier.newId();
+    return Identifier.generateNew();
   }
 }
