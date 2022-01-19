@@ -2,16 +2,16 @@ import { MenuResource } from 'kyytto-models';
 import { api } from '../api.js';
 
 export const menu: MenuResource = {
-  href: api.menu.resolveHref(),
+  href: api.menu.resourceHref(),
   title: 'Menu',
   children: [{
-    href: api.projects.resolveHref(),
+    href: api.projects.resourceHref(),
     title: 'Projects'
   }, {
-    href: api.tasks.resolveHref(),
+    href: api.tasks.resourceHref(),
     title: 'Board'
   }, {
-    href: api.tags.resolveHref(),
+    href: api.tags.resourceHref(),
     title: 'Tags'
   }]
 };
