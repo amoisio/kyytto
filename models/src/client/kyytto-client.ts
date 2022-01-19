@@ -16,12 +16,12 @@ export class KyyttoClient {
   public readonly tasks: ApiClient<TaskDto, TaskResource>;
   public readonly tags: ApiClient<TagDto, TagResource>;
 
-  constructor(baseUrl: string) {
-    const ax = axios.create({ baseURL: baseUrl });
-    this.baseUrl = baseUrl;
-    this.menu = new MenuApiClient(ax, Api.menu);
-    this.projects = new ApiClient(ax, Api.projects);
-    this.tasks = new ApiClient(ax, Api.tasks);
-    this.tags = new ApiClient(ax, Api.tags);
+  constructor(api: Api) {
+    this.baseUrl = api.baseUrl;
+    const ax = axios.create({ baseURL: api.baseUrl });
+    this.menu = new MenuApiClient(ax, api.menu.path);
+    this.projects = new ApiClient(ax, api.projects.path);
+    this.tasks = new ApiClient(ax, api.tasks.path);
+    this.tags = new ApiClient(ax, api.tags.path);
   }
 }

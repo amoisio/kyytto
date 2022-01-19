@@ -4,9 +4,11 @@ import { Utilities } from '../utilities/util.js';
 import { KyyttoClient } from './kyytto-client.js';
 
 describe('Kyytto client', () => {
+  let api: Api;
   let client: KyyttoClient;
   beforeEach(() => {
-    client = new KyyttoClient('http://mydomain:9000');
+    api = new Api('http://mydomain:9000');
+    client = new KyyttoClient(api);
   });
 
   test('builds an api map with the given baseUrl', () => {
@@ -29,13 +31,13 @@ describe('Kyytto client', () => {
 
   test('resolveHref for tasks resolves the correct path', () => {
     const id = Identifier.build('52289d13-d597-4010-a78f-f3fa0690bd6d');
-    const href = client.tasks.resolveHref(id);
+    const href = api.tasks.resolveHref(id);
     expect(href).toBe(`http://mydomain:9000${client.tasks.path}/52289d13-d597-4010-a78f-f3fa0690bd6d`);
   });
 
   test('resolveHref for projects resolves the correct path', () => {
     const id = Identifier.build('52289d13-d597-4010-a78f-f3fa0690bd6d');
-    const href = client.projects.resolveHref(id);
+    const href = api.projects.resolveHref(id);
     expect(href).toBe(`http://mydomain:9000${client.projects.path}/52289d13-d597-4010-a78f-f3fa0690bd6d`);
   });
 });

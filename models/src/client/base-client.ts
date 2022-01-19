@@ -9,8 +9,6 @@ export interface Client<TDto, TResource> {
   getById(id: IdentifierType): Promise <TResource>;
   update(id: IdentifierType, dto: TDto): Promise<void>;
   delete(id: IdentifierType): Promise<void>;
-  resolveHref(id: IdentifierType): ResourceReference;
-  resourceHref(): ResourceReference;
 }
 
 export abstract class BaseClient {
@@ -73,13 +71,5 @@ export class ApiClient<TDto, TResource> extends BaseClient implements Client<TDt
 
   public async delete(id: IdentifierType): Promise<void> {
     await this.ax.delete<void>(`${this.path}/${id}`);
-  }
-
-  public resolveHref(id: IdentifierType): ResourceReference {
-    return `${this.resourceHref()}/${id}`;
-  }
-
-  public resourceHref(): ResourceReference {
-    return `${this.baseUrl}${this.path}`;
   }
 }
