@@ -83,6 +83,14 @@ export class Task extends Entity {
     return errors;
   }
 
+  public isNew(): boolean {
+    return Identifier.isNil(this.id);
+  }
+
+  public isTodo(): boolean {
+    return this.state === TaskState.Todo;
+  }
+  
   public isStarted(): boolean {
     return this.state === TaskState.InProgress;
   }
