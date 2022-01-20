@@ -1,56 +1,68 @@
-import { Identifiable } from '@/shared/identifiable';
-import { isEmpty, NEWID } from '@/shared/utilities';
-import { Validatable } from '@/shared/validatable';
-import { Color, colorBuilder, idBuilder, Identifier, ProjectResource } from 'kyytto-models';
-import { api } from '../api';
+import { Entity } from '@/shared/entity';
+import { Color, ColorType, Identifier, IdentifierType, ProjectDto, ProjectResource, Utilities } from 'kyytto-models';
 
-export class Project implements Identifiable, Validatable {
-  public readonly id: Identifier;
+export class ProjectCollection extends Array<Project> {
+  constructor(resources: ProjectResource[]) {
+    super(...resources.map(r => new Project(r)))
+  }
+}
+
+export class Project extends Entity {
   public name: string;
-  public description?: string;
-  public color: Color;
-  
-  public constructor(id: Identifier, name: string, description: string | undefined, color: Color) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.color = color;
+  public description: string;
+  public color: ColorType;
+
+  public constructor(id: IdentifierType, name: string, description: string, color: ColorType);
+  public constructor(resource: ProjectResource);
+  public constructor();
+  public constructor(item?: IdentifierType | ProjectResource, name?: string, description?: string, color?: ColorType) {
+    if (item === undefined) {
+      super(Identifier.nil);
+      this.name = '';
+      this.description = '';
+      this.color = Color.build('ffffff');
+    } else if (typeof item === 'string') {
+      super(item);
+      this.name = name!;
+      this.description = description!;
+      this.color = color!;
+    } else {
+      super(Utilities.resolveId(item.href));
+      this.name = item.name;
+      this.description = item.description ?? '';
+      this.color = Color.build(item.color);
+    }
   }
 
-  /**
-   * Creates an empty Project.
-   */
-  public static empty(): Project {
-    const color = colorBuilder('ffffff');
-    return new Project(idBuilder(NEWID), '', undefined, color);
-  }
-
-  /**
-   * Create a Project entity from the given resource representation.
-   * @param resource Project resource.
-   * @returns A project entity corresponding the resource representation.
-   */
-  public static from(resource: ProjectResource): Project {
+  public copy(): Project {
     return new Project(
-      api.resolveId(resource.href),
-      resource.name,
-      resource.description,
-      colorBuilder(resource.color));
+      Identifier.build(this.id),
+      this.name,
+      this.description,
+      Color.build(this.color));
+  }
+
+  public toDto(): ProjectDto {
+    return {
+      name: this.name,
+      description: this.description,
+      color: Color.build(this.color)
+    };
   }
 
   public validate(): string[] {
     const errors: string[] = [];
 
-    if (!this.id.validate()) {
-      errors.push(`Id ${this.id.value} is invalid.`)
+    if (!Identifier.isValid(this.id)) {
+      errors.push(`Id ${this.id} is invalid.`)
     }
 
-    if (isEmpty(this.name)) {
+    if (Utilities.isEmpty(this.name)) {
       errors.push('Name must not be empty.');
     }
 
-    if (!this.color.validate()) {
-      errors.push(`Color ${this.color.value} is invalid.`);
+    if (!Color.isValid(this.color)) {
+      errors.push(`Color ${this.color} is invalid.`);
     }
 
     return errors;

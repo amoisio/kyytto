@@ -1,5 +1,5 @@
 <template>
-  <div class="task-view">
+  <div class="task-view" v-if="isReady">
     <div class="row pb-3 pt-3">
       <div class="col-12 col-md-6">
         <h1>Task</h1>
@@ -7,14 +7,21 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <task-edit-form
-          v-if="isReady"
-          :task="task"
+        <task-edit-form 
+          v-model="task"
           :projects="projects"
-          @save="save"
-          @remove="remove"
-          @cancel="cancel"
+          :tags="tags"
         ></task-edit-form>
+      </div>
+    </div>
+    <div> {{ task }}</div>
+    <div class="row">
+      <div class="col-6 col-md-3">
+        <button type="button" @click="save" class="btn btn-outline-success me-2">Save</button>
+        <button type="button" @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+      </div>
+      <div class="col-6 col-md-3 text-end">
+        <button type="button" @click="remove" class="btn btn-outline-danger">Remove</button>
       </div>
     </div>
   </div>
@@ -24,8 +31,9 @@
   import TaskEditForm from './task-edit-form.vue';
   import { Project } from '../projects/project-models';
   import { Task } from './task-models';
-  import { Identifier } from 'kyytto-models';
+  import { Identifier, IdentifierType } from 'kyytto-models';
   import { NotificationService } from '@/shared/notification-service';
+  import { Tag } from '../tags/tag-models';
 
   export default defineComponent({
     name: 'TaskView',
@@ -34,68 +42,73 @@
     },
     props: {
       id: {
-        type: Object as PropType<Identifier>,
+        type: Object as PropType<IdentifierType>,
         required: true,
-        validator: (uuid: Identifier) => uuid.validate()
+        validator: (uuid: IdentifierType) => Identifier.isValidOrNil(uuid)
       }
     },
     data() {
       return {
         isReady: false,
         task: {} as Task,
-        projects: [] as Project[]
+        projects: [] as Project[],
+        tags: [] as Tag[]
       };
     },
     computed: {
-      notificationService(): NotificationService {
+      notifier(): NotificationService {
         return this.$services.notificationService;
+      },
+      color(): string {
+        return this.task.project.color;
       }
     },
     async created() {
       try {
         this.isReady = false;
+        this.task = Identifier.isNil(this.id)
+          ? new Task()
+          : await this.$services.taskService.getById(this.id);
         this.projects = await this.$services.projectService.getAll();
-        if (this.id.isNil()) {
-          this.task = Task.empty();
-        } else {
-          this.task = await this.$services.taskService.getById(this.id);
-        }
+        this.tags = await this.$services.tagService.getAllUserTags();
       } catch (e) {
-        this.notificationService.notifyError(`Loading task details with id ${this.id} failed.`, 'Error', e);
+        this.notifier.notifyError(`Loading task details with id ${this.id} failed.`, 'Error', e);
         await this.navigateToBoard();
       } finally {
         this.isReady = true;
       }
     },
     methods: {
-      async save(task: Task): Promise<void> {
+      async save(): Promise<void> {
+        const task = this.task;
         const errors = task.validate();
         if (errors.length > 0) {
-          this.notificationService.notifyWarning(errors.join('\n'), 'Validation error');
+          this.notifier.notifyWarning(errors.join('\n'), 'Validation error');
           return;
         }
 
         try {
-          await this.$services.taskService.save(task);
-          this.notificationService.notifySuccess('Task saved.');
+          const id = await this.$services.taskService.save(task);
+          this.notifier.notifySuccess('Task saved.');
           await this.navigateToBoard();
         } catch (e) {
-          this.notificationService.notifyError('Save failed.', 'Error', e);
+          this.notifier.notifyError('Save failed.', 'Error', e);
         }
       },
-      async remove(id: Identifier): Promise<void> {
-        if (id.isNil() || !id.validate()) {
-          this.notificationService.notifyWarning(`Unable to remove task. Id ${id} is invalid.`);
+      async remove(): Promise<void> {
+        const id = this.id;
+        if (!Identifier.isValid(id)) {
+          this.notifier.notifyWarning(`Unable to remove task. Id ${id} is invalid.`);
           await this.cancel();
           return;
         }
 
         try {
           await this.$services.taskService.delete(id);
-          this.notificationService.notifySuccess('Task removed.');
+          this.notifier.notifySuccess('Task removed.');
           await this.navigateToBoard();
         } catch (e) {
-          this.notificationService.notifyError('Remove failed.', 'Error', e);
+          this.notifier.notifyError('Remove failed.', 'Error', e);
         }
       },
       async cancel(): Promise<void> {

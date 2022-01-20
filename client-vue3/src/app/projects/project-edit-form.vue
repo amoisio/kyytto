@@ -34,7 +34,7 @@
   </form>
 </template>
 <script lang="ts">
-  import { Color, colorBuilder, idBuilder, Identifier } from 'kyytto-models';
+  import { ColorType, IdentifierType } from 'kyytto-models';
   import { defineComponent, PropType } from 'vue';
   import { Project } from './project-models';
 
@@ -73,28 +73,24 @@
   });
 
   class ProjectEditFormModel {
-    public readonly id: Identifier;
+    public readonly id: IdentifierType;
     public name: string;
     public description?: string;
-    public color: Color;
+    public color: ColorType;
 
     constructor(project: Project) {
-      this.id = idBuilder(project.id.value);
+      this.id = project.id;
       this.name = project.name;
       this.description = project.description;
-      this.color = colorBuilder(project.color.value);
-    }
-
-    public get isNew(): boolean {
-      return this.id.isNil();
+      this.color = project.color;
     }
 
     public toProject(): Project {
       return new Project(
-        idBuilder(this.id.value),
+        this.id,
         this.name,
-        this.description,
-        colorBuilder(this.color.value));
+        this.description ?? '',
+        this.color);
     }
   }
 </script>

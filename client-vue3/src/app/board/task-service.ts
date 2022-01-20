@@ -1,116 +1,74 @@
 import { Task } from './task-models';
-import { LocalStorageRepository } from '@/shared/local-storage-repository';
-import { LocalStorage } from '@/shared/local-storage';
-import * as mappers from '@/shared/mappers';
-import { ApiClient, idBuilder, Identifier, ProjectResource, TaskResource } from 'kyytto-models';
-import { api } from '../api';
+import { Identifier, IdentifierType, KyyttoClient, Utilities } from 'kyytto-models';
+import { ProjectService } from '../projects/project-service';
+import { TagService } from '../tags/tag-service';
 
 export interface TaskService {
-  save(task: Task): Promise<Identifier>;
-  create(newTask: Task): Promise<Identifier>;
+  save(task: Task): Promise<IdentifierType>;
+  create(task: Task): Promise<IdentifierType>;
   getAll(): Promise<Task[]>;
-  getById(id: Identifier): Promise<Task>
-  update(task: Task): Promise<Identifier>;
-  delete(id: Identifier): Promise<void>;
+  getById(id: IdentifierType): Promise<Task>
+  update(task: Task): Promise<IdentifierType>;
+  delete(id: IdentifierType): Promise<void>;
 }
 
 export class ApiTaskService implements TaskService {
-  private readonly client: ApiClient;
-  
-  constructor(client: ApiClient) {
+  private readonly client: KyyttoClient;
+  private readonly projectService: ProjectService;
+  private readonly tagService: TagService;
+
+  constructor(client: KyyttoClient, projectService: ProjectService, tagService: TagService) {
     this.client = client;
+    this.projectService = projectService;
+    this.tagService = tagService;
   }
 
-  public async save(task: Task): Promise<Identifier> {
-    if (task.id.isNil()) {
+  public async save(task: Task): Promise<IdentifierType> {
+    if (Identifier.isNil(task.id)) {
       return await this.create(task);
     } else {
       return await this.update(task);
     }
   }
 
-  public async create(newTask: Task): Promise<Identifier> {
-    const resource = mappers.taskResourceMapper(newTask);
-    const id = await this.client.postTask(resource);
+  public async create(task: Task): Promise<IdentifierType> {
+    const dto = task.toDto();
+    const id = await this.client.tasks.create(dto);
     return id;
   }
 
   public async getAll(): Promise<Task[]> {
-    const taskResources = await this.client.getTasks();
-    const projectResources = await this.client.getProjects();
-    
-    return taskResources.map(taskResource => {
-      const projectResource = projectResources.find(pr => pr.href === taskResource.projectHref);
-      if (projectResource === undefined) {
+    const taskResources = await this.client.tasks.getAll();
+    const projectResources = await this.client.projects.getAll();
+    const tagResources = await this.client.tags.getAll();
+    return taskResources.map(task => {
+      const project = projectResources.find(p => p.href === task.projectHref);
+      const tags = tagResources.filter(t => task.tagHrefs.includes(t.href));
+      if (project === undefined) {
         throw new Error('Project reference was missing.');
       }
-      return Task.from(taskResource, projectResource);
+      return new Task(task, project, tags);
     });
   }
 
-  public async getById(id: Identifier): Promise<Task> {
-    const taskResource = await this.client.getTask(id);
-    const projectResource = await this.client.getProject(api.resolveId(taskResource.projectHref));
-    return Task.from(taskResource, projectResource);
+  public async getById(id: IdentifierType): Promise<Task> {
+    const taskResource = await this.client.tasks.getById(id);
+    const projectId = Utilities.resolveId(taskResource.projectHref);
+    const projectResource = await this.client.projects.getById(projectId);
+    const tagResources = await Promise.all(taskResource.tagHrefs.map(async (t) => {
+      const tagId = Utilities.resolveId(t);
+      return await this.client.tags.getById(tagId);
+    }));
+    return new Task(taskResource, projectResource, tagResources);
   }
 
-  public async update(task: Task): Promise<Identifier> {
-    const resource = mappers.taskResourceMapper(task);
-    await this.client.putTask(resource);
+  public async update(task: Task): Promise<IdentifierType> {
+    const dto = task.toDto()
+    await this.client.tasks.update(task.id, dto);
     return task.id;
   }
 
-  public async delete(id: Identifier): Promise<void> {
-    await this.client.deleteTask(id);
-  }
-}
-
-export class LocalStorageTaskService implements TaskService {
-  private readonly taskRepository: LocalStorageRepository<TaskResource>;
-  private readonly projectRepository: LocalStorageRepository<ProjectResource>;
-
-  constructor(store: LocalStorage) {
-    this.taskRepository = store.taskRepository;
-    this.projectRepository = store.projectRepository;
-  }
-
-  public async save(task: Task): Promise<Identifier> {
-    if (task.id.isNil()) {
-      return await this.create(task);
-    } else {
-      return await this.update(task);
-    }
-  }
-
-  public async create(newTask: Task): Promise<Identifier> {
-    const resource = mappers.taskResourceMapper(newTask);
-    const id = this.taskRepository.add(resource);
-    return idBuilder(id);
-  }
-
-  public async getAll(): Promise<Task[]> {
-    const resources = this.taskRepository.getAll();
-    return resources.map(resource => this.getTask(resource));
-  }
-
-  public async getById(id: Identifier): Promise<Task> {
-    const resource = this.taskRepository.getById(id.value);
-    return this.getTask(resource);
-  }
-
-  private getTask(taskResource: TaskResource) : Task {
-    const projectId = api.resolveId(taskResource.projectHref);
-    const projectResource = this.projectRepository.getById(projectId.value);
-    return Task.from(taskResource, projectResource);
-  }
-
-  public async update(task: Task): Promise<Identifier> {
-    const resource = mappers.taskResourceMapper(task);
-    this.taskRepository.update(resource);
-    return task.id;
-  }
-
-  public async delete(id: Identifier): Promise<void> {
-    this.taskRepository.remove(id.value);
+  public async delete(id: IdentifierType): Promise<void> {
+    await this.client.tasks.delete(id);
   }
 }

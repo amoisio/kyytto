@@ -1,50 +1,57 @@
-import { Identifiable } from '@/shared/identifiable';
-import { isEmpty, NEWID } from '@/shared/utilities';
-import { Validatable } from '@/shared/validatable';
-import { idBuilder, Identifier, TagResource, TagType } from 'kyytto-models';
-import { api } from '../api';
+import { Entity } from '@/shared/entity';
+import { Identifier, IdentifierType, TagDto, TagResource, TagType, Utilities } from 'kyytto-models';
 
-export class Tag implements Identifiable, Validatable {
-  public readonly id: Identifier;
+export class TagCollection extends Array<Tag> {
+  constructor(resources: TagResource[]) {
+    super(...resources.map(r => new Tag(r)));
+  }
+}
+
+export class Tag extends Entity {
   public name: string;
   public type: TagType;
 
-  public constructor(id: Identifier, name: string, type: TagType) {
-    this.id = id;
-    this.name = name;
-    this.type = type;
-  }
-  
-  /**
-   * Creates a new Tag.
-   */
-  public static new(name: string): Tag {
-    return new Tag(
-      idBuilder(NEWID), 
-      name, 
-      TagType.UserDefined);
+  constructor(id: IdentifierType, name: string, type: TagType);
+  constructor(resource: TagResource);
+  constructor()
+  constructor(item?: IdentifierType | TagResource, name?: string, type?: TagType) {
+    if (item === undefined) {
+      super(Identifier.nil);
+      this.name = '';
+      this.type = TagType.UserDefined;
+    } else if (typeof item === 'string') {
+      super(item);
+      this.name = name!;
+      this.type = type!;
+    } else {
+      super(Utilities.resolveId(item.href));
+      this.name = item.name,
+      this.type = item.type;
+    }
   }
 
-  /**
-   * Create a Tag entity from the given resource representation.
-   * @param tagResource Tag resource.
-   * @returns A Tag entity corresponding the resource representation.
-   */
-  public static from(tagResource: TagResource): Tag {
-    return new Tag(
-      api.resolveId(tagResource.href),
-      tagResource.name,
-      tagResource.type);
+  public static empty(): Tag {
+    return new Tag(Identifier.nil, '', TagType.UserDefined);
+  }
+
+  public copy(): Tag {
+    return new Tag(this.id, this.name, this.type);
+  }
+
+  public toDto(): TagDto {
+    return {
+      name: this.name
+    };
   }
 
   public validate(): string[] {
     const errors: string[] = [];
 
-    if (!this.id.validate()) {
-      errors.push(`Id ${this.id.value} is invalid.`);
+    if (!Identifier.isValid(this.id)) {
+      errors.push(`Id ${this.id} is invalid.`);
     }
 
-    if (isEmpty(this.name)) {
+    if (Utilities.isEmpty(this.name)) {
       errors.push('Name must not be empty.');
     }
 
@@ -53,5 +60,9 @@ export class Tag implements Identifiable, Validatable {
     }
 
     return errors;
+  }
+
+  public isUserDefined(): boolean {
+    return this.type === TagType.UserDefined;
   }
 }

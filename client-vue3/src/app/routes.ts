@@ -4,12 +4,12 @@ import ProjectListView from './projects/project-list-view.vue';
 import ProjectView from './projects/project-view.vue';
 import { menuLinks } from './menu/menu-links';
 import { RouteLocation } from 'vue-router';
-import { idBuilder } from 'kyytto-models';
+import { Identifier } from 'kyytto-models';
 
 function identifierResolver(route: RouteLocation) {
   const idStr = route.params.id as string;
   return {
-    id: idBuilder(idStr)
+    id: Identifier.build(idStr)
   }
 }
 

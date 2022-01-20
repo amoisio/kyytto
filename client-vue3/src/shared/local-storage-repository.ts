@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Resource } from 'kyytto-models';
+import { Resource, Utilities } from 'kyytto-models';
 import { api } from '@/app/api';
 
 export class LocalStorageRepository<TResouce extends Resource> {
@@ -53,7 +53,11 @@ export class LocalStorageRepository<TResouce extends Resource> {
   }
 
   private entityId(item: TResouce): string {
-    return api.resolveId(item.href).value;
+    const id = api.resolveId(item.href);
+    if (Utilities.isEmpty(id)){
+      throw new Error(`Resolved empty identifier from ${item.href}.`);
+    }
+    return id!;
   }
 
   private readItems(): TResouce[] {

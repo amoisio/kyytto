@@ -1,4 +1,4 @@
-import { NEWID } from '@/shared/utilities';
+import { Identifier } from 'kyytto-models';
 
 export interface KyyttoLinks {
   newTask: Link,
@@ -16,7 +16,7 @@ export interface Link {
 export const menuLinks: KyyttoLinks = {
   newTask: {
     name: 'task',
-    path: `/task/${NEWID}`,
+    path: `/task/${Identifier.nil}`,
     title: 'New',
     icon: 'plus-circle'
   },

@@ -1,5 +1,5 @@
-import { Identifier } from 'kyytto-models';
+import { IdentifierType } from 'kyytto-models';
 
 export interface Identifiable {
-  id: Identifier;
+  id: IdentifierType;
 }

@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="save" autocomplete="off">
+  <form autocomplete="off">
     <div class="mb-3">
       <label for="task-title" class="form-label">Title</label>
       <input
@@ -17,7 +17,7 @@
       <textarea
         id="task-description"
         class="form-control"
-        rows="5"
+        rows="15"
         v-model="item.description"
         ref="description"
         placeholder="Task description"
@@ -31,6 +31,10 @@
           {{ project.name }}
         </option>
       </select>
+    </div>
+    <div class="mb-3">
+      <label for="task-tags" class="form-label">Tags</label>
+      <tag-selector id="task-tags" v-model="selectedTags" :options="tags"></tag-selector>
     </div>
     <div class="row mb-3 justify-content-between" v-if="!item.isNew">
       <div class="col-auto">
@@ -52,15 +56,6 @@
         </button>
       </div>
     </div>
-    <div class="row justify-content-between">
-      <div class="col-auto">
-        <button type="submit" class="btn btn-outline-success me-2">Save</button>
-        <button type="button" @click="cancel" class="btn btn-outline-secondary">Cancel</button>
-      </div>
-      <div class="col-auto text-end">
-        <button type="button" @click="remove" class="btn btn-outline-danger">Remove</button>
-      </div>
-    </div>
   </form>
 </template>
 <script lang="ts">
@@ -68,24 +63,33 @@
   import { Project } from '@/app/projects/project-models';
   import { TaskState } from './task-state';
   import { Task } from './task-models';
-  import { idBuilder, Identifier } from 'kyytto-models';
+  import { Identifier, IdentifierType, Utilities } from 'kyytto-models';
+  import TagSelector from '../tags/tag-selector.vue';
+  import { Tag } from '../tags/tag-models';
 
   export default defineComponent({
     name: 'TaskEditForm',
-    emits: ['save', 'remove', 'cancel'],
+    components: {
+      TagSelector
+    },
+    emits: ['update:modelValue'],
     props: {
-      task: {
+      modelValue: {
         type: Object as PropType<Task>,
         required: true
       },
       projects: {
         type: Array as PropType<Project[]>,
         required: true
+      },
+      tags: {
+        type: Array as PropType<Tag[]>,
+        required: true
       }
     },
     data() {
       return {
-        item: new TaskEditModel(this.task)
+        item: new TaskEditModel(this.modelValue)
       };
     },
     computed: {
@@ -100,13 +104,21 @@
       },
       selectedProjectId: {
         get(): string {
-          return this.item.project?.id.value ?? '';
+          return this.item.project?.id ?? '';
         },
         set(id: string) {
-          const match = this.projects.find((p) => p.id.value === id);
+          const match = this.projects.find((p) => p.id === id);
           if (match !== undefined) {
             this.item.project = match;
           }
+        }
+      },
+      selectedTags: {
+        get(): Tag[] {
+          return this.item.tags;
+        },
+        set(newTags: Tag[]): void {
+          this.item.tags = newTags;
         }
       }
     },
@@ -123,57 +135,54 @@
       setCompleted() {
         this.item.state = TaskState.Completed;
       },
-      save() {
-        this.$emit('save', this.item.toTask());
-      },
-      remove() {
-        this.$emit('remove', this.item.id);
-      },
-      cancel() {
-        this.$emit('cancel');
-      },
       focusOnTitle() {
         const input = this.$refs.title as HTMLElement;
         input.focus();
+      }
+    },
+    watch: {
+      item: {
+        handler(newValue: TaskEditModel) {
+          this.$emit('update:modelValue', newValue.toTask());
+        },
+        deep: true
       }
     }
   });
 
   class TaskEditModel {
-    public readonly id: Identifier;
+    public readonly id: IdentifierType;
     public title: string;
     public description?: string;
     public state: TaskState;
     public project?: Project;
-    
+    public tags: Tag[];
+
     constructor(task: Task) {
-      this.id = idBuilder(task.id.value);
+      this.id = task.id;
       this.title = task.title;
       this.description = task.description;
       this.state = task.state;
-      this.project = task.project.id.isNil() 
-        ? undefined
-        : task.project;
+      this.project = Identifier.isNil(task.project.id) ? undefined : task.project;
+      this.tags = task.tags;
     }
 
     public get color(): string | undefined {
-      return this.project?.color.value;
+      return this.project?.color;
     }
 
     public get isNew(): boolean {
-      return this.id.isNil();
+      return Identifier.isNil(this.id);
     }
 
+    public validate(): boolean {
+      return !Utilities.isEmpty(this.title) && !!this.project && Identifier.isValid(this.id);
+    }
     public toTask(): Task {
       if (this.project === undefined) {
-        throw new Error("Project must be selected.");
+        throw new Error('Project must be selected.');
       }
-      return new Task(
-        idBuilder(this.id.value),
-        this.title,
-        this.description,
-        this.state,
-        this.project);
+      return new Task(this.id, this.project, this.tags, this.title, this.description ?? '', this.state);
     }
   }
 </script>

@@ -6,7 +6,7 @@
       </div>
       <div class="col-6 col-md-3 align-self-center text-end">
         <div class="position-relative mb-4 me-4">
-          <bordered-icon icon="tag" scale="2" :color="project.color.value" border-color="black"></bordered-icon>
+          <bordered-icon icon="tag" scale="2" :color="project.color" border-color="black"></bordered-icon>
         </div>
       </div>
     </div>
@@ -22,7 +22,7 @@
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/shared/bordered-icon.vue';
   import { Project } from './project-models';
-  import { Identifier } from 'kyytto-models';
+  import { Identifier, IdentifierType } from 'kyytto-models';
   import { NotificationService } from '@/shared/notification-service';
 
   export default defineComponent({
@@ -33,9 +33,9 @@
     },
     props: {
       id: {
-        type: Object as PropType<Identifier>,
+        type: Object as PropType<IdentifierType>,
         required: true,
-        validator: (uuid: Identifier) => uuid.validate()
+        validator: (uuid: IdentifierType) => Identifier.isValidOrNil(uuid)
       }
     },
     data() {
@@ -52,8 +52,8 @@
     async created() {
       try {
         this.isReady = false;
-        if (this.id.isNil()) {
-          this.project = Project.empty();
+        if (Identifier.isNil(this.id)) {
+          this.project = new Project();
         } else {
           this.project = await this.$services.projectService.getById(this.id);
         }
@@ -80,8 +80,8 @@
           this.notificationService.notifyError('Save failed.', 'Error', e);
         }
       },
-      async remove(id: Identifier): Promise<void> {
-        if (id.isNil() || !id.validate()) {
+      async remove(id: IdentifierType): Promise<void> {
+        if (!Identifier.isValid(id)) {
           this.notificationService.notifyWarning(`Unable to remove project. Id ${id} is invalid.`);
           await this.cancel();
           return;

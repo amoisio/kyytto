@@ -14,10 +14,11 @@
     "bootstrap-icons": "^1.7.2",
     "bootstrap-vue-3": "^0.0.5",
     "core-js": "^3.6.5",
-    "kyytto-models": "^1.0.48",
+    "kyytto-models": "^1.0.64",
     "uuid": "^8.3.2",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
+    "vue-multiselect": "^3.0.0-alpha.2",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2"
   },

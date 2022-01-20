@@ -22,8 +22,8 @@
   import { defineComponent } from 'vue';
   import { Project } from './project-models';
   import ProjectItem from './project-item.vue';
-  import { NEWID } from '@/shared/utilities';
   import { NotificationService } from '@/shared/notification-service';
+  import { Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'ProjectListView',
@@ -49,7 +49,7 @@
     },
     methods: {
       async navigateToProjectForm(project?: Project): Promise<void> {
-        const id = project?.id.value ?? NEWID;
+        const id = project?.id ?? Identifier.nil;
         await this.$router.push({ name: 'project-form', params: { id: id } });
       }
     }

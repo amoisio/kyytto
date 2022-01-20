@@ -29,8 +29,8 @@
   import { defineComponent } from 'vue';
   import TaskList from './task-list.vue';
   import { Task } from './task-models';
-  import { NEWID } from '@/shared/utilities';
   import { NotificationService } from '@/shared/notification-service';
+  import { Identifier } from 'kyytto-models';
 
   export default defineComponent({
     name: 'BoardView',
@@ -65,7 +65,7 @@
     },
     methods: {
       async navigateToTaskForm(task?: Task): Promise<void> {
-        const id = task?.id.value ?? NEWID;
+        const id = task?.id ?? Identifier.nil;
         await this.$router.push({ name: 'task', params: { id: id } });
       },
       moveUp(task: Task) {
@@ -84,7 +84,7 @@
         // }
       },
       async edit(task: Task): Promise<void> {
-        await this.$router.push({ name: 'task', params: { id: task.id.value } });
+        await this.$router.push({ name: 'task', params: { id: task.id } });
       },
       async start(task: Task): Promise<void> {
         const state = task.state;
@@ -102,7 +102,6 @@
         try {
           task.startWork();
           await this.$services.taskService.update(task);
-          console.log('hello');
           this.notificationService.notifySuccess('Task started.');
         } catch (e) {
           task.state = state;

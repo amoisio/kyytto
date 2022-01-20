@@ -75,7 +75,7 @@
     },
     computed: {
       color(): string {
-        return this.task.project.color.value;
+        return this.task.project.color;
       }
     }
   });

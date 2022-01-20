@@ -1,65 +1,74 @@
 import { Project } from '@/app/projects/project-models';
-import { Identifiable } from '@/shared/identifiable';
-import { isEmpty, NEWID } from '@/shared/utilities';
-import { Validatable } from '@/shared/validatable';
-import { idBuilder, Identifier, ProjectResource, TaskResource } from 'kyytto-models';
-import { api } from '../api';
-import { Tag } from '../tags/tag-models';
+import { Entity } from '@/shared/entity';
+import { Identifier, IdentifierType, ProjectResource, TagResource, TaskDto, TaskResource, Utilities } from 'kyytto-models';
+import { Tag, TagCollection } from '../tags/tag-models';
 import { TaskState } from './task-state';
 
-export class Task implements Identifiable, Validatable {
-  public readonly id: Identifier;
+export class TaskCollection extends Array<Task> {
+  constructor(resources: [task: TaskResource, project: ProjectResource, tags: TagResource[]][]) {
+    super(...resources.map(r => new Task(r[0], r[1], r[2])));
+  }
+}
+
+export class Task extends Entity {
   public title: string;
-  public description?: string;
+  public description: string;
   public state: TaskState;
   public project: Project;
   public tags: Tag[];
 
-  public constructor(id: Identifier, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.state = state;
-    this.project = project;
-    this.tags = tags;
-  }
-  
-  /**
-   * Creates an empty Task.
-   */
-  public static empty(): Task {
-    return new Task(
-      idBuilder(NEWID), 
-      '', 
-      undefined, 
-      TaskState.Todo,
-      Project.empty());
+  constructor(id: IdentifierType, project: Project, tags: Tag[], title: string, description: string, state: TaskState);
+  constructor(task: TaskResource, project: ProjectResource, tags: TagResource[]);
+  constructor();
+  constructor(item?: IdentifierType | TaskResource, project ?: Project | ProjectResource, tags ?: Tag[] | TagResource[], title ?: string, description ?: string, state ?: TaskState) {
+    if (item === undefined) {
+      super(Identifier.nil);
+      this.title = '';
+      this.description = '';
+      this.state = TaskState.Todo;
+      this.project = new Project();
+      this.tags = [];
+    } else if (typeof item === 'string') {
+      super(item);
+      this.title = title!
+      this.description = description!;
+      this.state = state!;
+      this.project = project as Project;
+      this.tags = tags as Tag[];
+    } else {
+      super(Utilities.resolveId(item.href));
+      this.title = item.title;
+      this.description = item.description ?? '';
+      this.state = item.state;
+      this.project = new Project(project as ProjectResource);
+      this.tags = new TagCollection(tags as TagResource[]);
+    }
   }
 
-  /**
-   * Create a Task entity from the given resource representation.
-   * @param taskResource Task resource.
-   * @param projectResource Project resource.
-   * @returns A Task entity corresponding the resource representation.
-   */
-  public static from(taskResource: TaskResource, projectResource: ProjectResource): Task {
-    return new Task(
-      api.resolveId(taskResource.href),
-      taskResource.title,
-      taskResource.description,
-      taskResource.state,
-      Project.from(projectResource),
-      taskResource.tags.map(tag => Tag.from(tag)));
+  public copy(): Task {
+    const project = this.project.copy()
+    const tags = this.tags.map(tag => tag.copy());
+    return new Task(this.id, project, tags, this.title, this.description, this.state);
+  }
+
+  public toDto(): TaskDto {
+    return {
+      title: this.title,
+      description: this.description,
+      state: this.state,
+      projectId: this.project.id,
+      tagIds: this.tags.map(tag => tag.id)
+    }
   }
 
   public validate(): string[] {
     const errors: string[] = [];
 
-    if (!this.id.validate()) {
-      errors.push(`Id ${this.id.value} is invalid.`);
+    if (!Identifier.isValid(this.id)) {
+      errors.push(`Id ${this.id} is invalid.`);
     }
 
-    if (isEmpty(this.title)) {
+    if (Utilities.isEmpty(this.title)) {
       errors.push('Title must not be empty.');
     }
 
@@ -67,7 +76,7 @@ export class Task implements Identifiable, Validatable {
       errors.push(`State ${this.state} is invalid.`)
     }
 
-    if (this.project === undefined || this.project.id.isNil()) {
+    if (!Identifier.isValid(this.project.id)) {
       errors.push('Project reference is invalid.');
     }
 
@@ -108,7 +117,7 @@ export class Task implements Identifiable, Validatable {
   }
 
   public removeTag(tag: Tag): void {
-    const index = this.tags.findIndex(tag => tag.id.value === tag.id.value);
+    const index = this.tags.findIndex(t => t.id === tag.id);
     this.tags.splice(index, 1);
   }
 }
