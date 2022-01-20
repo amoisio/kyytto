@@ -118,7 +118,7 @@ export class Task implements Identifiable {
       description: this.description,
       state: this.state,
       projectHref: api.projects.resolveHref(this.project.id),
-      tags: this.tags.map(tag => tag.toResource())
+      tagHrefs: this.tags.map(tag => api.tags.resolveHref(tag.id))
     };
   }
 }
