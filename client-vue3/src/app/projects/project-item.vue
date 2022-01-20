@@ -7,7 +7,7 @@
           class="top-0 start-100 translate-middle"
           icon="tag"
           scale="2"
-          :color="project.color.value"
+          :color="project.color"
           border-color="black">
         </bordered-icon>
       </button>
