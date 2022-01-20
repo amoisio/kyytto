@@ -42,7 +42,7 @@
     },
     props: {
       id: {
-        type: Object as PropType<IdentifierType>,
+        type: String as PropType<IdentifierType>,
         required: true,
         validator: (uuid: IdentifierType) => Identifier.isValidOrNil(uuid)
       }
@@ -113,3 +113,12 @@
     }
   });
 </script>
+<style lang="scss">
+  .hidden {
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    z-index: -10;
+  }
+</style>
