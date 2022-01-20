@@ -12,7 +12,16 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <project-edit-form :project="project" @save="save" @remove="remove" @cancel="cancel"></project-edit-form>
+        <project-edit-form v-model="project"></project-edit-form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-3">
+        <button type="button" @click="save" class="btn btn-outline-success me-2">Save</button>
+        <button type="button" @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+      </div>
+      <div class="col-6 col-md-3 text-end">
+        <button type="button" @click="remove" class="btn btn-outline-danger">Remove</button>
       </div>
     </div>
   </div>
@@ -52,11 +61,9 @@
     async created() {
       try {
         this.isReady = false;
-        if (Identifier.isNil(this.id)) {
-          this.project = new Project();
-        } else {
-          this.project = await this.$services.projectService.getById(this.id);
-        }
+        this.project = Identifier.isNil(this.id)
+          ? new Project()
+          : await this.$services.projectService.getById(this.id);
       } catch (e) {
         this.notificationService.notifyError(`Loading a project with id ${this.id} failed.`, 'Error', e);
         await this.navigateToProjects();
@@ -65,7 +72,8 @@
       }
     },
     methods: {
-      async save(project: Project): Promise<void> {
+      async save(): Promise<void> {
+        const project = this.project;
         const errors = project.validate();
         if (errors.length > 0) {
           this.notificationService.notifyWarning(errors.join('\n'), 'Validation error');
@@ -80,7 +88,8 @@
           this.notificationService.notifyError('Save failed.', 'Error', e);
         }
       },
-      async remove(id: IdentifierType): Promise<void> {
+      async remove(): Promise<void> {
+        const id = this.id;
         if (!Identifier.isValid(id)) {
           this.notificationService.notifyWarning(`Unable to remove project. Id ${id} is invalid.`);
           await this.cancel();
