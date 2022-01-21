@@ -1,28 +1,15 @@
 <template>
   <form autocomplete="off">
-    <div class="mb-3">
-      <label for="task-title" class="form-label">Title</label>
-      <input
-        type="text"
-        class="form-control"
-        id="task-title"
-        v-model="task.title"
-        ref="title"
-        placeholder="Task title"
-        required
-      />
-    </div>
-    <div class="mb-3">
-      <label for="task-description" class="form-label">Description</label>
-      <textarea
-        id="task-description"
-        class="form-control"
-        rows="15"
-        v-model="task.description"
-        ref="description"
-        placeholder="Task description"
-      />
-    </div>
+    <text-input class="mb-3" id="task-title" v-model="task.title" placeholder="Task title">Title</text-input>
+    <textarea-input
+      class="mb-3"
+      id="task-description"
+      v-model="task.description"
+      placeholder="Task description"
+      :rows="10"
+      >Description</textarea-input
+    >
+
     <div class="mb-3">
       <label for="task-project" class="form-label">Project</label>
       <project-selector v-model="task.project" :options="projects"></project-selector>
@@ -36,17 +23,25 @@
         <label class="form-label">State</label>
       </div>
       <div class="col-auto text-end">
-        <button type="button" @click="task.stopWork()" :class="[{ active: task.isTodo() }, 'btn btn-outline-primary me-2']">
+        <button
+          type="button"
+          @click="task.stopWork()"
+          :class="[{ active: task.isTodo() }, 'btn btn-outline-primary me-2']"
+        >
           To do
         </button>
-        <button 
+        <button
           type="button"
           @click="task.startWork()"
           :class="[{ active: task.isStarted() }, 'btn btn-outline-primary me-2']"
         >
           In-progress
         </button>
-        <button type="button" @click="task.complete()" :class="[{ active: task.isCompleted() }, 'btn btn-outline-success']">
+        <button
+          type="button"
+          @click="task.complete()"
+          :class="[{ active: task.isCompleted() }, 'btn btn-outline-success']"
+        >
           Completed
         </button>
       </div>
@@ -60,12 +55,16 @@
   import TagSelector from '../tags/tag-selector.vue';
   import { Tag } from '../tags/tag-models';
   import ProjectSelector from '../projects/project-selector.vue';
+  import TextInput from '@/shared/text-input.vue';
+  import TextareaInput from '@/shared/textarea-input.vue';
 
   export default defineComponent({
     name: 'TaskEditForm',
     components: {
       TagSelector,
-      ProjectSelector
+      ProjectSelector,
+      TextInput,
+      TextareaInput
     },
     emits: ['update:modelValue'],
     props: {
@@ -86,15 +85,6 @@
       return {
         task: this.modelValue.copy()
       };
-    },
-    mounted() {
-      this.focusOnTitle();
-    },
-    methods: {
-      focusOnTitle() {
-        const input = this.$refs.title as HTMLElement;
-        input.focus();
-      }
     },
     watch: {
       task: {
