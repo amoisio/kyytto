@@ -5,8 +5,18 @@ import { Tag, TagCollection } from '../tags/tag-models';
 import { TaskState } from './task-state';
 
 export class TaskCollection extends Array<Task> {
-  constructor(resources: [task: TaskResource, project: ProjectResource, tags: TagResource[]][]) {
-    super(...resources.map(r => new Task(r[0], r[1], r[2])));
+  constructor(resources: [task: TaskResource, project: ProjectResource, tags: TagResource[]][])
+  constructor(capacity: number)
+  constructor()
+  constructor(val?: number | [task: TaskResource, project: ProjectResource, tags: TagResource[]][]) {
+    if (val === undefined) {
+      super();
+    } else if (typeof val === "number") {
+      super(val);
+    } else {
+      const tasks = val.map(r => new Task(r[0], r[1], r[2]));
+      super(...tasks);
+    }
   }
 }
 
@@ -64,7 +74,7 @@ export class Task extends Entity {
   public validate(): string[] {
     const errors: string[] = [];
 
-    if (!Identifier.isValid(this.id)) {
+    if (!Identifier.isValidOrNil(this.id)) {
       errors.push(`Id ${this.id} is invalid.`);
     }
 

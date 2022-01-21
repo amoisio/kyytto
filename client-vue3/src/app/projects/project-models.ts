@@ -2,8 +2,18 @@ import { Entity } from '@/shared/entity';
 import { Color, ColorType, Identifier, IdentifierType, ProjectDto, ProjectResource, Utilities } from 'kyytto-models';
 
 export class ProjectCollection extends Array<Project> {
-  constructor(resources: ProjectResource[]) {
-    super(...resources.map(r => new Project(r)))
+  constructor(resources: ProjectResource[])
+  constructor(capacity: number)
+  constructor()
+  constructor(val?: number | ProjectResource[]) {
+    if (val === undefined) {
+      super();
+    } else if (typeof val === "number") {
+      super(val);
+    } else {
+      const tags = val.map(r => new Project(r));
+      super(...tags);
+    }
   }
 }
 

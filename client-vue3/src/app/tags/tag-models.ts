@@ -2,8 +2,19 @@ import { Entity } from '@/shared/entity';
 import { Identifier, IdentifierType, TagDto, TagResource, TagType, Utilities } from 'kyytto-models';
 
 export class TagCollection extends Array<Tag> {
-  constructor(resources: TagResource[]) {
-    super(...resources.map(r => new Tag(r)));
+
+  constructor(resources: TagResource[])
+  constructor(capacity: number)
+  constructor()
+  constructor(val ?: number | TagResource[]) {
+    if (val === undefined) {
+      super();
+    } else if (typeof val === "number") {
+      super(val);
+    } else {
+      const tags = val.map(r => new Tag(r));
+      super(...tags);
+    }
   }
 }
 
