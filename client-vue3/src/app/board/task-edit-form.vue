@@ -9,7 +9,10 @@
       :rows="10"
       >Description</textarea-input
     >
-
+    <div class="mb-3">
+      <input type="checkbox" name="task-bug" id="task-bug" v-model="task.isBug" />
+      <label for="task-bug" class="form-label px-2">Is Bug?</label>
+    </div>
     <div class="mb-3">
       <label for="task-project" class="form-label">Project</label>
       <project-selector v-model="task.project" :options="projects"></project-selector>

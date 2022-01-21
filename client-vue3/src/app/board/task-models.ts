@@ -26,11 +26,12 @@ export class Task extends Entity {
   public state: TaskState;
   public project: Project;
   public tags: Tag[];
+  public isBug: boolean;
 
-  constructor(id: IdentifierType, project: Project, tags: Tag[], title: string, description: string, state: TaskState);
+  constructor(id: IdentifierType, project: Project, tags: Tag[], title: string, description: string, state: TaskState, isBug: boolean);
   constructor(task: TaskResource, project: ProjectResource, tags: TagResource[]);
   constructor();
-  constructor(item?: IdentifierType | TaskResource, project ?: Project | ProjectResource, tags ?: Tag[] | TagResource[], title ?: string, description ?: string, state ?: TaskState) {
+  constructor(item?: IdentifierType | TaskResource, project ?: Project | ProjectResource, tags ?: Tag[] | TagResource[], title ?: string, description ?: string, state ?: TaskState, isBug ?: boolean) {
     if (item === undefined) {
       super(Identifier.nil);
       this.title = '';
@@ -38,6 +39,7 @@ export class Task extends Entity {
       this.state = TaskState.Todo;
       this.project = new Project();
       this.tags = [];
+      this.isBug = false;
     } else if (typeof item === 'string') {
       super(item);
       this.title = title!
@@ -45,6 +47,7 @@ export class Task extends Entity {
       this.state = state!;
       this.project = project as Project;
       this.tags = tags as Tag[];
+      this.isBug = isBug!;
     } else {
       super(Utilities.resolveId(item.href));
       this.title = item.title;
@@ -52,13 +55,14 @@ export class Task extends Entity {
       this.state = item.state;
       this.project = new Project(project as ProjectResource);
       this.tags = new TagCollection(tags as TagResource[]);
+      this.isBug = item.isBug;
     }
   }
 
   public copy(): Task {
     const project = this.project.copy()
     const tags = this.tags.map(tag => tag.copy());
-    return new Task(this.id, project, tags, this.title, this.description, this.state);
+    return new Task(this.id, project, tags, this.title, this.description, this.state, this.isBug);
   }
 
   public toDto(): TaskDto {
@@ -67,7 +71,8 @@ export class Task extends Entity {
       description: this.description,
       state: this.state,
       projectId: this.project.id,
-      tagIds: this.tags.map(tag => tag.id)
+      tagIds: this.tags.map(tag => tag.id),
+      isBug: this.isBug
     }
   }
 

@@ -2,7 +2,6 @@ import { Entity } from '@/shared/entity';
 import { Identifier, IdentifierType, TagDto, TagResource, TagType, Utilities } from 'kyytto-models';
 
 export class TagCollection extends Array<Tag> {
-
   constructor(resources: TagResource[])
   constructor(capacity: number)
   constructor()

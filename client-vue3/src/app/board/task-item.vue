@@ -12,11 +12,12 @@
     @keyup.right="$emit('right', task)"
   >
     <b-card-header>
-        <div class="row mx-0">
-        <div class="col-12 px-0">
-          <span>
-            <strong>{{ task.title }}</strong>
-            </span>
+      <div class="row mx-0">
+        <div class="col-11 px-0">
+          <strong>{{ task.title }}</strong>
+        </div>
+        <div class="col-1 px-3 text-end">
+          <bordered-icon v-if="task.isBug" icon="bug" scale="2" color="#ff0000" border-color="black"></bordered-icon>
         </div>
       </div>
     </b-card-header>
@@ -63,10 +64,14 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { Task } from './task-models';
+  import BorderedIcon from '@/shared/bordered-icon.vue';
 
   export default defineComponent({
     name: 'TaskItem',
     emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],
+    components: {
+      BorderedIcon
+    },
     props: {
       task: {
         type: Object as PropType<Task>,
@@ -91,5 +96,4 @@
       border-color: custom.$dark1;
     }
   }
-
 </style>
