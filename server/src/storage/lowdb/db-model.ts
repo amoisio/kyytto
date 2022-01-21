@@ -20,6 +20,7 @@ export interface TaskDb {
   state: TaskState;
   projectId: string;
   tags: TagDb[];
+  isBug: boolean | undefined;
 }
 
 export interface TagDb {

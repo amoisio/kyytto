@@ -33,7 +33,7 @@ export class TaskBuilder {
 
     const id = this.idGenerator.generate();
     const state = TaskState.Todo;
-    return new Task(id, title, description, state, project, [ project.toTag() ]);
+    return new Task(id, title, description, state, project, [ project.toTag() ], dto.isBug);
   }
 
   /**
@@ -80,7 +80,7 @@ export class TaskBuilder {
       tags.push(tag);
     }
 
-    return new Task(id, title, dto.description, state, project, tags);
+    return new Task(id, title, dto.description, state, project, tags, dto.isBug);
   }
 }
 
@@ -91,8 +91,9 @@ export class Task implements Identifiable {
   public state: TaskState;
   public readonly project: Project;
   public readonly tags: Tag[];
+  public readonly isBug: boolean;
 
-  public constructor(id: IdentifierType, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = []) {
+  public constructor(id: IdentifierType, title: string, description: string | undefined, state: TaskState, project: Project, tags: Tag[] = [], isBug: boolean = false) {
     if (!Identifier.isValid(id)) {
       throw new Error(`Id is invalid. Value: ${id}.`);
     }
@@ -114,6 +115,7 @@ export class Task implements Identifiable {
     }
     this.project = project;
     this.tags = tags;
+    this.isBug = isBug;
   }
 
   public toResource(): TaskResource {
@@ -123,7 +125,8 @@ export class Task implements Identifiable {
       description: this.description,
       state: this.state,
       projectHref: api.projects.resolveHref(this.project.id),
-      tagHrefs: this.tags.map(tag => api.tags.resolveHref(tag.id))
+      tagHrefs: this.tags.map(tag => api.tags.resolveHref(tag.id)),
+      isBug: this.isBug
     };
   }
 }

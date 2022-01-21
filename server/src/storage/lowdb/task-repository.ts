@@ -47,7 +47,8 @@ export default class TaskRepository implements Repository<Task> {
       model.description,
       model.state,
       project,
-      tags);
+      tags,
+      model.isBug);
   }
 
   private constructProject(model: ProjectDb): Project {
@@ -79,7 +80,8 @@ export default class TaskRepository implements Repository<Task> {
         id: tag.id,
         name: tag.name,
         type: tag.type
-      }))
+      })),
+      isBug: task.isBug
     });
   }
 
@@ -96,6 +98,7 @@ export default class TaskRepository implements Repository<Task> {
         name: tag.name,
         type: tag.type
       }));
+      match.isBug = task.isBug;
     } else {
       throw new Error(`No Task found for ${task.id}.`);
     }
