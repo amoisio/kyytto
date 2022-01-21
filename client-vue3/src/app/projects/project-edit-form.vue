@@ -34,7 +34,7 @@
       };
     },
     watch: {
-      item: {
+      project: {
         handler(newValue: Project) {
           this.$emit('update:modelValue', newValue);
         },

@@ -53,7 +53,7 @@ export class Project extends Entity {
   public validate(): string[] {
     const errors: string[] = [];
 
-    if (!Identifier.isValid(this.id)) {
+    if (!Identifier.isValidOrNil(this.id)) {
       errors.push(`Id ${this.id} is invalid.`)
     }
 
