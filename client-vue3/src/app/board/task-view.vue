@@ -14,7 +14,6 @@
         ></task-edit-form>
       </div>
     </div>
-    <div> {{ task }}</div>
     <div class="row">
       <div class="col-6 col-md-3">
         <button type="button" @click="save" class="btn btn-outline-success me-2">Save</button>
@@ -42,7 +41,7 @@
     },
     props: {
       id: {
-        type: Object as PropType<IdentifierType>,
+        type: String as PropType<IdentifierType>,
         required: true,
         validator: (uuid: IdentifierType) => Identifier.isValidOrNil(uuid)
       }
