@@ -43,6 +43,7 @@ export class TaskBuilder {
    * @returns A task entity.
    */
   public async from(id: IdentifierType, dto: TaskDto): Promise<Task> {
+    console.log(id);
     if (!Identifier.isValid(id)) {
       throw new Error(`Task id ${id} is invalid.`);
     }
@@ -66,9 +67,13 @@ export class TaskBuilder {
       throw new Error(`Project id ${projectId} is invalid.`);
     }
 
+    const projectTag = project.toTag();
     const tags: Tag[] = [];
     for(const tagId of dto.tagIds) {
-      const tag = await this.unitOfWork.tagRepository.findById(tagId);
+      const tag = (tagId !== projectTag.id)
+      ? await this.unitOfWork.tagRepository.findById(tagId)
+      : projectTag;
+
       if (!tag) {
         throw new Error(`Tag id ${tagId} is invalid.`);
       }
