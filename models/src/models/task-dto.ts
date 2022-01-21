@@ -6,5 +6,6 @@ export interface TaskDto {
   description?: string;
   state: TaskState;
   projectId: IdentifierType,
-  tagIds: IdentifierType[]
+  tagIds: IdentifierType[],
+  isBug: boolean;
 }

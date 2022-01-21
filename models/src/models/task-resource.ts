@@ -7,4 +7,5 @@ export interface TaskResource extends Resource {
   state: TaskState;
   projectHref: ResourceReference;
   tagHrefs: ResourceReference[];
+  isBug: boolean;
 }
