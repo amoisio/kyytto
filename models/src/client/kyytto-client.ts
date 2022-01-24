@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Api } from '../api/api.js';
+import { StackDto } from '../models/stack-dto.js';
+import { StackResource } from '../models/stack-resource.js';
 import { ProjectDto } from '../models/project-dto.js';
 import { ProjectResource } from '../models/project-resource.js';
 import { TagDto } from '../models/tag-dto.js';
@@ -15,6 +17,7 @@ export class KyyttoClient {
   public readonly projects: ApiClient<ProjectDto, ProjectResource>;
   public readonly tasks: ApiClient<TaskDto, TaskResource>;
   public readonly tags: ApiClient<TagDto, TagResource>;
+  public readonly stacks: ApiClient<StackDto, StackResource>;
 
   constructor(api: Api) {
     this.baseUrl = api.baseUrl;
@@ -23,5 +26,6 @@ export class KyyttoClient {
     this.projects = new ApiClient(ax, api.projects.path);
     this.tasks = new ApiClient(ax, api.tasks.path);
     this.tags = new ApiClient(ax, api.tags.path);
+    this.stacks = new ApiClient(ax, api.stacks.path);
   }
 }

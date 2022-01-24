@@ -7,6 +7,7 @@ export class Api  {
   public readonly projects: ApiPath;
   public readonly tasks: ApiPath;
   public readonly tags: ApiPath;
+  public readonly stacks: ApiPath;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -14,6 +15,7 @@ export class Api  {
     this.projects = new ApiPath(baseUrl, '/api/projects');
     this.tasks = new ApiPath(baseUrl, '/api/tasks');
     this.tags = new ApiPath(baseUrl, '/api/tags');
+    this.stacks = new ApiPath(baseUrl, '/api/stacks');
   }
 }
 
