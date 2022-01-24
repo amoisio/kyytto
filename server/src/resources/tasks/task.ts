@@ -43,7 +43,6 @@ export class TaskBuilder {
    * @returns A task entity.
    */
   public async from(id: IdentifierType, dto: TaskDto): Promise<Task> {
-    console.log(id);
     if (!Identifier.isValid(id)) {
       throw new Error(`Task id ${id} is invalid.`);
     }
