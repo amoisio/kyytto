@@ -1,6 +1,6 @@
 import express from 'express';
 import { TagDto } from 'kyytto-models';
-import { idValidation } from '../handlers.js';
+import { dtoParser, idValidation } from '../handlers.js';
 import { api } from '../api.js';
 
 export const router = express.Router();
@@ -10,20 +10,15 @@ router.route(api.tags.path)
     const service = req.tagService;
     const tags = await service.getAllSorted();
     const resources = tags.map(tag => tag.toResource());
-
     res.json(resources);
   })
+  .post(dtoParser)
   .post(async (req, res) => {
-    const dto = req.body as TagDto;
-    if (dto === undefined) {
-      res.sendStatus(400);
-      return;
-    }
+    const dto = req.bodyAs<TagDto>();
     const builder = req.tagBuilder;
     const tag = await builder.new(dto);
     const repository = req.unitOfWork.tagRepository;
     await repository.add(tag);
-
     res.json(tag.id);  
   });
 
@@ -38,11 +33,7 @@ router.route(`${api.tags.path}/:id`)
   })
   .put(async (req, res) => {
     const id = req.id;
-    const dto = req.body as TagDto;
-    if (dto === undefined) {
-      res.sendStatus(400);
-      return;
-    }
+    const dto = req.bodyAs<TagDto>();
     const builder = req.tagBuilder;
     const tag = await builder.from(id, dto);
     const repository = req.unitOfWork.tagRepository;

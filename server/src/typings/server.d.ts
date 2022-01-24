@@ -12,6 +12,7 @@ declare global {
   namespace Express {
     interface Request {
       id: IdentifierType,
+      bodyAs: <TDto>() => TDto;
       idGenerator: IdentifierGenerator,
       colorGenerator: ColorGenerator,
       unitOfWork: UnitOfWork;

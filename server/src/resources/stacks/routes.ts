@@ -1,7 +1,7 @@
 import express from 'express';
 import { StackDto } from 'kyytto-models';
 import { api } from '../api.js';
-import { idValidation } from '../handlers.js';
+import { dtoParser, idValidation } from '../handlers.js';
 
 export const router = express.Router();
 
@@ -10,20 +10,15 @@ router.route(api.stacks.path)
     const repository = req.unitOfWork.stackRepository;
     const stacks = await repository.getAll();
     const resources = stacks.map(stack => stack.toResource());
-
     res.json(resources);
   })
+  .post(dtoParser)
   .post(async (req, res) => {
-    const dto = req.body as StackDto;
-    if (dto === undefined) {
-      res.sendStatus(400);
-      return;
-    }
+    const dto = req.bodyAs<StackDto>();
     const builder = req.stackBuilder;
     const stack = await builder.new(dto);
     const repository = req.unitOfWork.stackRepository;
     await repository.add(stack);
-
     res.json(stack.id);
   });
 
@@ -36,13 +31,10 @@ router.route(`${api.stacks.path}/:id`)
     const resource = stack.toResource();
     res.json(resource);
   })
+  .put(dtoParser)
   .put(async (req, res) => {
     const id = req.id;
-    const dto = req.body as StackDto;
-    if (dto === undefined) {
-      res.sendStatus(400);
-      return;
-    }
+    const dto = req.bodyAs<StackDto>();
     const builder = req.stackBuilder;
     const stack = await builder.from(id, dto);
     const repository = req.unitOfWork.stackRepository;
