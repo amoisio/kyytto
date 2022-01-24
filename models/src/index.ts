@@ -10,6 +10,7 @@ export { TagDto } from './models/tag-dto.js';
 export { TagType } from './models/tag-type.js';
 export { StackDto } from './models/stack-dto.js';
 export { StackResource } from './models/stack-resource.js';
+export { MatchType } from './models/stack-resource.js';
 export { Identifiable } from './models/identifiable.js';
 export { Validatable } from './models/validatable.js';
 
