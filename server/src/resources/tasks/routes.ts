@@ -1,7 +1,7 @@
 import express from 'express';
 import { api } from '../api.js';
 import { TaskDto } from 'kyytto-models';
-import { dtoParser, idValidation } from '../handlers.js';
+import { dtoParser, idParser } from '../handlers.js';
 
 export const router = express.Router();
 
@@ -23,7 +23,7 @@ router.route(api.tasks.path)
   });
 
 router.route(`${api.tasks.path}/:id`)
-  .all(idValidation)
+  .all(idParser)
   .get(async (req, res) => {
     const id = req.id;
     const repository = req.unitOfWork.taskRepository;

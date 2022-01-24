@@ -1,7 +1,7 @@
 import express from 'express';
 import { StackDto } from 'kyytto-models';
 import { api } from '../api.js';
-import { dtoParser, idValidation } from '../handlers.js';
+import { dtoParser, idParser } from '../handlers.js';
 
 export const router = express.Router();
 
@@ -23,7 +23,7 @@ router.route(api.stacks.path)
   });
 
 router.route(`${api.stacks.path}/:id`)
-  .all(idValidation)
+  .all(idParser)
   .get(async (req, res) => {
     const id = req.id;
     const repository = req.unitOfWork.stackRepository;

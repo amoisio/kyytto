@@ -1,6 +1,6 @@
 import express from 'express';
 import { TagDto } from 'kyytto-models';
-import { dtoParser, idValidation } from '../handlers.js';
+import { dtoParser, idParser } from '../handlers.js';
 import { api } from '../api.js';
 
 export const router = express.Router();
@@ -23,7 +23,7 @@ router.route(api.tags.path)
   });
 
 router.route(`${api.tags.path}/:id`)
-  .all(idValidation)
+  .all(idParser)
   .get(async (req, res) => {
     const id = req.id;
     const service = req.tagService;
