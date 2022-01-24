@@ -1,6 +1,7 @@
 import express from 'express';
 import { api } from '../api.js';
-import { Identifier, TaskDto, Utilities } from 'kyytto-models';
+import { Identifier, TaskDto } from 'kyytto-models';
+import { idValidation } from '../handlers.js';
 
 export const router = express.Router();
 
@@ -27,22 +28,18 @@ router.route(api.tasks.path)
   });
 
 router.route(`${api.tasks.path}/:id`)
+  .all(idValidation)
   .get(async (req, res) => {
-    const id = Identifier.build(req.params['id']);
-    if (!Identifier.isValid(id)) {
-      res.sendStatus(400);
-      return;
-    }
+    const id = req.id;
     const repository = req.unitOfWork.taskRepository;
     const task = await repository.getById(id);
     const resource = task.toResource();
-
     res.json(resource);
   })
   .put(async (req, res) => {
-    const id = Identifier.build(req.params['id']);
+    const id = req.id;
     const dto = req.body as TaskDto;
-    if (!Identifier.isValid(id) || dto === undefined) {
+    if (dto === undefined) {
       res.sendStatus(400);
       return;
     }
@@ -50,17 +47,11 @@ router.route(`${api.tasks.path}/:id`)
     const task = await builder.from(id, dto);
     const repository = req.unitOfWork.taskRepository;
     await repository.update(task);
-
     res.end();
   })
   .delete(async (req, res) => {
-    const id = Identifier.build(req.params['id']);
-    if (!Identifier.isValid(id)) {
-      res.sendStatus(400);
-      return;
-    }
+    const id = req.id;
     const repository = req.unitOfWork.taskRepository;
     await repository.delete(id);
-
     res.end();
   });

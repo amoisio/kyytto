@@ -1,6 +1,7 @@
 import express from 'express';
-import { Identifier, StackDto } from 'kyytto-models';
+import { StackDto } from 'kyytto-models';
 import { api } from '../api.js';
+import { idValidation } from '../handlers.js';
 
 export const router = express.Router();
 
@@ -27,22 +28,18 @@ router.route(api.stacks.path)
   });
 
 router.route(`${api.stacks.path}/:id`)
+  .all(idValidation)
   .get(async (req, res) => {
-    const id = Identifier.build(req.params['id']);
-    if (!Identifier.isValid(id)) {
-      res.sendStatus(400);
-      return;
-    }
+    const id = req.id;
     const repository = req.unitOfWork.stackRepository;
     const stack = await repository.getById(id);
     const resource = stack.toResource();
-
     res.json(resource);
   })
   .put(async (req, res) => {
-    const id = Identifier.build(req.params['id']);
+    const id = req.id;
     const dto = req.body as StackDto;
-    if (!Identifier.isValid(id) || dto === undefined) {
+    if (dto === undefined) {
       res.sendStatus(400);
       return;
     }
@@ -50,17 +47,11 @@ router.route(`${api.stacks.path}/:id`)
     const stack = await builder.from(id, dto);
     const repository = req.unitOfWork.stackRepository;
     await repository.update(stack);
-
     res.end();
   })
   .delete(async (req, res) => {
-    const id = Identifier.build(req.params['id']);
-    if (!Identifier.isValid(id)) {
-      res.sendStatus(400);
-      return;
-    }
+    const id = req.id;
     const repository = req.unitOfWork.stackRepository;
     await repository.delete(id);
-
     res.end();
   });

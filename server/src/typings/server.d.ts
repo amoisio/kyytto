@@ -6,18 +6,20 @@ import { ColorGenerator } from '../utilities/color-generator.js';
 import { IdentifierGenerator } from '../utilities/identifier-generator.js';
 import { TagService } from '../resources/tags/tag-service.js';
 import { StackBuilder } from '../resources/stacks/stack.js';
+import { IdentifierType } from 'kyytto-models';
 
 declare global {
   namespace Express {
     interface Request {
-      unitOfWork: UnitOfWork;
-      colorGenerator: ColorGenerator,
+      id: IdentifierType,
       idGenerator: IdentifierGenerator,
+      colorGenerator: ColorGenerator,
+      unitOfWork: UnitOfWork;
       projectBuilder: ProjectBuilder,
       taskBuilder: TaskBuilder,
       tagBuilder: TagBuilder,
-      tagService: TagService,
       stackBuilder: StackBuilder
+      tagService: TagService
     }
   }
 }
