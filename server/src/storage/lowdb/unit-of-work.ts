@@ -6,18 +6,21 @@ import { Low, JSONFile } from 'lowdb'
 import { DataDb } from './db-model.js';
 import { options } from './options.js';
 import TagRepository from './tag-repository.js';
+import StackRepository from './stack-repository.js';
 
 export class LowDbUnitOfWork implements UnitOfWork {
   private readonly db: Low<DataDb>;
   public readonly projectRepository: ProjectRepository;
   public readonly taskRepository: TaskRepository;
   public readonly tagRepository: TagRepository;
+  public readonly stackRepository: StackRepository;
 
   private constructor(db: Low<DataDb>) { 
     this.db = db;
     this.projectRepository = new ProjectRepository(db);
     this.taskRepository = new TaskRepository(db);
     this.tagRepository = new TagRepository(db);
+    this.stackRepository = new StackRepository(db);
   }
 
   public static async openContext(): Promise<UnitOfWork> {
@@ -35,11 +38,13 @@ export class LowDbUnitOfWork implements UnitOfWork {
     db.data ||= {
       projects: [],
       tasks: [],
-      tags: []
+      tags: [],
+      stacks: []
     };
     db.data.projects ||= [];
     db.data.tasks ||= [];
     db.data.tags ||= [];
+    db.data.stacks ||= [];
   }
   
   public async closeContext(): Promise<void> { 

@@ -1,6 +1,7 @@
 import { Tag } from '../resources/tags/tag.js';
 import { Project } from '../resources/projects/project.js';
 import { Task } from '../resources/tasks/task.js';
+import { Stack } from '../resources/stacks/stack.js';
 import Repository from './repository.js';
 
 /**
@@ -10,6 +11,7 @@ export default interface UnitOfWork {
     projectRepository: Repository<Project>;
     taskRepository: Repository<Task>;
     tagRepository: Repository<Tag>;
+    stackRepository: Repository<Stack>
 
     /**
      * Close the active unit of work context. This can be, for example, committing a database transaction hence persisting
