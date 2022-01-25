@@ -8,7 +8,7 @@ export enum MatchType {
 
 export interface StackResource extends Resource {
   name: string;
-  description: string;
+  description?: string;
   match: MatchType;
   tagHrefs: ResourceReference[];
 }
