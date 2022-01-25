@@ -17,7 +17,7 @@ export class ProjectCollection extends Array<Project> {
   }
 }
 
-export class Project extends Entity {
+export class Project extends Entity<ProjectDto> {
   public name: string;
   public description: string;
   public color: ColorType;

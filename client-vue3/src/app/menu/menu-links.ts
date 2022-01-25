@@ -3,7 +3,8 @@ import { Identifier } from 'kyytto-models';
 export interface KyyttoLinks {
   newTask: Link,
   board: Link,
-  projects: Link
+  projects: Link,
+  stacks: Link
 }
 
 export interface Link {
@@ -32,5 +33,10 @@ export const menuLinks: KyyttoLinks = {
     title: 'Projects',
     icon: 'tags'
   },
-
+  stacks: {
+    name: 'stacks',
+    path: '/stacks',
+    title: 'Stacks',
+    icon: 'stack'
+  }
 };

@@ -20,7 +20,7 @@ export class TaskCollection extends Array<Task> {
   }
 }
 
-export class Task extends Entity {
+export class Task extends Entity<TaskDto> {
   public title: string;
   public description: string;
   public state: TaskState;

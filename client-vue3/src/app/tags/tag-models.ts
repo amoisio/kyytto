@@ -17,7 +17,7 @@ export class TagCollection extends Array<Tag> {
   }
 }
 
-export class Tag extends Entity {
+export class Tag extends Entity<TagDto> {
   public name: string;
   public type: TagType;
 

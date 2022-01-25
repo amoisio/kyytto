@@ -34,7 +34,8 @@
         return [
           menuLinks.newTask,
           menuLinks.board,
-          menuLinks.projects
+          menuLinks.projects,
+          menuLinks.stacks
         ];
       }
     }
