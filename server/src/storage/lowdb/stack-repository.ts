@@ -34,6 +34,7 @@ export default class StackRepository implements Repository<Stack> {
     return new Stack(
       Identifier.build(model.id),
       model.name,
+      model.description,
       model.match,
       model.tags.map(tag => new Tag(tag.id, tag.name, tag.type)));
   }
@@ -42,6 +43,7 @@ export default class StackRepository implements Repository<Stack> {
     this.db.data!.stacks.push({
       id: stack.id,
       name: stack.name,
+      description: stack.description,
       match: stack.match,
       tags: stack.tags.map(tag => ({
         id: tag.id,

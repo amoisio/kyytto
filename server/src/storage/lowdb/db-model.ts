@@ -34,6 +34,7 @@ export interface TagDb {
 export interface StackDb {
   id: string;
   name: string;
+  description: string | undefined;
   match: MatchType;
   tags: TagDb[];
 }

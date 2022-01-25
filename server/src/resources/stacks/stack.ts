@@ -17,6 +17,7 @@ export class StackBuilder {
    */
   public async new(dto: StackDto): Promise<Stack> {
     const name = dto.name;
+    const description = dto.description;
     const match = dto.match;
     if (isEmpty(name)) {
       throw new Error('Name must be provided.');
@@ -30,7 +31,7 @@ export class StackBuilder {
       }
       tags.push(tag);
     }
-    return new Stack(id, name, match, tags);
+    return new Stack(id, name, description, match, tags);
   }
 
   /**
@@ -47,7 +48,7 @@ export class StackBuilder {
     if (isEmpty(name)) {
       throw new Error('Name must be provided.');
     }
-
+    const description = dto.description;
     const match = dto.match;
     const tags: Tag[] = [];
     for (const tagId of dto.tagIds) {
@@ -57,17 +58,18 @@ export class StackBuilder {
       }
       tags.push(tag);
     }
-    return new Stack(id, name, match, tags);
+    return new Stack(id, name, description, match, tags);
   }
 }
 
 export class Stack implements Identifiable {
   public readonly id: IdentifierType;
   public name: string;
+  public description: string | undefined;
   public match: MatchType;
   public tags: Tag[];
 
-  public constructor(id: IdentifierType, name: string, match: MatchType, tags: Tag[]) {
+  public constructor(id: IdentifierType, name: string, description: string | undefined, match: MatchType, tags: Tag[]) {
     if (!Identifier.isValid(id)) {
       throw new Error(`Given id: ${id} is invalid.`);
     }
@@ -76,6 +78,7 @@ export class Stack implements Identifiable {
       throw new Error('Name must not be empty.');
     }
     this.name = name;
+    this.description = description;
     this.match = match;
     this.tags = tags;
   }
@@ -84,6 +87,7 @@ export class Stack implements Identifiable {
     return {
       href: api.stacks.resolveHref(this.id),
       name: this.name,
+      description: this.description,
       match: this.match,
       tagHrefs: this.tags.map(t => api.tags.resolveHref(t.id))
     };
