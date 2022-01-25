@@ -10,29 +10,30 @@
     :close-on-select="false"
     track-by="name"
     label="name">
-    </vue-multiselect>
+  </vue-multiselect>
 </template>
 <script lang="ts">
   import { Utilities } from 'kyytto-models';
-import { defineComponent, PropType } from 'vue';
+  import { defineComponent, PropType } from 'vue';  
   import VueMultiselect from 'vue-multiselect';
   import { Tag } from './tag-models';
+
   export default defineComponent({
     name: 'TagSelector',
     components: {
       VueMultiselect
     },
+    emits: ['update:modelValue'],
     props: {
       modelValue: {
         type: Array as PropType<Tag[]>,
-        default: () => []
+        required: true
       },
       options: {
         type: Object as PropType<Tag[]>,
         required: true
       }
     },
-    emits: ['update:modelValue'],
     data() {
       return {
         selected: [] as Tag[]

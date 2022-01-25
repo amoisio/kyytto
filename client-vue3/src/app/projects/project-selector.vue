@@ -1,14 +1,13 @@
 <template>
   <vue-multiselect 
-    :model-value="selectedId" 
+    :model-value="selected" 
     @select="select"
-    :options="optionIds"
+    :options="options"
     track-by="name"
     label="name">
-    </vue-multiselect>
+  </vue-multiselect>
 </template>
 <script lang="ts">
-  import { IdentifierType } from 'kyytto-models';
   import { defineComponent, PropType } from 'vue';
   import VueMultiselect from 'vue-multiselect';
   import { Project } from './project-models';
@@ -29,16 +28,14 @@
         required: true
       }
     },
-    data() {
-      return {
-        selectedId: this.modelValue.id,
-        optionIds: this.options.map(o => o.id)
+    computed: {
+      selected(): Project | undefined {
+        const match = this.options.find(o => o.id === this.modelValue.id);
+        return match;
       }
     },
     methods: {
-      select(selectedId: IdentifierType) {
-        this.selectedId = selectedId;
-        const selected = this.options.find(o => o.id === selectedId);
+      select(selected: Project) {
         this.$emit('update:modelValue', selected);
       }
     }
