@@ -5,7 +5,7 @@ import { TaskBuilder } from '../resources/tasks/task.js';
 import { NextUnusedColorGenerator } from '../utilities/color-generator.js';
 import { UuidGenerator } from '../utilities/identifier-generator.js';
 import { TagService } from '../resources/tags/tag-service.js';
-import { StackBuilder } from 'resources/stacks/stack.js';
+import { StackBuilder } from '../resources/stacks/stack.js';
 
 export const router = express.Router();
 
