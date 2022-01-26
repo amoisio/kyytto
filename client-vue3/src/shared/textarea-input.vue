@@ -9,7 +9,7 @@
       :rows="rows"
       v-model="value"
       :ref="id"
-      :placeholder="placeholder" />
+      :placeholder="placeholder"></textarea>
   </div>
 </template>
 <script lang="ts">

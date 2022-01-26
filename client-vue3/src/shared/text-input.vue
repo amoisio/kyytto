@@ -9,8 +9,7 @@
       :id="id"
       v-model="value"
       :ref="id"
-      :placeholder="placeholder"
-    />
+      :placeholder="placeholder" />
   </div>
 </template>
 <script lang="ts">

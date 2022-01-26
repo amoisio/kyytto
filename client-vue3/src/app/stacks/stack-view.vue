@@ -7,7 +7,9 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <stack-edit-form v-model="stack"></stack-edit-form>
+        <stack-edit-form 
+          v-model="stack"
+          :tags="tags"></stack-edit-form>
       </div>
     </div>
     <div class="row">
@@ -27,6 +29,7 @@
   import { Stack } from './stack-models';
   import { Identifier, IdentifierType } from 'kyytto-models';
   import { NotificationService } from '@/shared/notification-service';
+  import { Tag } from '../tags/tag-models';
 
   export default defineComponent({
     name: 'StackView',
@@ -43,7 +46,8 @@
     data() {
       return {
         isReady: false,
-        stack: {} as Stack
+        stack: {} as Stack,
+        tags: [] as Tag[]
       };
     },
     computed: {
@@ -57,6 +61,7 @@
         this.stack = Identifier.isNil(this.id)
           ? new Stack()
           : await this.$services.stackService.getById(this.id);
+        this.tags = await this.$services.tagService.getAllUserTags();
       } catch (e) {
         this.notificationService.notifyError(`Loading a stack with id ${this.id} failed.`, 'Error', e);
         await this.navigateToStacks();
