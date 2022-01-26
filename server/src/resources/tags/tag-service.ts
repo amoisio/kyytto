@@ -24,14 +24,23 @@ export class TagService {
   }
 
   public async getById(id: IdentifierType): Promise<Tag> {
+    const tag = await this.findById(id);
+    if (tag === undefined) {
+      throw new Error(`Tag with id ${id} not found.`);
+    } else {
+      return tag;
+    }
+  }
+
+  public async findById(id: IdentifierType): Promise<Tag | undefined> {
     const tag = await this.uow.tagRepository.findById(id);
     const project = await this.uow.projectRepository.findById(id);
     if (tag !== undefined) {
       return tag;
     } else if (project !== undefined) {
-      return new Tag(project.id, project.name, TagType.Project);
+      return project.toTag();
     } else {
-      throw new Error(`Tag with id ${id} not found.`);
+      throw undefined;
     }
   }
 }

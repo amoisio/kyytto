@@ -16,6 +16,6 @@ router.use(async(req, res, next) => {
   req.taskBuilder = new TaskBuilder(req.idGenerator, req.unitOfWork);
   req.tagBuilder = new TagBuilder(req.idGenerator);
   req.tagService = new TagService(req.unitOfWork);
-  req.stackBuilder = new StackBuilder(req.idGenerator, req.unitOfWork);
+  req.stackBuilder = new StackBuilder(req.idGenerator, req.tagService);
   next();
 });

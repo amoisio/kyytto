@@ -3,12 +3,12 @@ import { Identifiable, Identifier, IdentifierType, MatchType, StackDto, StackRes
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import { Tag } from '../tags/tag.js';
-import UnitOfWork from '../../storage/unit-of-work.js';
+import { TagService } from '../tags/tag-service.js';
 
 export class StackBuilder {
   constructor(
     private readonly idGenerator: IdentifierGenerator,
-    private readonly unitOfWork: UnitOfWork) { }
+    private readonly tagService: TagService) { }
 
   /**
    * Create a new Stack.
@@ -25,7 +25,7 @@ export class StackBuilder {
     const id = this.idGenerator.generate();
     const tags: Tag[] = [];
     for (const tagId of dto.tagIds) {
-      const tag = await this.unitOfWork.tagRepository.findById(tagId)
+      const tag = await this.tagService.findById(tagId)
       if (!tag) {
         throw new Error(`Tag id ${tagId} is invalid.`);
       }
@@ -52,7 +52,7 @@ export class StackBuilder {
     const match = dto.match;
     const tags: Tag[] = [];
     for (const tagId of dto.tagIds) {
-      const tag = await this.unitOfWork.tagRepository.findById(tagId);
+      const tag = await this.tagService.findById(tagId)
       if (!tag) {
         throw new Error(`Tag id ${tagId} is invalid.`);
       }
