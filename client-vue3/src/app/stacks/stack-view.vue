@@ -61,7 +61,7 @@
         this.stack = Identifier.isNil(this.id)
           ? new Stack()
           : await this.$services.stackService.getById(this.id);
-        this.tags = await this.$services.tagService.getAllUserTags();
+        this.tags = await this.$services.tagService.getAll();
       } catch (e) {
         this.notificationService.notifyError(`Loading a stack with id ${this.id} failed.`, 'Error', e);
         await this.navigateToStacks();
