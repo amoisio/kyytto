@@ -1,5 +1,6 @@
 @use '@/app/custom';
 @use 'sass:color';
+@use '@/app/app';
 
 $color: white;
 $background-color: custom.$dark1;
@@ -14,6 +15,8 @@ $button-highlight-color: custom.$dark1;
   background: linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
   background: -moz-linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
   background: -webkit-linear-gradient(270deg, custom.$dark2 0%, custom.$dark1 100%);
+  position: fixed;
+  width: app.$width;
 
   .logo {
     color: $color;

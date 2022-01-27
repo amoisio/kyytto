@@ -14,6 +14,11 @@
         </menu-button>
       </div>
     </div> 
+    <div class="user-nav">
+        <menu-button class="mx-0 pt-3 pb-3" routerLink="/user" icon="person-circle">
+          User
+        </menu-button>
+    </div>
   </nav>
 </template>
 <script lang="ts">
@@ -43,4 +48,12 @@
 </script>
 <style lang="scss">
   @use 'menu';
+  @use '../app';
+
+  .user-nav {
+    position: absolute; 
+    bottom:0; 
+    left:0;
+    width:app.$width;
+  }
 </style>
