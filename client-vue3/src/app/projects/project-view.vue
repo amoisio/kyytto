@@ -1,27 +1,28 @@
 <template>
-  <div class="project-view" v-if="isReady">
-    <div class="row pb-3 pt-3">
-      <div class="col-6 col-md-3">
+  <div class="project-view container pb-2 my-5" v-if="isReady">
+    <div class="row py-3">
+      <div class="col-12">
         <h1>Project</h1>
       </div>
-      <div class="col-6 col-md-3 align-self-center text-end">
-        <div class="position-relative mb-4 me-4">
-          <bordered-icon icon="tag" scale="2" :color="project.color" border-color="black"></bordered-icon>
-        </div>
-      </div>
     </div>
-    <div class="row">
-      <div class="col-12 col-md-6">
+    <div class="row py-3">
+      <div class="col-12">
         <project-edit-form v-model="project"></project-edit-form>
       </div>
     </div>
-    <div class="row">
-      <div class="col-6 col-md-3">
-        <button type="button" @click="save" class="btn btn-outline-success me-2">Save</button>
-        <button type="button" @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+    <div class="row py-3">
+      <div class="col-6">
+        <button type="button" @click="save" class="btn btn-outline-success me-2" alt="Save">
+          <b-icon icon="save" size="2x"></b-icon>
+        </button>
+        <button type="button" @click="cancel" class="btn btn-outline-secondary" alt="Cancel">
+          <b-icon icon="backspace" size="2x"></b-icon>
+        </button>
       </div>
-      <div class="col-6 col-md-3 text-end">
-        <button type="button" @click="remove" class="btn btn-outline-danger">Remove</button>
+      <div class="col-6 text-end">
+        <button type="button" @click="remove" class="btn btn-outline-danger" alt="Delete">
+          <b-icon icon="x-circle" size="2x"></b-icon>
+        </button>
       </div>
     </div>
   </div>

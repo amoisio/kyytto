@@ -10,7 +10,7 @@
       v-model="stack.description"
       id="stack-description"
       class="mb-3"
-      :rows=10
+      :rows=5
       placeholder="Stack description">Description</textarea-input>
     
     <multi-select-input

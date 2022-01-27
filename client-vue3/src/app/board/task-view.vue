@@ -1,12 +1,12 @@
 <template>
-  <div class="task-view" v-if="isReady">
-    <div class="row pb-3 pt-3">
-      <div class="col-12 col-md-6">
+  <div class="task-view container pb-2 my-5" v-if="isReady">
+    <div class="row py-3">
+      <div class="col-12">
         <h1>Task</h1>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12 col-md-6">
+    <div class="row py-3">
+      <div class="col-12">
         <task-edit-form 
           v-model="task"
           :projects="projects"
@@ -14,13 +14,19 @@
         ></task-edit-form>
       </div>
     </div>
-    <div class="row">
-      <div class="col-6 col-md-3">
-        <button type="button" @click="save" class="btn btn-outline-success me-2">Save</button>
-        <button type="button" @click="cancel" class="btn btn-outline-secondary">Cancel</button>
+    <div class="row py-3">
+      <div class="col-6">
+        <button type="button" @click="save" class="btn btn-outline-success me-2" alt="Save">
+          <b-icon icon="save" size="2x"></b-icon>
+        </button>
+        <button type="button" @click="cancel" class="btn btn-outline-secondary" alt="Cancel">
+          <b-icon icon="backspace" size="2x"></b-icon>
+        </button>
       </div>
-      <div class="col-6 col-md-3 text-end">
-        <button type="button" @click="remove" class="btn btn-outline-danger">Remove</button>
+      <div class="col-6 text-end">
+        <button type="button" @click="remove" class="btn btn-outline-danger" alt="Delete">
+          <b-icon icon="x-circle" size="2x"></b-icon>
+        </button>
       </div>
     </div>
   </div>

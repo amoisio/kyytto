@@ -1,6 +1,6 @@
 <template>
   <k-table 
-    class="stacks mt-5"
+    class="stacks my-5"
     title="Stacks"
     :items="stacks" 
     display="name" 

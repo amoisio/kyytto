@@ -2,24 +2,23 @@
   <div class="container pb-2">
     <div class="row py-3">
       <div class="col-10">
-        <span class="fs-3 text-capitalize fw-bold">{{ title }}</span>
+        <h1>{{ title }}</h1>
       </div>
       <div class="col-2 text-end">
-        <button class="btn btn-default" @click="$emit('new')" alt="New">
+        <button class="btn btn-outline-success" @click="$emit('new')" alt="New">
           <b-icon icon="plus-circle" size="2x"></b-icon>
         </button>
       </div>
     </div>
     <div class="row py-3" v-for="item of items" :key="item">
       <div class="col-10">
-        <span class="fs-4">{{ item[display] }}</span>
+        <h2>{{ item[display] }}</h2>
         <template v-for="column of columns">
-          <br />
-          <span>{{ item[column] }}</span>
+          <p>{{ item[column] }}</p>
         </template>
       </div>
       <div class="col-2 text-end">
-        <button class="btn btn-default" @click="$emit('edit', item)" alt="Edit">
+        <button class="btn btn-outline-secondary" @click="$emit('edit', item)" alt="Edit">
           <b-icon icon="pencil" size="2x"></b-icon>
         </button>
       </div>

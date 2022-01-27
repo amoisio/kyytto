@@ -5,7 +5,7 @@
       v-model="project.description"
       id="project-description"
       class="mb-3"
-      :rows=10
+      :rows=5
       placeholder="Project description">Description</textarea-input>
   </form>
 </template>
