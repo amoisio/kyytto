@@ -21,7 +21,7 @@
       </div>
       <div class="col-2 text-end align-middle">
         <span class="badge bg-danger fs-6" v-if="item[1] > 0">{{ item[1] }} uses</span>
-        <button class="btn btn-outline-danger" v-else @click="$emit('action', item)">
+        <button class="btn btn-outline-danger" v-else @click="remove(item[0])">
           <b-icon icon="x-circle" size="lg"></b-icon>
         </button>
       </div>
@@ -49,7 +49,6 @@
     },
     data() {
       return {
-        tags: [] as Tag[],
         usages: [] as [tag: Tag , count: number][],
         show: false
       };
@@ -81,8 +80,8 @@
         }
 
         try {
-          const index = this.tags.findIndex(t => t.id == id);
-          this.tags.splice(index, 1);
+          const index = this.usages.findIndex(t => t[0].id == id);
+          this.usages.splice(index, 1);
           await this.$services.tagService.delete(id);
           this.notificationService.notifySuccess('Tag removed.');
         } catch (e) {
