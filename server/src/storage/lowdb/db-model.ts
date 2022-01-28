@@ -1,11 +1,11 @@
-import { TagType, TaskState } from 'kyytto-models';
-import { MatchType } from 'kyytto-models/dist/models/stack-resource';
+import { TagType, TaskState, MatchType } from 'kyytto-models';
 
 export interface DataDb {
   projects: ProjectDb[];
   tasks: TaskDb[];
   tags: TagDb[];
   stacks: StackDb[];
+  users: UserDb[];
 }
 
 export interface ProjectDb {
@@ -37,4 +37,10 @@ export interface StackDb {
   description: string | undefined;
   match: MatchType;
   tags: TagDb[];
+}
+
+export interface UserDb {
+  id: string;
+  name: string;
+  stack?: StackDb
 }

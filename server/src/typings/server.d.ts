@@ -7,6 +7,7 @@ import { IdentifierGenerator } from '../utilities/identifier-generator.js';
 import { TagService } from '../resources/tags/tag-service.js';
 import { StackBuilder } from '../resources/stacks/stack.js';
 import { IdentifierType } from 'kyytto-models';
+import { UserBuilder } from '../resources/users/user.js';
 
 declare global {
   namespace Express {
@@ -21,6 +22,7 @@ declare global {
       tagBuilder: TagBuilder,
       stackBuilder: StackBuilder
       tagService: TagService
+      userBuilder: UserBuilder
     }
   }
 }

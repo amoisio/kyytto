@@ -13,5 +13,11 @@ export const menu: MenuResource = {
   }, {
     href: api.tags.resourceHref(),
     title: 'Tags'
+  }, {
+    href: api.stacks.resourceHref(),
+    title: 'Stacks'
+  }, {
+    href: api.users.resourceHref(),
+    title: 'Users'
   }]
 };

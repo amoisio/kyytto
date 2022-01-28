@@ -7,6 +7,7 @@ import { DataDb } from './db-model.js';
 import { options } from './options.js';
 import TagRepository from './tag-repository.js';
 import StackRepository from './stack-repository.js';
+import UserRepository from './user-repository.js';
 
 export class LowDbUnitOfWork implements UnitOfWork {
   private readonly db: Low<DataDb>;
@@ -14,6 +15,7 @@ export class LowDbUnitOfWork implements UnitOfWork {
   public readonly taskRepository: TaskRepository;
   public readonly tagRepository: TagRepository;
   public readonly stackRepository: StackRepository;
+  public readonly userRepository: UserRepository;
 
   private constructor(db: Low<DataDb>) { 
     this.db = db;
@@ -21,6 +23,7 @@ export class LowDbUnitOfWork implements UnitOfWork {
     this.taskRepository = new TaskRepository(db);
     this.tagRepository = new TagRepository(db);
     this.stackRepository = new StackRepository(db);
+    this.userRepository = new UserRepository(db);
   }
 
   public static async openContext(): Promise<UnitOfWork> {
@@ -39,12 +42,14 @@ export class LowDbUnitOfWork implements UnitOfWork {
       projects: [],
       tasks: [],
       tags: [],
-      stacks: []
+      stacks: [],
+      users: []
     };
     db.data.projects ||= [];
     db.data.tasks ||= [];
     db.data.tags ||= [];
     db.data.stacks ||= [];
+    db.data.users ||= [];
   }
   
   public async closeContext(): Promise<void> { 
