@@ -60,8 +60,9 @@
           return;
         }
         try {
-          const id = await this.$services.tagService.create({ name });
-          console.log(id);
+          const newTag = Tag.empty();
+          newTag.name = name;
+          const id = await this.$services.tagService.create(newTag);
           const tag = await this.$services.tagService.getById(id);
           this.selected.push(tag);
           this.options.push(tag);
