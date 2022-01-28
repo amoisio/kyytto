@@ -10,8 +10,19 @@
     button-icon="x-circle">
 
     <template v-slot:inline-form>
-      <div class="row py-3" v-if="show">
-        <p>Inline form comes here</p>
+      <div class="row justify-content-between py-3" v-if="show">
+        <div class="col-4">
+          <text-input 
+            v-model="name" 
+            id="tag-name" 
+            :hide-label="true"
+            placeholder="New tag name"></text-input>
+        </div>
+        <div class="col-2 text-end">
+          <button type="button" @click="save" class="btn btn-outline-success" alt="Save">
+            <b-icon icon="save" size="lg"></b-icon>
+          </button>
+        </div>
       </div>
     </template>
 
@@ -31,14 +42,16 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
-  import { Identifier } from 'kyytto-models';
+  import { Identifier, Utilities } from 'kyytto-models';
   import KTable from '@/shared/k-table.vue';
   import { Tag } from './tag-models';
+  import TextInput from '@/shared/text-input.vue';
 
   export default defineComponent({
     name: 'TagListView',
     components: {
-      KTable
+      KTable,
+      TextInput
     },
     async created() {
       try {
@@ -50,7 +63,8 @@
     data() {
       return {
         usages: [] as [tag: Tag , count: number][],
-        show: false
+        show: false,
+        name: ''
       };
     },
     computed: {
@@ -88,6 +102,23 @@
           this.notificationService.notifyError('Remove failed.', 'Error', e);
         }
       },
+      async save() {
+        if (Utilities.isEmpty(this.name)) {
+          this.$services.notificationService.notifyError('Tag name must be given');
+          return;
+        }
+        try {
+          const newTag = Tag.empty();
+          newTag.name = this.name;
+          const id = await this.$services.tagService.create(newTag);
+          const tag = await this.$services.tagService.getById(id);
+          this.usages.push([tag, 0]);
+          this.show = false;
+          this.name = '';
+        } catch (e) {
+          this.$services.notificationService.notifyError(`Unable to create tag for ${this.name}`, 'Error', e);
+        }
+      }
     }
   });
 </script>

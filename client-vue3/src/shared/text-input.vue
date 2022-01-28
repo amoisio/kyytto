@@ -1,11 +1,12 @@
 <template>
   <div>
-    <label :for="id" class="form-label">
+    <label :for="id" class="form-label" v-if="!hideLabel">
       <slot></slot>
     </label>
     <input
       type="text"
       class="form-control"
+      autocomplete="off"
       :id="id"
       v-model="value"
       :ref="id"
@@ -28,7 +29,11 @@
         type: String,
         default: () => `input-${uuid()}`
       },
-      placeholder: String
+      placeholder: String,
+      hideLabel: {
+        type: Boolean,
+        default: false
+      }
     },
     data() {
       return {
