@@ -10,8 +10,8 @@ import { TaskDto } from '../models/task-dto.js';
 import { TaskResource } from '../models/task-resource.js';
 import { ApiClient } from './base-client.js';
 import { MenuApiClient } from './menu-api-client.js';
-import { UserDto } from 'src/models/user-dto.js';
-import { UserResource } from 'src/models/user-resource.js';
+import { UserDto } from '../models/user-dto.js';
+import { UserResource } from '../models/user-resource.js';
 
 export class KyyttoClient {
   public readonly baseUrl: string;
