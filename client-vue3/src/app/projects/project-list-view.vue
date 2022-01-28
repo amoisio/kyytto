@@ -6,7 +6,7 @@
     display="name" 
     :columns="['description']" 
     @new="navigateToEditForm"
-    @edit="navigateToEditForm">
+    @action="navigateToEditForm">
   </k-table>
 </template>
 <script lang="ts">

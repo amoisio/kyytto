@@ -40,6 +40,7 @@
           menuLinks.newTask,
           menuLinks.board,
           menuLinks.projects,
+          menuLinks.tags,
           menuLinks.stacks
         ];
       }

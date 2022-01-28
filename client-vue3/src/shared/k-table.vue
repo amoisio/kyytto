@@ -5,21 +5,24 @@
         <h1>{{ title }}</h1>
       </div>
       <div class="col-2 text-end">
-        <button class="btn btn-outline-success" @click="$emit('new')" alt="New">
-          <b-icon icon="plus-circle" size="2x"></b-icon>
+        <button class="btn btn-outline-success" @click="$emit('new')">
+          <b-icon icon="plus-circle" size="lg"></b-icon>
         </button>
       </div>
     </div>
-    <div class="row py-3" v-for="item of items" :key="item">
+    <slot name="inline-form"></slot>
+    <div class="row mb-1" v-for="item of items" :key="item">
       <div class="col-10">
-        <h2>{{ item[display] }}</h2>
-        <template v-for="column of columns">
-          <p>{{ item[column] }}</p>
-        </template>
+        <slot name="item" :item="item" :display="item[display]" :columns="columns">
+          <h2>{{ item[display] }}</h2>
+          <template v-for="column of columns">
+            <p>{{ item[column] }}</p>
+          </template>
+        </slot>
       </div>
       <div class="col-2 text-end">
-        <button class="btn btn-outline-secondary" @click="$emit('edit', item)" alt="Edit">
-          <b-icon icon="pencil" size="2x"></b-icon>
+        <button :class="['btn', buttonClass]" @click="$emit('action', item)">
+          <b-icon :icon="buttonIcon" size="lg"></b-icon>
         </button>
       </div>
     </div>
@@ -30,7 +33,7 @@
 
   export default defineComponent({
     name: 'KTable',
-    emits: ['edit', 'remove', 'new'],
+    emits: ['action', 'new'],
     props: {
       title: {
         type: String,
@@ -47,6 +50,14 @@
       columns: {
         type: Array as PropType<string[]>,
         default: () => []
+      },
+      buttonClass: {
+        type: String,
+        default: 'btn-outline-secondary'
+      },
+      buttonIcon: {
+        type: String,
+        default: 'pencil'
       }
     }
   });

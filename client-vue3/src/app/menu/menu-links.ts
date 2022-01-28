@@ -4,6 +4,7 @@ export interface KyyttoLinks {
   newTask: Link,
   board: Link,
   projects: Link,
+  tags: Link,
   stacks: Link
 }
 
@@ -31,6 +32,12 @@ export const menuLinks: KyyttoLinks = {
     name: 'projects',
     path: '/projects',
     title: 'Projects',
+    icon: 'box'
+  },
+  tags: {
+    name: 'tags',
+    path: '/tags',
+    title: 'Tags',
     icon: 'tags'
   },
   stacks: {

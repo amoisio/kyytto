@@ -1,29 +1,17 @@
-import { IdentifierType, KyyttoClient, TagDto } from 'kyytto-models';
+import { ApiClient, KyyttoClient, TagDto, TagResource } from 'kyytto-models';
+import { ApiService, Service } from '../api-service';
 import { Tag, TagCollection } from './tag-models';
 
-export interface TagService {
-  create(name: TagDto): Promise<IdentifierType>;
-  getAll(): Promise<Tag[]>;
+export interface TagService extends Service<Tag, TagDto> {
   getAllUserTags(): Promise<Tag[]>;
-  getById(id: IdentifierType): Promise<Tag>;
-  delete(id: IdentifierType): Promise<void>;
 }
 
-export class ApiTagService implements TagService {
+export class ApiTagService extends ApiService<Tag, TagDto, TagResource> implements TagService {
   private readonly client: KyyttoClient;
 
   constructor(client: KyyttoClient) {
+    super();
     this.client = client;
-  }
-
-  public async create(dto: TagDto): Promise<IdentifierType> {
-    const id = await this.client.tags.create(dto);
-    return id;
-  }
-
-  public async getAll(): Promise<Tag[]> {
-    const tagResources = await this.client.tags.getAll();
-    return new TagCollection(tagResources);
   }
 
   public async getAllUserTags(): Promise<Tag[]> {
@@ -33,12 +21,15 @@ export class ApiTagService implements TagService {
     return tags;
   }
 
-  public async getById(id: IdentifierType): Promise<Tag> {
-    const tagResource = await this.client.tags.getById(id);
-    return new Tag(tagResource);
+  protected getApiClient(): ApiClient<TagDto, TagResource> {
+    return this.client.tags;
   }
 
-  public async delete(id: IdentifierType): Promise<void> {
-    await this.client.tags.delete(id);
+  protected async buildEntities(resources: TagResource[]): Promise<Tag[]> {
+    return new TagCollection(resources);
+  }
+
+  protected async buildEntity(resource: TagResource): Promise<Tag> {
+    return new Tag(resource);
   }
 }
