@@ -13,6 +13,8 @@ export { StackResource } from './models/stack-resource.js';
 export { MatchType } from './models/stack-resource.js';
 export { Identifiable } from './models/identifiable.js';
 export { Validatable } from './models/validatable.js';
+export { UserDto } from './models/user-dto.js';
+export { UserResource } from './models/user-resource.js';
 
 export { Identifier, IdentifierType } from './models/identifier.js';
 export { Color, ColorType } from './models/color.js';

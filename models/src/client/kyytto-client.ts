@@ -10,6 +10,8 @@ import { TaskDto } from '../models/task-dto.js';
 import { TaskResource } from '../models/task-resource.js';
 import { ApiClient } from './base-client.js';
 import { MenuApiClient } from './menu-api-client.js';
+import { UserDto } from 'src/models/user-dto.js';
+import { UserResource } from 'src/models/user-resource.js';
 
 export class KyyttoClient {
   public readonly baseUrl: string;
@@ -18,6 +20,7 @@ export class KyyttoClient {
   public readonly tasks: ApiClient<TaskDto, TaskResource>;
   public readonly tags: ApiClient<TagDto, TagResource>;
   public readonly stacks: ApiClient<StackDto, StackResource>;
+  public readonly users: ApiClient<UserDto, UserResource>;
 
   constructor(api: Api) {
     this.baseUrl = api.baseUrl;
@@ -27,5 +30,6 @@ export class KyyttoClient {
     this.tasks = new ApiClient(ax, api.tasks.path);
     this.tags = new ApiClient(ax, api.tags.path);
     this.stacks = new ApiClient(ax, api.stacks.path);
+    this.users = new ApiClient(ax, api.users.path);
   }
 }
