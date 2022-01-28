@@ -2,9 +2,8 @@
   <k-table 
     class="tags my-5"
     title="Tags"
-    :items="tags" 
+    :items="sortedUsages" 
     display="name" 
-    :columns="['description']" 
     @new="show = !show;"
     @action="remove"
     button-class="btn-outline-danger"
@@ -16,8 +15,16 @@
       </div>
     </template>
 
-    <template v-slot:item="{ display: display }">
-      <span class="fs-4">{{ display }}</span>
+    <template v-slot:body="{ item: item }">
+      <div class="col-10">
+        <span class="fs-4 pr-2">{{ item[0]['name'] }}</span>
+      </div>
+      <div class="col-2 text-end align-middle">
+        <span class="badge bg-danger fs-6" v-if="item[1] > 0">{{ item[1] }} uses</span>
+        <button class="btn btn-outline-danger" v-else @click="$emit('action', item)">
+          <b-icon icon="x-circle" size="lg"></b-icon>
+        </button>
+      </div>
     </template>
   </k-table>
 </template>
@@ -35,7 +42,7 @@
     },
     async created() {
       try {
-        this.tags = await this.$services.tagService.getAll();
+        this.usages = await this.$services.tagService.getUserTagsAndUsages();
       } catch (e) {
         this.notificationService.notifyError(`Loading tags failed.`, 'Error', e); 
       }
@@ -43,12 +50,22 @@
     data() {
       return {
         tags: [] as Tag[],
+        usages: [] as [tag: Tag , count: number][],
         show: false
       };
     },
     computed: {
       notificationService(): NotificationService {
         return this.$services.notificationService;
+      },
+      sortedUsages(): [tag: Tag , count: number][]{
+        return this.usages.sort((a, b) => {
+          var nameA = a[0].name.toLowerCase();
+          var nameB = b[0].name.toLowerCase();
+          return (nameA < nameB) ? -1 
+               : (nameA > nameB) ? 1 
+               : 0;
+        });
       }
     },
     methods: {

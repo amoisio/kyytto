@@ -11,20 +11,20 @@
       </div>
     </div>
     <slot name="inline-form"></slot>
-    <div class="row mb-1" v-for="item of items" :key="item">
-      <div class="col-10">
-        <slot name="item" :item="item" :display="item[display]" :columns="columns">
-          <h2>{{ item[display] }}</h2>
-          <template v-for="column of columns">
-            <p>{{ item[column] }}</p>
-          </template>
-        </slot>
-      </div>
-      <div class="col-2 text-end">
-        <button :class="['btn', buttonClass]" @click="$emit('action', item)">
-          <b-icon :icon="buttonIcon" size="lg"></b-icon>
-        </button>
-      </div>
+    <div class="row mb-1 align-items-center" v-for="item of items" :key="item">
+      <slot name="body" :item="item">
+        <div class="col-10">
+            <h2>{{ item[display] }}</h2>
+            <template v-for="column of columns">
+              <p>{{ item[column] }}</p>
+            </template>
+        </div>
+        <div class="col-2 text-end">
+          <button :class="['btn', buttonClass]" @click="$emit('action', item)">
+            <b-icon :icon="buttonIcon" size="lg"></b-icon>
+          </button>
+        </div>
+      </slot>
     </div>
   </div>
 </template>
