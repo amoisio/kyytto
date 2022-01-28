@@ -2,6 +2,7 @@ import { api } from '../api.js';
 import { Identifiable, Identifier, IdentifierType, TagDto, TagResource, TagType } from 'kyytto-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
+import text from '../../utilities/text-utilities.js';
 
 export class TagBuilder {
   constructor(
@@ -49,7 +50,9 @@ export class Tag implements Identifiable {
     if (isEmpty(name)) {
       throw new Error('Name must not be empty.');
     }
-    this.name = name;
+    this.name = (type === TagType.UserDefined)
+      ? name.toLowerCase()
+      : text.capitalize(name);
 
     if (type !== TagType.UserDefined && type !== TagType.Project) {
       throw new Error('Tag type is not supported');
