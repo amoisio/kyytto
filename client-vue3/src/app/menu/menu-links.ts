@@ -12,7 +12,8 @@ export interface Link {
   name: string,
   path: string,
   title: string,
-  icon: string
+  icon: string,
+  
 }
 
 export const menuLinks: KyyttoLinks = {
@@ -46,4 +47,11 @@ export const menuLinks: KyyttoLinks = {
     title: 'Stacks',
     icon: 'stack'
   }
+};
+
+export const userLink: Link = {
+  name: 'user',
+  path: '/user',
+  title: 'User',
+  icon: 'person-circle'
 };

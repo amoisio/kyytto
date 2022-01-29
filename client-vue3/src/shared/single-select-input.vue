@@ -26,8 +26,8 @@
     emits: ['update:modelValue'],
     props: {
       modelValue: {
-        type: Object as PropType<any>,
-        required: true
+        type: Object  as PropType<any>,
+        required: false
       },
       options: {
         type: Array,
@@ -49,8 +49,11 @@
     },
     computed: {
       value: {
-        get(): Object {
-          return JSON.parse(JSON.stringify(this.modelValue));
+        get(): Object | undefined {
+          if (this.modelValue)
+            return JSON.parse(JSON.stringify(this.modelValue));
+          else 
+            return undefined;
         },
         set(newValue: any): void {
           this.$emit('update:modelValue', newValue);
