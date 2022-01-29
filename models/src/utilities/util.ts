@@ -1,3 +1,4 @@
+import { Identifiable } from '../models/identifiable.js';
 import { Identifier, IdentifierType } from '../models/identifier.js';
 import { ResourceReference } from '../models/resource.js';
 
@@ -21,7 +22,30 @@ const resolveId = (href: ResourceReference): IdentifierType => {
   return id;
 } 
 
+const matchExact = <T extends Identifiable>(arr1: T[], arr2: T[]): boolean => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  return matchAll(arr1, arr2);
+}
+
+const matchAny = <T extends Identifiable>(arr1: T[], arr2: T[]): boolean => {
+  const ids1 = arr1.map(item1 => item1.id);
+  const ids2 = arr2.map(item2 => item2.id);
+  return ids1.some(id => ids2.includes(id));
+}
+
+const matchAll = <T extends Identifiable>(arr1: T[], arr2: T[]): boolean => {
+  const ids1 = arr1.map(item1 => item1.id);
+  const ids2 = arr2.map(item2 => item2.id);
+  return ids1.every(id => ids2.includes(id));
+}
+
 export const Utilities = {
   isEmpty,
-  resolveId
+  resolveId,
+  matchExact,
+  matchAny,
+  matchAll
 };
+
