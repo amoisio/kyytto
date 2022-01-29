@@ -1,4 +1,4 @@
-import { TaskService, ApiTaskService } from './board/task-service';
+import { TaskService, ApiTaskService } from './tasks/task-service';
 import { ProjectService, ApiProjectService } from './projects/project-service';
 import { client } from './api';
 import { NotificationService } from '../shared/notification-service';

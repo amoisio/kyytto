@@ -2,7 +2,7 @@
   <div class="board-view">
     <div class="row pb-3 pt-3">
       <div class="col-auto">
-        <h1>Board</h1>
+        <h1>Tasks</h1>
       </div>
       <div class="col align-self-center">
         <button id="new-item" class="btn btn-outline-primary" @click="navigateToTaskForm()">
@@ -33,7 +33,7 @@
   import { Identifier } from 'kyytto-models';
 
   export default defineComponent({
-    name: 'BoardView',
+    name: 'TaskListView',
     components: {
       TaskList
     },

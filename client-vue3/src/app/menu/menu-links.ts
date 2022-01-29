@@ -2,7 +2,8 @@ import { Identifier } from 'kyytto-models';
 
 export interface KyyttoLinks {
   newTask: Link,
-  board: Link,
+  work: Link,
+  tasks: Link,
   projects: Link,
   tags: Link,
   stacks: Link
@@ -13,7 +14,6 @@ export interface Link {
   path: string,
   title: string,
   icon: string,
-  
 }
 
 export const menuLinks: KyyttoLinks = {
@@ -23,11 +23,17 @@ export const menuLinks: KyyttoLinks = {
     title: 'New',
     icon: 'plus-circle'
   },
-  board: {
-    name: 'board',
-    path: '/board',
-    title: 'Board',
+  work: {
+    name: 'work',
+    path: '/',
+    title: 'Home',
     icon: 'list-check'
+  },
+  tasks: {
+    name: 'tasks',
+    path: '/tasks',
+    title: 'Tasks',
+    icon: 'collection'
   },
   projects: {
     name: 'projects',

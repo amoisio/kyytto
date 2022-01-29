@@ -1,12 +1,13 @@
-import BoardView from './board/board-view.vue';
-import TaskView from './board/task-view.vue';
+import TaskListView from './tasks/task-list-view.vue';
+import TaskView from './tasks/task-view.vue';
 import ProjectListView from './projects/project-list-view.vue';
 import ProjectView from './projects/project-view.vue';
 import StackListView from './stacks/stack-list-view.vue';
 import StackView from './stacks/stack-view.vue';
 import UserView from './users/user-view.vue';
+import WorkView from './work/work-view.vue';
 import { menuLinks, userLink } from './menu/menu-links';
-import { RouteLocation, useLink } from 'vue-router';
+import { RouteLocation } from 'vue-router';
 import { Identifier } from 'kyytto-models';
 import TagListView from './tags/tag-list-view.vue';
 import { ServiceProvider } from './service-provider';
@@ -21,9 +22,14 @@ function identifierResolver(route: RouteLocation) {
 export const buildRoutes = (services: ServiceProvider) => {
   return [
     {
-      name: menuLinks.board.name,
-      path: menuLinks.board.path,
-      component: BoardView
+      name: menuLinks.work.name,
+      path: menuLinks.work.path,
+      component: WorkView
+    },
+    {
+      name: menuLinks.tasks.name,
+      path: menuLinks.tasks.path,
+      component: TaskListView
     },
     {
       name: 'task',

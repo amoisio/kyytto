@@ -38,7 +38,8 @@
       links(): Link[] {
         return [
           menuLinks.newTask,
-          menuLinks.board,
+          menuLinks.work,
+          menuLinks.tasks,
           menuLinks.projects,
           menuLinks.tags,
           menuLinks.stacks
