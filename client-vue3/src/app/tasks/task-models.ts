@@ -1,6 +1,7 @@
 import { Project } from '@/app/projects/project-models';
 import { Entity } from '@/shared/entity';
-import { Identifier, IdentifierType, ProjectResource, TagResource, TaskDto, TaskResource, Utilities } from 'kyytto-models';
+import { Identifier, IdentifierType, MatchType, ProjectResource, TagResource, TaskDto, TaskResource, Utilities } from 'kyytto-models';
+import { Stack } from '../stacks/stack-models';
 import { Tag, TagCollection } from '../tags/tag-models';
 import { TaskState } from './task-state';
 
@@ -17,6 +18,13 @@ export class TaskCollection extends Array<Task> {
       const tasks = val.map(r => new Task(r[0], r[1], r[2]));
       super(...tasks);
     }
+  }
+
+  public filterByStack(stack: Stack): TaskCollection {
+    const arr = new TaskCollection();
+    const stackTasks = this.filter(task => stack.isStackTask(task));
+    arr.push(...stackTasks);
+    return arr;
   }
 }
 

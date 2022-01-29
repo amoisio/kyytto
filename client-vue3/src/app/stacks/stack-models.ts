@@ -1,6 +1,7 @@
 import { Entity } from '@/shared/entity';
 import { Identifier, IdentifierType, MatchType, StackDto, StackResource, TagResource, Utilities } from 'kyytto-models';
 import { Tag, TagCollection } from '../tags/tag-models';
+import { Task } from '../tasks/task-models';
 
 export class StackCollection extends Array<Stack> {
   constructor(resources: [stack: StackResource, tags: TagResource[]][])
@@ -75,5 +76,23 @@ export class Stack extends Entity<StackDto> {
     }
 
     return errors;
+  }
+
+  public isStackTask(task: Task): boolean {
+    let isMatch = false;
+    switch (this.match) {
+      case MatchType.Exact:
+        isMatch = Utilities.matchExact(task.tags, this.tags)
+        break;
+      case MatchType.Any:
+        isMatch = Utilities.matchAny(task.tags, this.tags);
+        break;
+      case MatchType.All:
+        isMatch = Utilities.matchAll(task.tags, this.tags);
+        break;
+      default:
+        break;
+    }
+    return isMatch;
   }
 }
