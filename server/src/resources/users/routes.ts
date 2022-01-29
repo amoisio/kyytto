@@ -31,6 +31,7 @@ router.route(`${api.users.path}/:id`)
     const resource = user.toResource();
     res.json(resource);
   })
+  .put(dtoParser)
   .put(async (req, res) => {
     const id = req.id;
     const dto = req.bodyAs<UserDto>();
