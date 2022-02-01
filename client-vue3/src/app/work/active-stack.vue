@@ -38,27 +38,9 @@
               </div>
             </div>
             <div class="col-4 pe-0 text-end">
-              <b-button
-                class="p-0 me-1"
-                variant="outline-secondary"
-                @click.stop="$emit('edit', stack)"
-                @keyup.enter.stop.prevent="$emit('edit', stack)">
-                <b-icon icon="pencil" size="2x"></b-icon>
-              </b-button>
-              <b-button
-                v-if="!isActive"
-                class="p-0"
-                variant="outline-warning"
-                @click.stop="$emit('set', stack)"
-                @keyup.enter.stop.prevent="$emit('set', stack)">
-                <b-icon icon="pin-angle" size="2x"></b-icon>
-              </b-button>
-              <b-button
-                v-else
-                class="p-0"
-                variant="warning">
-                <b-icon icon="pin-angle" size="2x"></b-icon>
-              </b-button>
+              <k-button class="me-1" icon="pencil" @activate="$emit('edit', stack)"></k-button>
+              <k-button-warning v-if="!isActive" icon="pin-angle" @activate="$emit('set', stack)"></k-button-warning>
+              <k-button v-else variant="warning" icon="pin-angle"></k-button>
             </div>
           </div>
         </b-card-body>
@@ -72,6 +54,8 @@
   import KSectionHeader from '@/shared/k-section-header.vue';
   import VueMultiselect from 'vue-multiselect';
   import KTagList from '@/shared/k-tag-list.vue';
+  import KButton from '@/shared/k-button.vue';
+  import KButtonWarning from '@/shared/k-button-warning.vue';
 
   export default defineComponent({
     name: 'ActiveStack',
@@ -79,7 +63,9 @@
     components: {
       KSectionHeader,
       VueMultiselect,
-      KTagList
+      KTagList,
+      KButton,
+      KButtonWarning
     },
     props: {
       stack: {

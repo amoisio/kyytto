@@ -16,17 +16,14 @@
     </div>
     <div class="row py-3">
       <div class="col-6">
-        <button type="button" @click="save" class="btn btn-outline-success me-2" alt="Save">
-          <b-icon icon="save" size="2x"></b-icon>
-        </button>
-        <button type="button" @click="cancel" class="btn btn-outline-secondary" alt="Cancel">
-          <b-icon icon="backspace" size="2x"></b-icon>
-        </button>
+        <k-button-danger class="me-1" icon="x" @activate="remove"></k-button-danger>
+        <k-button icon="arrow-left-short" @activate="cancel"></k-button>
       </div>
       <div class="col-6 text-end">
-        <button type="button" @click="remove" class="btn btn-outline-danger" alt="Delete">
-          <b-icon icon="x-circle" size="2x"></b-icon>
-        </button>
+        <k-button class="me-1" icon="stop" v-if="task.isStarted()" @activate="stop"></k-button>
+        <k-button-success class="me-1" icon="play" v-if="task.isTodo()" @activate="start"></k-button-success>
+        <k-button-success class="me-1" icon="check" v-if="task.isStarted()" @activate="complete"></k-button-success>
+        <k-button-success icon="arrow-down-short" @activate="save"></k-button-success>
       </div>
     </div>
   </div>
@@ -40,12 +37,18 @@
   import { NotificationService } from '@/shared/notification-service';
   import { Tag } from '../tags/tag-models';
   import KPageHeader from '@/shared/k-page-header.vue';
+  import KButton from '@/shared/k-button.vue';
+  import KButtonSuccess from '@/shared/k-button-success.vue';
+  import KButtonDanger from '@/shared/k-button-danger.vue';
 
   export default defineComponent({
     name: 'TaskView',
     components: {
       TaskEditForm,
-      KPageHeader
+      KPageHeader,
+      KButton,
+      KButtonSuccess,
+      KButtonDanger
     },
     props: {
       id: {
@@ -86,6 +89,18 @@
       }
     },
     methods: {
+      async stop(): Promise<void> {
+        this.task.stopWork();
+        await this.save();
+      },
+      async start(): Promise<void> {
+        this.task.startWork();
+        await this.save();
+      },
+      async complete(): Promise<void> {
+        this.task.complete();
+        await this.save();
+      },
       async save(): Promise<void> {
         const task = this.task;
         const errors = task.validate();

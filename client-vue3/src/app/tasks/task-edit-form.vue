@@ -21,34 +21,6 @@
       <label for="task-tags" class="form-label">Tags</label>
       <tag-selector id="task-tags" v-model="task.tags" :options="tags"></tag-selector>
     </div>
-    <div class="row mb-3 justify-content-between" v-if="!task.isNew()">
-      <div class="col-auto">
-        <label class="form-label">State</label>
-      </div>
-      <div class="col-auto text-end">
-        <button
-          type="button"
-          @click="task.stopWork()"
-          :class="[{ active: task.isTodo() }, 'btn btn-outline-primary me-2']"
-        >
-          To do
-        </button>
-        <button
-          type="button"
-          @click="task.startWork()"
-          :class="[{ active: task.isStarted() }, 'btn btn-outline-primary me-2']"
-        >
-          In-progress
-        </button>
-        <button
-          type="button"
-          @click="task.complete()"
-          :class="[{ active: task.isCompleted() }, 'btn btn-outline-success']"
-        >
-          Completed
-        </button>
-      </div>
-    </div>
   </form>
 </template>
 <script lang="ts">

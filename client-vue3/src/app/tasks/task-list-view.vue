@@ -1,26 +1,31 @@
 <template>
   <div class="board-view">
     <div class="row pb-3 pt-3">
-      <div class="col-auto">
+      <div class="col-12">
         <k-page-header>Tasks</k-page-header>
-      </div>
-      <div class="col align-self-center">
-        <button id="new-item" class="btn btn-outline-primary" @click="navigateToTaskForm()">
-          <span class="fs-5">New Item</span>
-        </button>
       </div>
     </div>
     <div class="row">
       <div class="col mx-2 mb-2 task-list">
-        <task-list :tasks="todoTasks" @right="start" @edit="edit" @start="start">Todos</task-list>
+        <task-list 
+          :tasks="todoTasks" 
+          @right="start" 
+          @edit="edit" 
+          @start="start">Todos</task-list>
       </div>
       <div class="col mx-2 mb-2 task-list">
-        <task-list :tasks="startedTasks" @left="stop" @right="complete" @edit="edit" @stop="stop" @complete="complete"
-          >In Progress</task-list
-        >
+        <task-list 
+          :tasks="startedTasks" 
+          @left="stop" 
+          @right="complete" 
+          @edit="edit" 
+          @stop="stop" 
+          @complete="complete">In Progress</task-list>
       </div>
       <div class="col mx-2 mb-2 task-list">
-        <task-list :tasks="completedTasks" @edit="edit">Completed</task-list>
+        <task-list 
+          :tasks="completedTasks" 
+          @edit="edit">Completed</task-list>
       </div>
     </div>
   </div>

@@ -12,12 +12,10 @@
     </div>
     <div class="row py-3">
       <div class="col-6">
-        <button type="button" @click="save" class="btn btn-outline-success me-2" alt="Save">
-          <b-icon icon="save" size="2x"></b-icon>
-        </button>
-        <button type="button" @click="cancel" class="btn btn-outline-secondary" alt="Cancel">
-          <b-icon icon="backspace" size="2x"></b-icon>
-        </button>
+        <k-button icon="arrow-left-short" @activate="cancel"></k-button>
+      </div>
+      <div class="col-6 text-end">
+        <k-button-success icon="arrow-down-short" @activate="save"></k-button-success>
       </div>
     </div>
   </div>
@@ -29,12 +27,16 @@
   import { User } from './user-models';
   import { Stack } from '../stacks/stack-models';
   import KPageHeader from '@/shared/k-page-header.vue';
+  import KButton from '@/shared/k-button.vue';
+  import KButtonSuccess from '@/shared/k-button-success.vue';
 
   export default defineComponent({
-    name: 'StackView',
+    name: 'UserView',
     components: {
       UserEditForm,
-      KPageHeader
+      KPageHeader,
+      KButton,
+      KButtonSuccess
     },
     data() {
       return {
@@ -71,16 +73,16 @@
           await this.$services.userService.update(user);
           this.$authentication.user = user;
           this.notificationService.notifySuccess('User saved.');
-          await this.navigateHome();
+          await this.navigateBack();
         } catch (e) {
           this.notificationService.notifyError('Save failed.', 'Error', e);
         }
       },
       async cancel(): Promise<void> {
-        await this.navigateHome();
+        await this.navigateBack();
       },
-      async navigateHome(): Promise<void> {
-        await this.$router.push({ path: '/' });
+      async navigateBack(): Promise<void> {
+        await this.$router.back();
       }
     }
   });
