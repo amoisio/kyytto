@@ -1,11 +1,11 @@
 <template>
   <div class="row">
-    <div class="col-7">
+    <div class="col-auto">
       <k-section-header>
         <slot></slot>
       </k-section-header>
     </div>
-    <div class="col-5 text-end">
+    <div class="col text-end">
       <slot name="right">
         {{ tasks.length }}
       </slot>
