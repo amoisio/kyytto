@@ -110,7 +110,7 @@
         await this.navigateToStacks();
       },
       async navigateToStacks(): Promise<void> {
-        await this.$router.push({ name: 'stacks' });
+        await this.$router.back();
       }
     }
   });

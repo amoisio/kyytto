@@ -78,7 +78,7 @@
         this.tags = await this.$services.tagService.getAllUserTags();
       } catch (e) {
         this.notifier.notifyError(`Loading task details with id ${this.id} failed.`, 'Error', e);
-        await this.navigateToBoard();
+        await this.navigateBack();
       } finally {
         this.isReady = true;
       }
@@ -95,7 +95,7 @@
         try {
           const id = await this.$services.taskService.save(task);
           this.notifier.notifySuccess('Task saved.');
-          await this.navigateToBoard();
+          await this.navigateBack();
         } catch (e) {
           this.notifier.notifyError('Save failed.', 'Error', e);
         }
@@ -111,16 +111,16 @@
         try {
           await this.$services.taskService.delete(id);
           this.notifier.notifySuccess('Task removed.');
-          await this.navigateToBoard();
+          await this.navigateBack();
         } catch (e) {
           this.notifier.notifyError('Remove failed.', 'Error', e);
         }
       },
       async cancel(): Promise<void> {
-        await this.navigateToBoard();
+        await this.navigateBack();
       },
-      async navigateToBoard(): Promise<void> {
-        await this.$router.push({ name: 'board' });
+      async navigateBack(): Promise<void> {
+        await this.$router.back();
       }
     }
   });
