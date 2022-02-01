@@ -1,19 +1,23 @@
 <template>
   <div class="row">
-    <div class="col-12">
-      <k-two-part-header class="m-2">
+    <div class="col-6">
+      <k-section-header>
         Stack
-        <template v-slot:right>
-          <vue-multiselect 
-            :model-value="stack" 
-            :options="stacks" 
-            track-by="name" 
-            label="name" 
-            placeholder="Choose stack"
-            @select="$emit('select', $event)">
-          </vue-multiselect>
-        </template>
-      </k-two-part-header>
+      </k-section-header>
+    </div>
+    <div class="col-6 text-end">
+      <vue-multiselect 
+        :model-value="stack" 
+        :options="stacks" 
+        track-by="name" 
+        label="name" 
+        placeholder="Choose stack"
+        @select="$emit('select', $event)">
+      </vue-multiselect>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
       <b-card
         no-body
         class="active-stack"
@@ -65,7 +69,7 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { Stack } from '../stacks/stack-models';
-  import KTwoPartHeader from '@/shared/k-two-part-header.vue';
+  import KSectionHeader from '@/shared/k-section-header.vue';
   import VueMultiselect from 'vue-multiselect';
   import KTagList from '@/shared/k-tag-list.vue';
 
@@ -73,7 +77,7 @@
     name: 'ActiveStack',
     emits: ['select', 'edit', 'set'],
     components: {
-      KTwoPartHeader,
+      KSectionHeader,
       VueMultiselect,
       KTagList
     },

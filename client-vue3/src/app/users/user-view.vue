@@ -2,7 +2,7 @@
   <div class="user-view container pb-2 my-5" v-if="isReady">
     <div class="row py-3">
       <div class="col-12">
-        <h1>User</h1>
+        <k-page-header>User</k-page-header>
       </div>
     </div>
     <div class="row py-3">
@@ -28,11 +28,13 @@
   import { NotificationService } from '@/shared/notification-service';
   import { User } from './user-models';
   import { Stack } from '../stacks/stack-models';
+  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'StackView',
     components: {
-      UserEditForm
+      UserEditForm,
+      KPageHeader
     },
     data() {
       return {

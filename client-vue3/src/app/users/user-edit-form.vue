@@ -17,7 +17,6 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import KTable from '@/shared/k-table.vue';
   import { User } from './user-models';
   import TextInput from '@/shared/text-input.vue';
   import SingleSelectInput from '@/shared/single-select-input.vue';
@@ -26,7 +25,6 @@
   export default defineComponent({
     name: 'UserEditForm',
     components: {
-      KTable,
       TextInput,
       SingleSelectInput
     },

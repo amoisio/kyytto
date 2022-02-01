@@ -1,45 +1,44 @@
 <template>
   <div class="row">
+    <div class="col-7">
+      <k-section-header>
+        <slot></slot>
+      </k-section-header>
+    </div>
+    <div class="col-5 text-end">
+      <slot name="right">
+        {{ tasks.length }}
+      </slot>
+    </div>
+  </div>
+  <div class="row mb-1" v-for="task of tasks" :key="task.id">
     <div class="col-12">
-      <k-two-part-header class="m-2">
-        <template v-slot:default>
-          <slot>Tasks</slot>
-        </template>
-        <template v-slot:right>
-          <slot name="count">
-            <h2>{{ tasks.length }}</h2>
-          </slot>
-        </template>
-      </k-two-part-header>
-      <task-list-items
-        :tasks="tasks"
-        @up="$emit('up', $event)"
-        @down="$emit('down', $event)"
-        @left="$emit('left', $event)"
-        @right="$emit('right', $event)"
-        @edit="$emit('edit', $event)"
-        @start="$emit('start', $event)"
-        @stop="$emit('stop', $event)"
-        @complete="$emit('complete', $event)"
-      >
-        <template v-slot:default="{ task }">
-          <slot name="item" :task="task"></slot>
-        </template>
-      </task-list-items>
+      <slot name="item" :task="task">
+        <task-item
+          :task="task"
+          @up="$emit('up', task)"
+          @down="$emit('down', task)"
+          @left="$emit('left', task)"
+          @right="$emit('right', task)"
+          @edit="$emit('edit', task)"
+          @start="$emit('start', task)"
+          @stop="$emit('stop', task)"
+          @complete="$emit('complete', task)"></task-item>
+      </slot>
     </div>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import KTwoPartHeader from '@/shared/k-two-part-header.vue';
-  import TaskListItems from './task-list-items.vue';
+  import TaskItem from './task-item.vue';
   import { Task } from './task-models';
-
+  import KSectionHeader from '@/shared/k-section-header.vue';
+  
   export default defineComponent({
     name: 'TaskList',
     components: {
-      KTwoPartHeader,
-      TaskListItems
+      KSectionHeader,
+      TaskItem
     },
     emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],
     props: {

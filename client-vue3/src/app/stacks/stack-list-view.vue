@@ -1,5 +1,5 @@
 <template>
-  <k-table 
+  <k-table-view 
     class="stacks my-5"
     title="Stacks"
     :items="stacks" 
@@ -7,19 +7,19 @@
     :columns="['description']" 
     @new="navigateToEditForm"
     @action="navigateToEditForm">
-  </k-table>
+  </k-table-view>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifier } from 'kyytto-models';
   import { Stack } from './stack-models';
-  import KTable from '@/shared/k-table.vue';
+  import KTableView from '@/shared/k-table-view.vue';
 
   export default defineComponent({
     name: 'StackListView',
     components: {
-      KTable
+      KTableView
     },
     async created() {
       try {

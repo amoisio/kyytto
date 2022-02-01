@@ -2,7 +2,7 @@
   <div class="container pb-2">
     <div class="row py-3">
       <div class="col-10">
-        <h1>{{ title }}</h1>
+        <k-page-header>{{ title }}</k-page-header>
       </div>
       <div class="col-2 text-end">
         <button class="btn btn-outline-success" @click="$emit('new')">
@@ -30,10 +30,14 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
+  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
-    name: 'KTable',
+    name: 'KTableView',
     emits: ['action', 'new'],
+    components: {
+      KPageHeader
+    },
     props: {
       title: {
         type: String,

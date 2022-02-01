@@ -7,11 +7,7 @@
         bg-variant="light"
         tabindex="0">
         <b-card-header>
-          <k-one-part-header>
-            <template v-slot:header>
-              <h3>{{ task?.title }}</h3>
-            </template>
-          </k-one-part-header>
+          <h3>{{ task?.title }}</h3>
           <k-tag-list v-if="task" :tags="task.tags"></k-tag-list>
         </b-card-header>
         <b-card-body>
@@ -54,7 +50,6 @@
   import { defineComponent } from 'vue';
   import { Task } from '../tasks/task-models';
   import BorderedIcon from '../../shared/bordered-icon.vue';
-  import KOnePartHeader from '@/shared/k-one-part-header.vue';
   import KTagList from '@/shared/k-tag-list.vue';
 
   export default defineComponent({
@@ -62,7 +57,6 @@
     emits: ['stop', 'edit', 'complete'],
     components: {
       BorderedIcon,
-      KOnePartHeader,
       KTagList
     },
     props: {

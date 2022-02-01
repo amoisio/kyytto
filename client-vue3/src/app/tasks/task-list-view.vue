@@ -2,7 +2,7 @@
   <div class="board-view">
     <div class="row pb-3 pt-3">
       <div class="col-auto">
-        <h1>Tasks</h1>
+        <k-page-header>Tasks</k-page-header>
       </div>
       <div class="col align-self-center">
         <button id="new-item" class="btn btn-outline-primary" @click="navigateToTaskForm()">
@@ -31,11 +31,13 @@
   import { Task } from './task-models';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifier } from 'kyytto-models';
+  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'TaskListView',
     components: {
-      TaskList
+      TaskList,
+      KPageHeader
     },
     data() {
       return {

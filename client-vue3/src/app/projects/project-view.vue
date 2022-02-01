@@ -2,7 +2,7 @@
   <div class="project-view container pb-2 my-5" v-if="isReady">
     <div class="row py-3">
       <div class="col-12">
-        <h1>Project</h1>
+        <k-page-header>Project</k-page-header>
       </div>
     </div>
     <div class="row py-3">
@@ -34,12 +34,14 @@
   import { Project } from './project-models';
   import { Identifier, IdentifierType } from 'kyytto-models';
   import { NotificationService } from '@/shared/notification-service';
+  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'ProjectView',
     components: {
       ProjectEditForm,
-      BorderedIcon
+      BorderedIcon,
+      KPageHeader
     },
     props: {
       id: {

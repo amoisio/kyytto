@@ -1,5 +1,5 @@
 <template>
-  <k-table 
+  <k-table-view 
     class="my-5"
     :title="title"
     :items="items" 
@@ -7,18 +7,18 @@
     :columns="columns" 
     @new="navigateToEditForm"
     @action="navigateToEditForm">
-  </k-table>
+  </k-table-view>
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifiable, Identifier } from 'kyytto-models';
-  import KTable from '@/shared/k-table.vue';
+  import KTableView from '@/shared/k-table-view.vue';
 
   export default defineComponent({
     name: 'KListView',
     components: {
-      KTable
+      KTableView
     },
     props: {
       allQuery: {

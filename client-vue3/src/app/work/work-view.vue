@@ -2,7 +2,7 @@
   <div class="work-view container pb-2 my-5" v-if="isReady">
     <div class="row py-3">
       <div class="col-12">
-        <h1>Work</h1>
+        <k-page-header>Work</k-page-header>
       </div>
     </div>
     <div class="row py-3">
@@ -25,9 +25,8 @@
           :stacks="stacks"
           @select="selectStack"
           @edit="editStack"
-          @set="setDefaultStack"
-        ></active-stack>
-        <task-list :tasks="todoTasks" class="pt-1">
+          @set="setDefaultStack"></active-stack>
+        <task-list :tasks="todoTasks">
           Tasks
           <template v-slot:count>
             <h2>{{ todoTasks.length }} ({{ tasks.length }})</h2>
@@ -55,6 +54,7 @@
   import { Task } from '../tasks/task-models';
   import { Stack } from '../stacks/stack-models';
   import { User } from '../users/user-models';
+  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'WorkView',
@@ -62,7 +62,8 @@
       ActiveTask,
       ActiveStack,
       TaskList,
-      WorkItem
+      WorkItem,
+      KPageHeader
     },
     data() {
       return {

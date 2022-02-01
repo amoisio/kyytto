@@ -1,5 +1,5 @@
 <template>
-  <k-table 
+  <k-table-view 
     class="tags my-5"
     title="Tags"
     :items="sortedUsages" 
@@ -37,20 +37,20 @@
         </button>
       </div>
     </template>
-  </k-table>
+  </k-table-view>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifier, Utilities } from 'kyytto-models';
-  import KTable from '@/shared/k-table.vue';
+  import KTableView from '@/shared/k-table-view.vue';
   import { Tag } from './tag-models';
   import TextInput from '@/shared/text-input.vue';
 
   export default defineComponent({
     name: 'TagListView',
     components: {
-      KTable,
+      KTableView,
       TextInput
     },
     async created() {

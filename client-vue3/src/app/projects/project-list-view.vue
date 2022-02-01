@@ -1,5 +1,5 @@
 <template>
-  <k-table 
+  <k-table-view 
     class="projects mt-5"
     title="Projects"
     :items="projects" 
@@ -7,19 +7,19 @@
     :columns="['description']" 
     @new="navigateToEditForm"
     @action="navigateToEditForm">
-  </k-table>
+  </k-table-view>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Project } from './project-models';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifier } from 'kyytto-models';
-  import KTable from '@/shared/k-table.vue';
+  import KTableView from '@/shared/k-table-view.vue';
 
   export default defineComponent({
     name: 'ProjectListView',
     components: {
-      KTable
+      KTableView
     },
     async created() {
       try {
