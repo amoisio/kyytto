@@ -1,42 +1,37 @@
 <template>
   <div class="container pb-2">
-    <div class="row py-3">
+    <div class="row py-3 align-items-center">
       <div class="col-10">
         <k-page-header>{{ title }}</k-page-header>
       </div>
       <div class="col-2 text-end">
-        <button class="btn btn-outline-success" @click="$emit('new')">
-          <b-icon icon="plus-circle" size="lg"></b-icon>
-        </button>
+        <k-button-success icon="plus" @activate="$emit('new')"></k-button-success>
       </div>
     </div>
-    <slot name="inline-form"></slot>
     <div class="row mb-1 align-items-center" v-for="item of items" :key="item">
-      <slot name="body" :item="item">
-        <div class="col-10">
-            <h2>{{ item[display] }}</h2>
-            <template v-for="column of columns">
-              <p>{{ item[column] }}</p>
-            </template>
-        </div>
-        <div class="col-2 text-end">
-          <button :class="['btn', buttonClass]" @click="$emit('action', item)">
-            <b-icon :icon="buttonIcon" size="lg"></b-icon>
-          </button>
-        </div>
-      </slot>
+      <div class="col-10">
+        <h2>{{ item[display] }}</h2>
+        <p v-for="column of columns">{{ item[column] }}</p>
+      </div>
+      <div class="col-2 text-end">
+        <k-button icon="pencil" @activate="$emit('action', item)"></k-button>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import KPageHeader from '@/shared/k-page-header.vue';
+  import KButton from '@/shared/k-button.vue';
+  import KButtonSuccess from '@/shared/k-button-success.vue';
 
   export default defineComponent({
     name: 'KTableView',
     emits: ['action', 'new'],
     components: {
-      KPageHeader
+      KPageHeader,
+      KButton,
+      KButtonSuccess
     },
     props: {
       title: {
@@ -54,14 +49,6 @@
       columns: {
         type: Array as PropType<string[]>,
         default: () => []
-      },
-      buttonClass: {
-        type: String,
-        default: 'btn-outline-secondary'
-      },
-      buttonIcon: {
-        type: String,
-        default: 'pencil'
       }
     }
   });

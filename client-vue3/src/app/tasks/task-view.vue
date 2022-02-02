@@ -20,9 +20,9 @@
         <k-button icon="arrow-left-short" @activate="cancel"></k-button>
       </div>
       <div class="col-6 text-end">
-        <k-button class="me-1" icon="stop" v-if="task.isStarted()" @activate="stop"></k-button>
-        <k-button-success class="me-1" icon="play" v-if="task.isTodo()" @activate="start"></k-button-success>
-        <k-button-success class="me-1" icon="check" v-if="task.isStarted()" @activate="complete"></k-button-success>
+        <k-button-danger class="me-1" icon="stop" v-if="task.isStarted() && !task.isNew()" @activate="stop"></k-button-danger>
+        <k-button-success class="me-1" icon="play" v-if="task.isTodo() && !task.isNew()" @activate="start"></k-button-success>
+        <k-button-success class="me-1" icon="check" v-if="task.isStarted() && !task.isNew()" @activate="complete"></k-button-success>
         <k-button-success icon="arrow-down-short" @activate="save"></k-button-success>
       </div>
     </div>

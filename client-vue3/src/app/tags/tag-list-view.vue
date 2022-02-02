@@ -1,43 +1,33 @@
 <template>
-  <k-table-view 
-    class="tags my-5"
-    title="Tags"
-    :items="sortedUsages" 
-    display="name" 
-    @new="show = !show;"
-    @action="remove"
-    button-class="btn-outline-danger"
-    button-icon="x-circle">
-
-    <template v-slot:inline-form>
-      <div class="row justify-content-between py-3" v-if="show">
-        <div class="col-4">
+  <div class="tag-list-view container pb-2 my-5" v-if="isReady">
+    <div class="row py-3 justify-content-between align-items-center">
+      <div class="col-6">
+        <k-page-header>Tags</k-page-header>
+      </div>
+      <div class="col-6">
+        <div class="input-group justify-content-end">
           <text-input 
+            v-if="show"
             v-model="name" 
             id="tag-name" 
             :hide-label="true"
             placeholder="New tag name"></text-input>
-        </div>
-        <div class="col-2 text-end">
-          <button type="button" @click="save" class="btn btn-outline-success" alt="Save">
-            <b-icon icon="save" size="lg"></b-icon>
-          </button>
+          <k-button-success v-if="show" icon="arrow-down-short" @activate="save"></k-button-success>
+          <k-button v-if="show" icon="arrow-left-short" @activate="show = false;"></k-button>
+          <k-button-success v-else icon="plus" @activate="show = true;"></k-button-success>
         </div>
       </div>
-    </template>
-
-    <template v-slot:body="{ item: item }">
+    </div>
+    <div class="row mb-1 align-items-center" v-for="usage of sortedUsages" :key="usage[0].id">
       <div class="col-10">
-        <span class="fs-4 pr-2">{{ item[0]['name'] }}</span>
+        <span class="fs-4 pr-2">{{ usage[0].name }}</span>
       </div>
       <div class="col-2 text-end align-middle">
-        <span class="badge bg-danger fs-6" v-if="item[1] > 0">{{ item[1] }} uses</span>
-        <button class="btn btn-outline-danger" v-else @click="remove(item[0])">
-          <b-icon icon="x-circle" size="lg"></b-icon>
-        </button>
+        <span class="badge bg-danger fs-6" v-if="usage[1] > 0">{{ usage[1] }} uses</span>
+        <k-button-danger icon="x" @activate="remove(usage[0])" v-else></k-button-danger>
       </div>
-    </template>
-  </k-table-view>
+    </div>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
@@ -46,25 +36,37 @@
   import KTableView from '@/shared/k-table-view.vue';
   import { Tag } from './tag-models';
   import TextInput from '@/shared/text-input.vue';
+  import KPageHeader from '@/shared/k-page-header.vue';
+  import KButton from '@/shared/k-button.vue';
+  import KButtonSuccess from '@/shared/k-button-success.vue';
+  import KButtonDanger from '@/shared/k-button-danger.vue';
 
   export default defineComponent({
     name: 'TagListView',
     components: {
       KTableView,
-      TextInput
+      TextInput,
+      KButton,
+      KButtonSuccess,
+      KPageHeader,
+      KButtonDanger
     },
     async created() {
       try {
+        this.isReady = false;
         this.usages = await this.$services.tagService.getUserTagsAndUsages();
       } catch (e) {
         this.notificationService.notifyError(`Loading tags failed.`, 'Error', e); 
+      } finally {
+        this.isReady = true;
       }
     },
     data() {
       return {
         usages: [] as [tag: Tag , count: number][],
         show: false,
-        name: ''
+        name: '',
+        isReady: false
       };
     },
     computed: {

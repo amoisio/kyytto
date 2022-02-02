@@ -1,6 +1,6 @@
 <template>
   <b-button
-    class="p-0"
+    class="p-1"
     :variant="variant"
     @click.stop="$emit('activate')"
     @keyup.enter.stop.prevent="$emit('activate')">
