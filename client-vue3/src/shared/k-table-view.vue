@@ -5,7 +5,7 @@
         <k-page-header>{{ title }}</k-page-header>
       </div>
       <div class="col-2 text-end">
-        <k-button-success icon="plus" @activate="$emit('new')"></k-button-success>
+        <k-button-new @activate="$emit('new')"></k-button-new>
       </div>
     </div>
     <div class="row mb-1 align-items-center" v-for="item of items" :key="item">
@@ -14,7 +14,7 @@
         <p v-for="column of columns">{{ item[column] }}</p>
       </div>
       <div class="col-2 text-end">
-        <k-button icon="pencil" @activate="$emit('action', item)"></k-button>
+        <k-button-edit @activate="$emit('action', item)"></k-button-edit>
       </div>
     </div>
   </div>
@@ -22,16 +22,12 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import KPageHeader from '@/shared/k-page-header.vue';
-  import KButton from '@/shared/k-button.vue';
-  import KButtonSuccess from '@/shared/k-button-success.vue';
 
   export default defineComponent({
     name: 'KTableView',
     emits: ['action', 'new'],
     components: {
-      KPageHeader,
-      KButton,
-      KButtonSuccess
+      KPageHeader
     },
     props: {
       title: {

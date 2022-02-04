@@ -12,11 +12,11 @@
     </div>
     <div class="row py-3">
       <div class="col-6">
-        <k-button-danger class="me-1" icon="x" @activate="remove"></k-button-danger>
-        <k-button icon="arrow-left-short" @activate="cancel"></k-button>
+        <k-button-remove @activate="remove"></k-button-remove>
+        <k-button-cancel @activate="cancel"></k-button-cancel>
       </div>
       <div class="col-6 text-end">
-        <k-button-success icon="arrow-down-short" @activate="save"></k-button-success>
+        <k-button-save @activate="save"></k-button-save>
       </div>
     </div>
   </div>
@@ -29,18 +29,12 @@
   import { NotificationService } from '@/shared/notification-service';
   import { Tag } from '../tags/tag-models';
   import KPageHeader from '@/shared/k-page-header.vue';
-  import KButtonDanger from '@/shared/k-button-danger.vue';
-  import KButton from '@/shared/k-button.vue';
-  import KButtonSuccess from '@/shared/k-button-success.vue';
 
   export default defineComponent({
     name: 'StackView',
     components: {
       StackEditForm,
-      KPageHeader,
-      KButtonDanger,
-      KButton,
-      KButtonSuccess
+      KPageHeader
     },
     props: {
       id: {

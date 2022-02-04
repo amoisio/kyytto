@@ -14,7 +14,7 @@
           <span>{{ task.title }}</span>
         </div>
         <div class="col-2 pe-0 text-end">
-          <k-button-success icon="play" @activate="$emit('start', task)"></k-button-success>
+          <k-button-start icon="play" @activate="$emit('start', task)"></k-button-start>
         </div>
       </div>
     </b-card-body>
@@ -23,13 +23,9 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { Task } from '../tasks/task-models';
-  import KButtonSuccess from '@/shared/k-button-success.vue';
 
   export default defineComponent({
     name: "WorkItem",
-    components: { 
-      KButtonSuccess
-    },
     emits: ["up", "down", "edit", "start"],
     props: {
         task: {

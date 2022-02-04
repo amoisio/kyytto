@@ -12,9 +12,9 @@
             id="tag-name" 
             :hide-label="true"
             placeholder="New tag name"></text-input>
-          <k-button-success v-if="show" icon="arrow-down-short" @activate="save"></k-button-success>
-          <k-button v-if="show" icon="arrow-left-short" @activate="show = false;"></k-button>
-          <k-button-success v-else icon="plus" @activate="show = true;"></k-button-success>
+          <k-button-save v-if="show" @activate="save"></k-button-save>
+          <k-button-cancel v-if="show" @activate="show = false;"></k-button-cancel>
+          <k-button-new v-else @activate="show = true;"></k-button-new>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
       </div>
       <div class="col-2 text-end align-middle">
         <span class="badge bg-danger fs-6" v-if="usage[1] > 0">{{ usage[1] }} uses</span>
-        <k-button-danger icon="x" @activate="remove(usage[0])" v-else></k-button-danger>
+        <k-button-remove @activate="remove(usage[0])" v-else></k-button-remove>
       </div>
     </div>
   </div>
@@ -37,19 +37,13 @@
   import { Tag } from './tag-models';
   import TextInput from '@/shared/text-input.vue';
   import KPageHeader from '@/shared/k-page-header.vue';
-  import KButton from '@/shared/k-button.vue';
-  import KButtonSuccess from '@/shared/k-button-success.vue';
-  import KButtonDanger from '@/shared/k-button-danger.vue';
 
   export default defineComponent({
     name: 'TagListView',
     components: {
       KTableView,
       TextInput,
-      KButton,
-      KButtonSuccess,
-      KPageHeader,
-      KButtonDanger
+      KPageHeader
     },
     async created() {
       try {

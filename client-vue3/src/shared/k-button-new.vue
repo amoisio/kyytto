@@ -1,7 +1,7 @@
 <template>
   <k-button 
     variant="outline-success" 
-    icon="plus-lg"
+    icon="plus"
     :size="size"
     @activate="$emit('activate')"></k-button>
 </template>

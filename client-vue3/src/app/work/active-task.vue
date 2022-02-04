@@ -14,11 +14,11 @@
     <b-card-footer>
       <div class="row">
         <div class="col-6">
-          <k-button-danger icon="stop" @activate="$emit('stop', task)"></k-button-danger>
-          <k-button class="ms-1" icon="pencil" @activate="$emit('edit', task)"></k-button>
+          <k-button-stop @activate="$emit('stop', task)"></k-button-stop>
+          <k-button-edit @activate="$emit('edit', task)"></k-button-edit>
         </div>
         <div class="col-6 text-end">
-          <k-button-success icon="check" @activate="$emit('complete', task)"></k-button-success>
+          <k-button-complete @activate="$emit('complete', task)"></k-button-complete>
         </div>
       </div>
     </b-card-footer>
@@ -29,20 +29,14 @@
   import { Task } from '../tasks/task-models';
   import BorderedIcon from '../../shared/bordered-icon.vue';
   import KTagList from '@/shared/k-tag-list.vue';
-  import KButtonDanger from '@/shared/k-button-danger.vue';
-  import KButton from '@/shared/k-button.vue';
-  import KButtonSuccess from '@/shared/k-button-success.vue';
 
   export default defineComponent({
     name: 'ActiveTask',
     emits: ['stop', 'edit', 'complete'],
     components: {
-    BorderedIcon,
-    KTagList,
-    KButtonDanger,
-    KButton,
-    KButtonSuccess
-  },
+      BorderedIcon,
+      KTagList
+    },
     props: {
       task: {
         type: Task,

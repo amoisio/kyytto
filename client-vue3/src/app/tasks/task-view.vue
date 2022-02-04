@@ -16,14 +16,14 @@
     </div>
     <div class="row py-3">
       <div class="col-6">
-        <k-button-danger class="me-1" icon="x" @activate="remove"></k-button-danger>
-        <k-button icon="arrow-left-short" @activate="cancel"></k-button>
+        <k-button-remove @activate="remove"></k-button-remove>
+        <k-button-cancel @activate="cancel"></k-button-cancel>
       </div>
       <div class="col-6 text-end">
-        <k-button-danger class="me-1" icon="stop" v-if="task.isStarted() && !task.isNew()" @activate="stop"></k-button-danger>
-        <k-button-success class="me-1" icon="play" v-if="task.isTodo() && !task.isNew()" @activate="start"></k-button-success>
-        <k-button-success class="me-1" icon="check" v-if="task.isStarted() && !task.isNew()" @activate="complete"></k-button-success>
-        <k-button-success icon="arrow-down-short" @activate="save"></k-button-success>
+        <k-button-stop v-if="task.isStarted() && !task.isNew()" @activate="stop"></k-button-stop>
+        <k-button-start v-if="task.isTodo() && !task.isNew()" @activate="start"></k-button-start>
+        <k-button-complete v-if="task.isStarted() && !task.isNew()" @activate="complete"></k-button-complete>
+        <k-button-save icon="arrow-down-short" @activate="save"></k-button-save>
       </div>
     </div>
   </div>
@@ -37,18 +37,12 @@
   import { NotificationService } from '@/shared/notification-service';
   import { Tag } from '../tags/tag-models';
   import KPageHeader from '@/shared/k-page-header.vue';
-  import KButton from '@/shared/k-button.vue';
-  import KButtonSuccess from '@/shared/k-button-success.vue';
-  import KButtonDanger from '@/shared/k-button-danger.vue';
 
   export default defineComponent({
     name: 'TaskView',
     components: {
       TaskEditForm,
-      KPageHeader,
-      KButton,
-      KButtonSuccess,
-      KButtonDanger
+      KPageHeader
     },
     props: {
       id: {
