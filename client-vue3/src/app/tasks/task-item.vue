@@ -48,14 +48,12 @@
   import { defineComponent, PropType } from 'vue';
   import { Task } from './task-models';
   import BorderedIcon from '@/shared/bordered-icon.vue';
-  import KTagList from '@/shared/k-tag-list.vue';
 
   export default defineComponent({
     name: 'TaskItem',
     emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],
     components: {
-      BorderedIcon,
-      KTagList
+      BorderedIcon
     },
     props: {
       task: {

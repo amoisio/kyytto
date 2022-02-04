@@ -20,6 +20,10 @@ import KButtonStop from '@/shared/k-button-stop.vue';
 import KButtonSuccess from '@/shared/k-button-success.vue';
 import KButtonWarning from '@/shared/k-button-warning.vue';
 import KButton from '@/shared/k-button.vue';
+import KTag from '@/shared/k-tag.vue';
+import KPageHeader from '@/shared/k-page-header.vue';
+import KSectionHeader from '@/shared/k-section-header.vue';
+import KTagList from '@/shared/k-tag-list.vue';
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
@@ -44,6 +48,10 @@ app.component('k-button-stop', KButtonStop);
 app.component('k-button-success', KButtonSuccess);
 app.component('k-button-warning', KButtonWarning);
 app.component('k-button', KButton);
+app.component('k-tag', KTag)
+app.component('k-page-header', KPageHeader);
+app.component('k-section-header', KSectionHeader);
+app.component('k-tag-list', KTagList);
 
 // DI services via a custom '$service' global property
 app.config.globalProperties.$services = services;

@@ -36,13 +36,11 @@
   import { Task } from './task-models';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifier } from 'kyytto-models';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'TaskListView',
     components: {
-      TaskList,
-      KPageHeader
+      TaskList
     },
     data() {
       return {

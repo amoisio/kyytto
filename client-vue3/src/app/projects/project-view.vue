@@ -28,14 +28,12 @@
   import { Project } from './project-models';
   import { Identifier, IdentifierType } from 'kyytto-models';
   import { NotificationService } from '@/shared/notification-service';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'ProjectView',
     components: {
       ProjectEditForm,
-      BorderedIcon,
-      KPageHeader
+      BorderedIcon
     },
     props: {
       id: {

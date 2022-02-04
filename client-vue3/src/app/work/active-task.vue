@@ -27,16 +27,10 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Task } from '../tasks/task-models';
-  import BorderedIcon from '../../shared/bordered-icon.vue';
-  import KTagList from '@/shared/k-tag-list.vue';
 
   export default defineComponent({
     name: 'ActiveTask',
     emits: ['stop', 'edit', 'complete'],
-    components: {
-      BorderedIcon,
-      KTagList
-    },
     props: {
       task: {
         type: Task,

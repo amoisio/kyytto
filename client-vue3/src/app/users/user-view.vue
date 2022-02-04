@@ -26,13 +26,11 @@
   import { NotificationService } from '@/shared/notification-service';
   import { User } from './user-models';
   import { Stack } from '../stacks/stack-models';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'UserView',
     components: {
-      UserEditForm,
-      KPageHeader
+      UserEditForm
     },
     data() {
       return {

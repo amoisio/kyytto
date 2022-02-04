@@ -32,12 +32,10 @@
   import { defineComponent, PropType } from 'vue';
   import TaskItem from './task-item.vue';
   import { Task } from './task-models';
-  import KSectionHeader from '@/shared/k-section-header.vue';
   
   export default defineComponent({
     name: 'TaskList',
     components: {
-      KSectionHeader,
       TaskItem
     },
     emits: ['up', 'down', 'left', 'right', 'edit', 'start', 'stop', 'complete'],

@@ -50,17 +50,13 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
   import { Stack } from '../stacks/stack-models';
-  import KSectionHeader from '@/shared/k-section-header.vue';
   import VueMultiselect from 'vue-multiselect';
-  import KTagList from '@/shared/k-tag-list.vue';
 
   export default defineComponent({
     name: 'ActiveStack',
     emits: ['select', 'edit', 'set'],
     components: {
-      KSectionHeader,
-      VueMultiselect,
-      KTagList
+      VueMultiselect
     },
     props: {
       stack: {

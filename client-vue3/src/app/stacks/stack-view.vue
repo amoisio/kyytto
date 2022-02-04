@@ -28,13 +28,11 @@
   import { Identifier, IdentifierType } from 'kyytto-models';
   import { NotificationService } from '@/shared/notification-service';
   import { Tag } from '../tags/tag-models';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'StackView',
     components: {
-      StackEditForm,
-      KPageHeader
+      StackEditForm
     },
     props: {
       id: {

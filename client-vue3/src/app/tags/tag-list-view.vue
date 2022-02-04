@@ -12,8 +12,8 @@
             id="tag-name" 
             :hide-label="true"
             placeholder="New tag name"></text-input>
-          <k-button-save v-if="show" @activate="save"></k-button-save>
-          <k-button-cancel v-if="show" @activate="show = false;"></k-button-cancel>
+          <k-button-save v-if="show" @activate="save" class="mx-0"></k-button-save>
+          <k-button-cancel v-if="show" @activate="show = false;" class="mx-0"></k-button-cancel>
           <k-button-new v-else @activate="show = true;"></k-button-new>
         </div>
       </div>
@@ -33,17 +33,13 @@
   import { defineComponent } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
   import { Identifier, Utilities } from 'kyytto-models';
-  import KTableView from '@/shared/k-table-view.vue';
   import { Tag } from './tag-models';
   import TextInput from '@/shared/text-input.vue';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'TagListView',
     components: {
-      KTableView,
-      TextInput,
-      KPageHeader
+      TextInput
     },
     async created() {
       try {

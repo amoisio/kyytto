@@ -21,14 +21,10 @@
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'KTableView',
     emits: ['action', 'new'],
-    components: {
-      KPageHeader
-    },
     props: {
       title: {
         type: String,

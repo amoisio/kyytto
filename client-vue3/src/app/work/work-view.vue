@@ -54,7 +54,6 @@
   import { Task } from '../tasks/task-models';
   import { Stack } from '../stacks/stack-models';
   import { User } from '../users/user-models';
-  import KPageHeader from '@/shared/k-page-header.vue';
 
   export default defineComponent({
     name: 'WorkView',
@@ -62,8 +61,7 @@
       ActiveTask,
       ActiveStack,
       TaskList,
-      WorkItem,
-      KPageHeader
+      WorkItem
     },
     data() {
       return {
