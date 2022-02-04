@@ -27,7 +27,7 @@ export const menuLinks: KyyttoLinks = {
     name: 'work',
     path: '/',
     title: 'Home',
-    icon: 'list-check'
+    icon: 'house'
   },
   tasks: {
     name: 'tasks',
