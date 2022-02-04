@@ -22,7 +22,9 @@
         no-body
         class="active-stack"
         bg-variant="light"
-        tabindex="0">
+        tabindex="0"
+        @dblclick="$emit('edit', stack)"
+        @keyup.enter="$emit('edit', stack)">
         <b-card-body class="p-1">
           <div class="row mx-0 align-items-center">
             <div class="col-8">
@@ -38,7 +40,6 @@
               </div>
             </div>
             <div class="col-4 pe-0 text-end">
-              <k-button-edit @activate="$emit('edit', stack)"></k-button-edit>
               <k-button-pin @activate="$emit('set', stack)"></k-button-pin>
             </div>
           </div>
@@ -74,3 +75,12 @@
     }
   });
 </script>
+<style lang="scss">
+  @use '@/app/custom';
+  .active-stack {
+    &:hover {
+      border-color: custom.$dark1;
+    }
+  }
+</style>
+

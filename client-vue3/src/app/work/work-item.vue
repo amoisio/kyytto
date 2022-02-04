@@ -46,9 +46,5 @@
     &:hover {
       border-color: custom.$dark1;
     }
-
-    .badge {
-      border-color: custom.$dark1;
-    }
   }
 </style>
