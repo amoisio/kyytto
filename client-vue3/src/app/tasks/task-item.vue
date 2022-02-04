@@ -24,7 +24,7 @@
     <b-card-body class="p-2 pt-2">
       <div class="row mx-0 align-items-center">
         <div class="col px-0 pb-1">
-          <k-tag-list v-if="task" :tags="task.tags"></k-tag-list>
+          <k-tag-list v-if="task" :tags="task.tags.map(t => t.name)"></k-tag-list>
         </div>
         <div class="col-auto text-end px-0">
           <k-button-stop

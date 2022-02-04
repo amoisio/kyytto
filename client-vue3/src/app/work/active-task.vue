@@ -6,7 +6,7 @@
     tabindex="0">
     <b-card-header>
       <h3>{{ task?.title }}</h3>
-      <k-tag-list v-if="task" :tags="task.tags"></k-tag-list>
+      <k-tag-list v-if="task" :tags="task.tags.map(t => t.name)"></k-tag-list>
     </b-card-header>
     <b-card-body>
       <span v-if="task?.description">{{ task?.description }}</span>

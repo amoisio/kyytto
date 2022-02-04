@@ -1,10 +1,9 @@
 <template>
-  <k-tag v-for="tag of tags" :key="tag.id" class="me-1">{{ tag.name }}</k-tag>  
+  <k-tag v-for="tag of tags" :key="tag" class="me-1">{{ tag }}</k-tag>  
 </template>
 <script lang="ts">
   import { defineComponent, PropType } from 'vue';
-  import { Tag } from '@/app/tags/tag-models';
-  import KTag from '@/shared/k-tag.vue';
+  import KTag from './k-tag.vue';
 
   export default defineComponent({
     name: 'KTagList',
@@ -13,7 +12,7 @@
     },
     props: {
       tags: {
-        type: Array as PropType<Tag[]>,
+        type: Array as PropType<string[]>,
         required: true
       }
     }

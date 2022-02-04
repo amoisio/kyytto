@@ -33,7 +33,7 @@
               </div>
               <div class="row mb-1">
                 <div class="col-12 ps-1">
-                  <k-tag-list v-if="stack" :tags="stack.tags"></k-tag-list>
+                  <k-tag-list v-if="stack" :tags="stack.tags.map(t => t.name)"></k-tag-list>
                 </div>
               </div>
             </div>
