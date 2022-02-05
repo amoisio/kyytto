@@ -1,14 +1,14 @@
 import { Api } from '../api/api.js';
 import { Identifier } from '../models/identifier.js';
 import { Utilities } from '../utilities/util.js';
-import { KyyttoClient } from './kyytto-client.js';
+import { KClient } from './k-client.js';
 
 describe('Kyytto client', () => {
   let api: Api;
-  let client: KyyttoClient;
+  let client: KClient;
   beforeEach(() => {
     api = new Api('http://mydomain:9000');
-    client = new KyyttoClient(api);
+    client = new KClient(api);
   });
 
   test('builds an api map with the given baseUrl', () => {

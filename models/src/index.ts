@@ -20,5 +20,5 @@ export { Identifier, IdentifierType } from './models/identifier.js';
 export { Color, ColorType } from './models/color.js';
 export { Utilities } from './utilities/util.js';
 export { Api } from './api/api.js';
-export { KyyttoClient } from './client/kyytto-client.js';
+export { KClient } from './client/k-client.js';
 export { ApiClient } from './client/base-client.js';

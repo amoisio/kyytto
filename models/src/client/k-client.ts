@@ -13,7 +13,7 @@ import { MenuApiClient } from './menu-api-client.js';
 import { UserDto } from '../models/user-dto.js';
 import { UserResource } from '../models/user-resource.js';
 
-export class KyyttoClient {
+export class KClient {
   public readonly baseUrl: string;
   public readonly menu: MenuApiClient;
   public readonly projects: ApiClient<ProjectDto, ProjectResource>;
