@@ -13,6 +13,7 @@
   ],
   "typings": "dist/index.d.ts",
   "scripts": {
+    "build": "rm -rf dist && tsc",
     "test": "tsc && jest"
   },
   "author": "Aleksi Moisio <aleksi.moisio30@gmail.com>",
