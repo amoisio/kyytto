@@ -1,4 +1,4 @@
-import { TagType, TaskState, MatchType } from 'kyytto-models';
+import { TagType, TaskState, MatchType } from 'k-models';
 
 export interface DataDb {
   projects: ProjectDb[];

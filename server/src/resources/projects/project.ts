@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectDto, ProjectResource, TagType } from 'kyytto-models';
+import { Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectDto, ProjectResource, TagType } from 'k-models';
 import { ColorGenerator } from '../../utilities/color-generator.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';

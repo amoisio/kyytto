@@ -1,4 +1,4 @@
-import { MenuResource } from 'kyytto-models';
+import { MenuResource } from 'k-models';
 import { api } from '../api.js';
 
 export const menu: MenuResource = {

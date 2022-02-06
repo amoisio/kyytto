@@ -1,7 +1,7 @@
 import Repository from '../repository.js';
 import { Low } from 'lowdb'
 import { DataDb, StackDb, UserDb } from './db-model.js';
-import { Identifier, IdentifierType } from 'kyytto-models';
+import { Identifier, IdentifierType } from 'k-models';
 import { Tag } from '../../resources/tags/tag.js';
 import { User } from '../../resources/users/user.js';
 import { Stack } from '../../resources/stacks/stack.js';

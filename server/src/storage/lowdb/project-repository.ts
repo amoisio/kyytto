@@ -2,7 +2,7 @@ import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb } from './db-model.js';
-import { Color, Identifier, IdentifierType } from 'kyytto-models';
+import { Color, Identifier, IdentifierType } from 'k-models';
 
 export default class ProjectRepository implements Repository<Project> {
   constructor(private readonly db: Low<DataDb>) { }

@@ -1,4 +1,4 @@
-import { IdentifierType, TagType } from 'kyytto-models';
+import { IdentifierType, TagType } from 'k-models';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Tag } from './tag.js';
 

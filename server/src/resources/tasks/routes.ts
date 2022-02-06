@@ -1,6 +1,6 @@
 import express from 'express';
 import { api } from '../api.js';
-import { TaskDto } from 'kyytto-models';
+import { TaskDto } from 'k-models';
 import { dtoParser, idParser } from '../handlers.js';
 
 export const router = express.Router();

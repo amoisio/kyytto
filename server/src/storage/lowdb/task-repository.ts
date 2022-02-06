@@ -3,7 +3,7 @@ import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
 import { Low } from 'lowdb'
 import { DataDb, ProjectDb, TagDb, TaskDb } from './db-model.js';
-import { Color, Identifier, IdentifierType, TagType } from 'kyytto-models';
+import { Color, Identifier, IdentifierType, TagType } from 'k-models';
 import { Tag } from '../../resources/tags/tag.js';
 
 export default class TaskRepository implements Repository<Task> {

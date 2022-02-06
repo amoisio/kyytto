@@ -1,4 +1,4 @@
-import { Identifier, Identifiable, IdentifierType, TaskResource, TaskState, TaskDto } from 'kyytto-models';
+import { Identifier, Identifiable, IdentifierType, TaskResource, TaskState, TaskDto } from 'k-models';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
 import { api } from '../api.js';

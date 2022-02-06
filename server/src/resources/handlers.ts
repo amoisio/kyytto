@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { Identifier } from 'kyytto-models';
+import { Identifier } from 'k-models';
 
 export const idParser: RequestHandler = (req, res, next) => {
   const id = Identifier.build(req.params['id']);

@@ -6,7 +6,7 @@ import { ColorGenerator } from '../utilities/color-generator.js';
 import { IdentifierGenerator } from '../utilities/identifier-generator.js';
 import { TagService } from '../resources/tags/tag-service.js';
 import { StackBuilder } from '../resources/stacks/stack.js';
-import { IdentifierType } from 'kyytto-models';
+import { IdentifierType } from 'k-models';
 import { UserBuilder } from '../resources/users/user.js';
 
 declare global {

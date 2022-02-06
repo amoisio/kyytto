@@ -1,4 +1,4 @@
-import { Identifiable, IdentifierType } from 'kyytto-models';
+import { Identifiable, IdentifierType } from 'k-models';
 
 /**
  * Represents a repository of identifiable instances.

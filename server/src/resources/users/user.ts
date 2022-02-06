@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { Identifiable, Identifier, IdentifierType, UserDto, UserResource } from 'kyytto-models';
+import { Identifiable, Identifier, IdentifierType, UserDto, UserResource } from 'k-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import { Stack } from '../stacks/stack.js';

@@ -2,7 +2,7 @@ import { Connection, RowDataPacket } from 'mysql2/promise';
 import Repository from '../repository.js';
 import { Project } from '../../resources/projects/project.js';
 import { Task } from '../../resources/tasks/task.js';
-import { IdentifierType } from 'kyytto-models';
+import { IdentifierType } from 'k-models';
 
 export default class TaskRepository implements Repository<Task>{
 

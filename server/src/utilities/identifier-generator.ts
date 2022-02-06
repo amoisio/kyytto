@@ -1,4 +1,4 @@
-import { IdentifierType, Identifier } from 'kyytto-models';
+import { IdentifierType, Identifier } from 'k-models';
 
 export interface IdentifierGenerator {
   generate(): IdentifierType;

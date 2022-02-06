@@ -1,4 +1,4 @@
-import { ColorType } from 'kyytto-models';
+import { ColorType } from 'k-models';
 import UnitOfWork from '../storage/unit-of-work.js';
 
 const allColorValues: ColorType[] = [

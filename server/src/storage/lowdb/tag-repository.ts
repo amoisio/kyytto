@@ -1,7 +1,7 @@
 import Repository from '../repository.js';
 import { Low } from 'lowdb'
 import { DataDb, TagDb } from './db-model.js';
-import { Identifier, IdentifierType } from 'kyytto-models';
+import { Identifier, IdentifierType } from 'k-models';
 import { Tag } from '../../resources/tags/tag.js';
 
 export default class TagRepository implements Repository<Tag> {

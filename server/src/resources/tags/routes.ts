@@ -1,5 +1,5 @@
 import express from 'express';
-import { TagDto } from 'kyytto-models';
+import { TagDto } from 'k-models';
 import { dtoParser, idParser } from '../handlers.js';
 import { api } from '../api.js';
 

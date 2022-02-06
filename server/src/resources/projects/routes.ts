@@ -1,5 +1,5 @@
 import express from 'express';
-import { ProjectDto } from 'kyytto-models';
+import { ProjectDto } from 'k-models';
 import { api } from '../api.js';
 import { dtoParser, idParser } from '../handlers.js';
 

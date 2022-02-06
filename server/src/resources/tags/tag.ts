@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { Identifiable, Identifier, IdentifierType, TagDto, TagResource, TagType } from 'kyytto-models';
+import { Identifiable, Identifier, IdentifierType, TagDto, TagResource, TagType } from 'k-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import text from '../../utilities/text-utilities.js';

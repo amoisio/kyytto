@@ -1,4 +1,4 @@
-import { Api } from 'kyytto-models';
+import { Api } from 'k-models';
 import { options } from '../options.js';
 
 /**
