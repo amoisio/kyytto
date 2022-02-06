@@ -1,6 +1,6 @@
 import { Project } from '@/app/projects/project-models';
 import { Entity } from '@/shared/entity';
-import { Identifier, IdentifierType, MatchType, ProjectResource, TagResource, TaskDto, TaskResource, Utilities } from 'kyytto-models';
+import { Identifier, IdentifierType, MatchType, ProjectResource, TagResource, TaskDto, TaskResource, Utilities } from 'k-models';
 import { Stack } from '../stacks/stack-models';
 import { Tag, TagCollection } from '../tags/tag-models';
 import { TaskState } from './task-state';

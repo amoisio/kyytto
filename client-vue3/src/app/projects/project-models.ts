@@ -1,5 +1,5 @@
 import { Entity } from '@/shared/entity';
-import { Color, ColorType, Identifier, IdentifierType, ProjectDto, ProjectResource, Utilities } from 'kyytto-models';
+import { Color, ColorType, Identifier, IdentifierType, ProjectDto, ProjectResource, Utilities } from 'k-models';
 
 export class ProjectCollection extends Array<Project> {
   constructor(resources: ProjectResource[])

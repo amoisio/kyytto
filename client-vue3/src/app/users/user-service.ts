@@ -1,14 +1,14 @@
-import { KyyttoClient, StackDto, UserDto, UserResource, Utilities } from 'kyytto-models';
-import { ApiClient } from 'kyytto-models/dist/client/base-client';
+import { KClient, StackDto, UserDto, UserResource, Utilities } from 'k-models';
+import { ApiClient } from 'k-models/dist/client/base-client';
 import { ApiService, Service } from '../api-service';
 import { User } from './user-models';
 import { Stack } from '../stacks/stack-models';
 
 export class ApiUserService extends ApiService<User, UserDto, UserResource> {
-  private readonly client: KyyttoClient;
+  private readonly client: KClient;
   private readonly stackService: Service<Stack, StackDto>;
 
-  constructor(client: KyyttoClient, stackService: Service<Stack, StackDto>) {
+  constructor(client: KClient, stackService: Service<Stack, StackDto>) {
     super();
     this.client = client;
     this.stackService = stackService;

@@ -1,4 +1,4 @@
-import { IdentifierType } from 'kyytto-models';
+import { IdentifierType } from 'k-models';
 import { Identifiable } from './identifiable';
 import { Validatable } from './validatable';
 

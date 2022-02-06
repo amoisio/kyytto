@@ -26,7 +26,7 @@
   import ProjectEditForm from './project-edit-form.vue';
   import BorderedIcon from '@/shared/bordered-icon.vue';
   import { Project } from './project-models';
-  import { Identifier, IdentifierType } from 'kyytto-models';
+  import { Identifier, IdentifierType } from 'k-models';
   import { NotificationService } from '@/shared/notification-service';
 
   export default defineComponent({

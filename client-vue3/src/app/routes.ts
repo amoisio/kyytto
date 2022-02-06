@@ -8,7 +8,7 @@ import UserView from './users/user-view.vue';
 import WorkView from './work/work-view.vue';
 import { menuLinks, userLink } from './menu/menu-links';
 import { RouteLocation } from 'vue-router';
-import { Identifier } from 'kyytto-models';
+import { Identifier } from 'k-models';
 import TagListView from './tags/tag-list-view.vue';
 import { ServiceProvider } from './service-provider';
 

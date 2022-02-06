@@ -1,5 +1,5 @@
 import { Entity } from '@/shared/entity';
-import { Identifier, IdentifierType, UserDto, Utilities } from 'kyytto-models';
+import { Identifier, IdentifierType, UserDto, Utilities } from 'k-models';
 import { Stack } from '../stacks/stack-models';
 
 export class User extends Entity<UserDto> {

@@ -33,7 +33,7 @@
   import TaskEditForm from './task-edit-form.vue';
   import { Project } from '../projects/project-models';
   import { Task } from './task-models';
-  import { Identifier, IdentifierType } from 'kyytto-models';
+  import { Identifier, IdentifierType } from 'k-models';
   import { NotificationService } from '@/shared/notification-service';
   import { Tag } from '../tags/tag-models';
 

@@ -1,4 +1,4 @@
-import { ApiClient, KyyttoClient, TagDto, TagResource, Utilities } from 'kyytto-models';
+import { ApiClient, KClient, TagDto, TagResource, Utilities } from 'k-models';
 import { ApiService, Service } from '../api-service';
 import { Tag, TagCollection } from './tag-models';
 
@@ -8,9 +8,9 @@ export interface TagService extends Service<Tag, TagDto> {
 }
 
 export class ApiTagService extends ApiService<Tag, TagDto, TagResource> implements TagService {
-  private readonly client: KyyttoClient;
+  private readonly client: KClient;
 
-  constructor(client: KyyttoClient) {
+  constructor(client: KClient) {
     super();
     this.client = client;
   }

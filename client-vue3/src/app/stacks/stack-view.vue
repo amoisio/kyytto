@@ -25,7 +25,7 @@
   import { defineComponent, PropType } from 'vue';
   import StackEditForm from './stack-edit-form.vue';
   import { Stack } from './stack-models';
-  import { Identifier, IdentifierType } from 'kyytto-models';
+  import { Identifier, IdentifierType } from 'k-models';
   import { NotificationService } from '@/shared/notification-service';
   import { Tag } from '../tags/tag-models';
 

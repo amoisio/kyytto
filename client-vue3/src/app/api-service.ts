@@ -1,6 +1,6 @@
-import { Identifier, IdentifierType, Resource } from 'kyytto-models';
+import { Identifier, IdentifierType, Resource } from 'k-models';
 import { Entity } from '@/shared/entity';
-import { ApiClient } from 'kyytto-models/dist/client/base-client';
+import { ApiClient } from 'k-models/dist/client/base-client';
 
 export interface Service<TEntity extends Entity<TDto>, TDto> {
   save(entity: TEntity): Promise<IdentifierType>;

@@ -36,7 +36,7 @@
   import MultiSelectInput from '@/shared/multi-select-input.vue';
   import RadioInput from '@/shared/radio-input.vue';
   import { Tag } from '../tags/tag-models';
-  import { MatchType } from 'kyytto-models';
+  import { MatchType } from 'k-models';
 
   export default defineComponent({
     name: 'StackEditForm',

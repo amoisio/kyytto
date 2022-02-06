@@ -1,5 +1,5 @@
 import { Entity } from '@/shared/entity';
-import { Identifier, IdentifierType, MatchType, StackDto, StackResource, TagResource, Utilities } from 'kyytto-models';
+import { Identifier, IdentifierType, MatchType, StackDto, StackResource, TagResource, Utilities } from 'k-models';
 import { Tag, TagCollection } from '../tags/tag-models';
 import { Task } from '../tasks/task-models';
 

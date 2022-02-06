@@ -13,7 +13,7 @@
   </vue-multiselect>
 </template>
 <script lang="ts">
-  import { Utilities } from 'kyytto-models';
+  import { Utilities } from 'k-models';
   import { defineComponent, PropType } from 'vue';  
   import VueMultiselect from 'vue-multiselect';
   import { Tag } from './tag-models';

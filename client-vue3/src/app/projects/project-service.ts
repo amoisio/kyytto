@@ -1,5 +1,5 @@
 import { Project, ProjectCollection } from './project-models';
-import { Identifier, IdentifierType, KyyttoClient } from 'kyytto-models';
+import { Identifier, IdentifierType, KClient } from 'k-models';
 
 export interface ProjectService {
   save(project: Project): Promise<IdentifierType>;
@@ -11,9 +11,9 @@ export interface ProjectService {
 }
 
 export class ApiProjectService implements ProjectService {
-  private readonly client: KyyttoClient;
+  private readonly client: KClient;
 
-  constructor(client: KyyttoClient) {
+  constructor(client: KClient) {
     this.client = client;
   }
 

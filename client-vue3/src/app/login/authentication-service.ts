@@ -1,9 +1,9 @@
-import { KyyttoClient } from 'kyytto-models';
+import { KClient } from 'k-models';
 
 export class AuthenticationService {
-  private readonly client: KyyttoClient;
+  private readonly client: KClient;
   
-  constructor(client: KyyttoClient) {
+  constructor(client: KClient) {
     this.client = client;
   }
 

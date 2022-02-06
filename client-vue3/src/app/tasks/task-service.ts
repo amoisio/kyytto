@@ -1,5 +1,5 @@
 import { Task } from './task-models';
-import { Identifier, IdentifierType, KyyttoClient, Utilities } from 'kyytto-models';
+import { Identifier, IdentifierType, KClient, Utilities } from 'k-models';
 import { ProjectService } from '../projects/project-service';
 import { TagService } from '../tags/tag-service';
 
@@ -13,11 +13,11 @@ export interface TaskService {
 }
 
 export class ApiTaskService implements TaskService {
-  private readonly client: KyyttoClient;
+  private readonly client: KClient;
   private readonly projectService: ProjectService;
   private readonly tagService: TagService;
 
-  constructor(client: KyyttoClient, projectService: ProjectService, tagService: TagService) {
+  constructor(client: KClient, projectService: ProjectService, tagService: TagService) {
     this.client = client;
     this.projectService = projectService;
     this.tagService = tagService;

@@ -35,7 +35,7 @@
   import TaskList from './task-list.vue';
   import { Task } from './task-models';
   import { NotificationService } from '@/shared/notification-service';
-  import { Identifier } from 'kyytto-models';
+  import { Identifier } from 'k-models';
 
   export default defineComponent({
     name: 'TaskListView',

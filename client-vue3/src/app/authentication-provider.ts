@@ -3,7 +3,7 @@ import { NotificationService } from '../shared/notification-service';
 import { ApiStackService } from './stacks/stack-service';
 import { Service } from './api-service';
 import { Stack } from './stacks/stack-models';
-import { StackDto, UserDto } from 'kyytto-models';
+import { StackDto, UserDto } from 'k-models';
 import { User } from './users/user-models';
 import { ApiUserService } from './users/user-service';
 import { AuthenticationService } from './login/authentication-service';

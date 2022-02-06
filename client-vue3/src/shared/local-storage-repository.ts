@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Resource, Utilities } from 'kyytto-models';
+import { Resource, Utilities } from 'k-models';
 import { api } from '@/app/api';
 
 export class LocalStorageRepository<TResouce extends Resource> {

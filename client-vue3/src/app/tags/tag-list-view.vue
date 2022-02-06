@@ -32,7 +32,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
-  import { Identifier, Utilities } from 'kyytto-models';
+  import { Identifier, Utilities } from 'k-models';
   import { Tag } from './tag-models';
   import TextInput from '@/shared/text-input.vue';
 

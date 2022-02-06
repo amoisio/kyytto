@@ -1,4 +1,4 @@
-import { Identifier } from 'kyytto-models';
+import { Identifier } from 'k-models';
 
 export interface KyyttoLinks {
   newTask: Link,

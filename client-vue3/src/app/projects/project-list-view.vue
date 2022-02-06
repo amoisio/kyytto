@@ -13,7 +13,7 @@
   import { defineComponent } from 'vue';
   import { Project } from './project-models';
   import { NotificationService } from '@/shared/notification-service';
-  import { Identifier } from 'kyytto-models';
+  import { Identifier } from 'k-models';
   import KTableView from '@/shared/k-table-view.vue';
 
   export default defineComponent({

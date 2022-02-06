@@ -12,7 +12,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { NotificationService } from '@/shared/notification-service';
-  import { Identifier } from 'kyytto-models';
+  import { Identifier } from 'k-models';
   import { Stack } from './stack-models';
   import KTableView from '@/shared/k-table-view.vue';
 
