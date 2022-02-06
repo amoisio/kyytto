@@ -11,7 +11,8 @@
       <k-tag-list v-if="task" :tags="task.tags.map(t => t.name)"></k-tag-list>
     </b-card-header>
     <b-card-body>
-      <span v-if="task?.description">{{ task?.description }}</span>
+      <pre class="task">{{ task?.description }}</pre>
+      <!-- <input v-if="task?.description" disabled v-model=""/>   -->
     </b-card-body>
     <b-card-footer>
       <div class="row">
