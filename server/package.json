@@ -9,6 +9,7 @@
     "dist/**/*.js"
   ],
   "scripts": {
+    "build": "rm -rf dist && npx tsc",
     "start": "node dist/server.js"
   },
   "dependencies": {
