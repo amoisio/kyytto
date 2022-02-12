@@ -1,12 +1,10 @@
-import * as data from '../../appsettings.json';
-
 class Options {
   public readonly apiServerHost: string;
   public readonly apiServerPort: number;
 
   constructor() {
-    this.apiServerHost = data?.apiServerHost || 'http://localhost';
-    this.apiServerPort = data?.apiServerPort || 80;
+    this.apiServerHost = process.env.VUE_APP_API_SERVER_HOST || 'http://localhost';
+    this.apiServerPort = process.env.VUE_APP_API_SERVER_PORT || 8090;
   }
 }
 
