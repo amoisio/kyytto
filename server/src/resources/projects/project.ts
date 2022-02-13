@@ -1,5 +1,4 @@
-import { api } from '../api.js';
-import { Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectDto, ProjectResource, TagType } from 'k-models';
+import { api, Color, ColorType, Identifiable, Identifier, IdentifierType, ProjectDto, ProjectResource, TagType } from 'k-models';
 import { ColorGenerator } from '../../utilities/color-generator.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
@@ -68,9 +67,9 @@ export class Project implements Identifiable {
     return new Tag(this.id, this.name, TagType.Project);
   }
 
-  public toResource(): ProjectResource {
+  public toResource(baseUrl: string): ProjectResource {
     return {
-      href: api.projects.resolveHref(this.id),
+      href: api.projects.byId.resolve(baseUrl, this.id),
       name: this.name,
       description: this.description,
       color: this.color

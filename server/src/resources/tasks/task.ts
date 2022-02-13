@@ -1,7 +1,6 @@
-import { Identifier, Identifiable, IdentifierType, TaskResource, TaskState, TaskDto } from 'k-models';
+import { api, Identifier, Identifiable, IdentifierType, TaskResource, TaskState, TaskDto } from 'k-models';
 import UnitOfWork from '../../storage/unit-of-work.js';
 import { Project } from '../projects/project.js';
-import { api } from '../api.js';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import { Tag } from '../../resources/tags/tag.js';
@@ -117,14 +116,14 @@ export class Task implements Identifiable {
     this.isBug = isBug;
   }
 
-  public toResource(): TaskResource {
+  public toResource(baseUrl: string): TaskResource {
     return {
-      href: api.tasks.resolveHref(this.id),
+      href: api.tasks.byId.resolve(baseUrl, this.id),
       title: this.title,
       description: this.description,
       state: this.state,
-      projectHref: api.projects.resolveHref(this.project.id),
-      tagHrefs: this.tags.map(tag => api.tags.resolveHref(tag.id)),
+      projectHref: api.projects.byId.resolve(baseUrl, this.project.id),
+      tagHrefs: this.tags.map(tag => api.tags.byId.resolve(baseUrl, tag.id)),
       isBug: this.isBug
     };
   }

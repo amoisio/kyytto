@@ -1,23 +1,24 @@
-import { MenuResource } from 'k-models';
-import { api } from '../api.js';
+import { api, MenuResource } from 'k-models';
 
-export const menu: MenuResource = {
-  href: api.menu.resourceHref(),
-  title: 'Menu',
-  children: [{
-    href: api.projects.resourceHref(),
-    title: 'Projects'
-  }, {
-    href: api.tasks.resourceHref(),
-    title: 'Board'
-  }, {
-    href: api.tags.resourceHref(),
-    title: 'Tags'
-  }, {
-    href: api.stacks.resourceHref(),
-    title: 'Stacks'
-  }, {
-    href: api.users.resourceHref(),
-    title: 'Users'
-  }]
-};
+export function menuBuilder(baseUrl: string): MenuResource {
+  return {
+    href: api.menu.resolve(baseUrl),
+    title: 'Menu',
+    children: [{
+      href: api.projects.resolve(baseUrl),
+      title: 'Projects'
+    }, {
+      href: api.tasks.resolve(baseUrl),
+      title: 'Board'
+    }, {
+      href: api.tags.resolve(baseUrl),
+      title: 'Tags'
+    }, {
+      href: api.stacks.resolve(baseUrl),
+      title: 'Stacks'
+    }, {
+      href: api.users.resolve(baseUrl),
+      title: 'Users'
+    }]
+  };
+}

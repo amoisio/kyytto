@@ -5,8 +5,8 @@ ARG API_PORT="8090"
 ARG FILENAME="kyytto-data.json"
 WORKDIR /app
 COPY ./dist ./dist
-COPY ./node_modules ./node_modules
-COPY package.json .
+# COPY ./node_modules ./node_modules
+# COPY package.json .
 RUN mkdir ./data
 VOLUME ./data
 ENV CORS_ALLOW_ORIGIN=${CORS}

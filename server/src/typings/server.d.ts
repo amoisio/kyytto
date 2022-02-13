@@ -6,14 +6,15 @@ import { ColorGenerator } from '../utilities/color-generator.js';
 import { IdentifierGenerator } from '../utilities/identifier-generator.js';
 import { TagService } from '../resources/tags/tag-service.js';
 import { StackBuilder } from '../resources/stacks/stack.js';
-import { IdentifierType } from 'k-models';
+import { IdentifierType, KClient } from 'k-models';
 import { UserBuilder } from '../resources/users/user.js';
 
 declare global {
   namespace Express {
     interface Request {
       id: IdentifierType,
-      bodyAs: <TDto>() => TDto;
+      bodyAs: <TDto>() => TDto,
+      client: KClient,
       idGenerator: IdentifierGenerator,
       colorGenerator: ColorGenerator,
       unitOfWork: UnitOfWork;

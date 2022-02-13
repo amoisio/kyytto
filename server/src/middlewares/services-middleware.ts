@@ -7,12 +7,14 @@ import { UuidGenerator } from '../utilities/identifier-generator.js';
 import { TagService } from '../resources/tags/tag-service.js';
 import { StackBuilder } from '../resources/stacks/stack.js';
 import { UserBuilder } from '../resources/users/user.js';
+import { KClient } from 'k-models';
 
 export const router = express.Router();
 
 router.use(async(req, res, next) => {
   req.colorGenerator= new NextUnusedColorGenerator(req.unitOfWork);
   req.idGenerator = new UuidGenerator();
+  req.client = new KClient(req.hostname);
   req.projectBuilder = new ProjectBuilder(req.idGenerator, req.colorGenerator);
   req.taskBuilder = new TaskBuilder(req.idGenerator, req.unitOfWork);
   req.tagBuilder = new TagBuilder(req.idGenerator);

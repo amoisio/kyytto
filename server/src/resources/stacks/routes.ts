@@ -1,15 +1,15 @@
 import express from 'express';
-import { StackDto } from 'k-models';
-import { api } from '../api.js';
+import { api, StackDto } from 'k-models';
 import { dtoParser, idParser } from '../handlers.js';
 
 export const router = express.Router();
 
 router.route(api.stacks.path)
   .get(async (req, res) => {
+    const baseUrl = req.baseUrl;
     const repository = req.unitOfWork.stackRepository;
     const stacks = await repository.getAll();
-    const resources = stacks.map(stack => stack.toResource());
+    const resources = stacks.map(stack => stack.toResource(baseUrl));
     res.json(resources);
   })
   .post(dtoParser)
@@ -22,13 +22,14 @@ router.route(api.stacks.path)
     res.json(stack.id);
   });
 
-router.route(`${api.stacks.path}/:id`)
+router.route(api.stacks.byId.path)
   .all(idParser)
   .get(async (req, res) => {
+    const baseUrl = req.baseUrl;
     const id = req.id;
     const repository = req.unitOfWork.stackRepository;
     const stack = await repository.getById(id);
-    const resource = stack.toResource();
+    const resource = stack.toResource(baseUrl);
     res.json(resource);
   })
   .put(dtoParser)

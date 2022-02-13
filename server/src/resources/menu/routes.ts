@@ -1,13 +1,14 @@
-import { api } from '../api.js';
+import { api } from 'k-models';
 import express from 'express';
-import { menu } from './menu.js';
+import { menuBuilder } from './menu.js';
 
 export const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get(api.path, (req, res) => {
   res.redirect(api.menu.path);
 });
 
 router.get(api.menu.path, (req, res) => {
+  const menu = menuBuilder(req.baseUrl);
   res.json(menu);
 });
