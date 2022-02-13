@@ -1,15 +1,15 @@
 import express from 'express';
-import { TagDto } from 'k-models';
+import { api, TagDto } from 'k-models';
 import { dtoParser, idParser } from '../handlers.js';
-import { api } from '../api.js';
 
 export const router = express.Router();
 
 router.route(api.tags.path)
   .get(async (req, res) => {
+    const baseUrl = req.baseUrl;
     const service = req.tagService;
     const tags = await service.getAllSorted();
-    const resources = tags.map(tag => tag.toResource());
+    const resources = tags.map(tag => tag.toResource(baseUrl));
     res.json(resources);
   })
   .post(dtoParser)
@@ -22,13 +22,14 @@ router.route(api.tags.path)
     res.json(tag.id);  
   });
 
-router.route(`${api.tags.path}/:id`)
+router.route(api.tags.byId.path)
   .all(idParser)
   .get(async (req, res) => {
+    const baseUrl = req.baseUrl;
     const id = req.id;
     const service = req.tagService;
     const tag = await service.getById(id);
-    const resource = tag.toResource();
+    const resource = tag.toResource(baseUrl);
     res.json(resource);
   })
   .put(async (req, res) => {

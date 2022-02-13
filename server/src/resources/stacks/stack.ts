@@ -1,5 +1,4 @@
-import { api } from '../api.js';
-import { Identifiable, Identifier, IdentifierType, MatchType, StackDto, StackResource } from 'k-models';
+import { api, Identifiable, Identifier, IdentifierType, MatchType, StackDto, StackResource } from 'k-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import { Tag } from '../tags/tag.js';
@@ -83,13 +82,13 @@ export class Stack implements Identifiable {
     this.tags = tags;
   }
 
-  public toResource(): StackResource {
+  public toResource(baseUrl: string): StackResource {
     return {
-      href: api.stacks.resolveHref(this.id),
+      href: api.stacks.byId.resolve(baseUrl, this.id),
       name: this.name,
       description: this.description,
       match: this.match,
-      tagHrefs: this.tags.map(t => api.tags.resolveHref(t.id))
+      tagHrefs: this.tags.map(t => api.tags.byId.resolve(baseUrl, t.id))
     };
   }
 }

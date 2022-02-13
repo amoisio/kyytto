@@ -1,5 +1,4 @@
-import { api } from '../api.js';
-import { Identifiable, Identifier, IdentifierType, TagDto, TagResource, TagType } from 'k-models';
+import { api, Identifiable, Identifier, IdentifierType, TagDto, TagResource, TagType } from 'k-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import text from '../../utilities/text-utilities.js';
@@ -60,9 +59,9 @@ export class Tag implements Identifiable {
     this.type = type;
   }
 
-  public toResource(): TagResource {
+  public toResource(baseUrl: string): TagResource {
     return {
-      href: api.tags.resolveHref(this.id),
+      href: api.tags.byId.resolve(baseUrl, this.id),
       name: this.name,
       type: this.type
     };

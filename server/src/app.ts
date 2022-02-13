@@ -9,14 +9,16 @@ import { router as tagRoutes } from './resources/tags/routes.js';
 import { router as stackRoutes } from './resources/stacks/routes.js';
 import { router as userRoutes } from './resources/users/routes.js';
 import { handler as cors } from './middlewares/cors-middleware.js';
+import { baseUrlParser } from './resources/handlers.js';
 
 export const app: Express = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors);
 
+app.use(cors);
+app.use(baseUrlParser);
 app.use(unitOfWorkMiddleware);
 app.use(servicesMiddleware);
 app.use(menuRoutes);

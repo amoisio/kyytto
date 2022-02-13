@@ -1,15 +1,15 @@
 import express from 'express';
-import { UserDto } from 'k-models';
+import { api, UserDto } from 'k-models';
 import { dtoParser, idParser } from '../handlers.js';
-import { api } from '../api.js';
 
 export const router = express.Router();
 
 router.route(api.users.path)
   .get(async (req, res) => {
+    const baseUrl = req.baseUrl;
     const repository = req.unitOfWork.userRepository;
     const users = await repository.getAll();
-    const resources = users.map(user => user.toResource());
+    const resources = users.map(user => user.toResource(baseUrl));
     res.json(resources);
   })
   .post(dtoParser)
@@ -22,13 +22,14 @@ router.route(api.users.path)
     res.json(user.id);  
   });
 
-router.route(`${api.users.path}/:id`)
+router.route(api.users.byId.path)
   .all(idParser)
   .get(async (req, res) => {
+    const baseUrl = req.baseUrl;
     const id = req.id;
     const repository = req.unitOfWork.userRepository;
     const user = await repository.getById(id);
-    const resource = user.toResource();
+    const resource = user.toResource(baseUrl);
     res.json(resource);
   })
   .put(dtoParser)

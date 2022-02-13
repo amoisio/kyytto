@@ -1,5 +1,4 @@
-import { api } from '../api.js';
-import { Identifiable, Identifier, IdentifierType, UserDto, UserResource } from 'k-models';
+import { api, Identifiable, Identifier, IdentifierType, UserDto, UserResource } from 'k-models';
 import { IdentifierGenerator } from '../../utilities/identifier-generator.js';
 import { isEmpty } from '../../utilities/checks.js';
 import { Stack } from '../stacks/stack.js';
@@ -65,11 +64,11 @@ export class User implements Identifiable {
     this.stack = stack;
   }
 
-  public toResource(): UserResource {
+  public toResource(baseUrl: string): UserResource {
     return {
-      href: api.users.resolveHref(this.id),
+      href: api.users.byId.resolve(baseUrl, this.id),
       name: this.name,
-      stackHref: this.stack ? api.stacks.resolveHref(this.stack.id) : undefined
+      stackHref: this.stack ? api.stacks.byId.resolve(baseUrl, this.stack.id) : undefined
     };
   }
 }
