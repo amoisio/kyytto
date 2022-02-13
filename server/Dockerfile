@@ -1,7 +1,7 @@
 FROM node:14-alpine
-ARG CORS="http://localhost:8080"
-ARG API_PORT="8090"
-ARG FILENAME="kyytto-data.json"
+ARG CORS
+ARG API_PORT
+ARG FILENAME
 WORKDIR /app
 COPY ./dist ./dist
 COPY ./node_modules ./node_modules
