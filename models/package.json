@@ -2,7 +2,7 @@
   "name": "k-models",
   "displayName": "K Models",
   "description": "Models, utilities, and a REST api client for K.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "dist/index.js",
   "type": "module",
   "files": [
@@ -14,7 +14,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && npx tsc",
-    "test": "jest"
+    "test": "rm -rf dist && npx tsc && jest"
   },
   "author": "Aleksi Moisio <aleksi.moisio30@gmail.com>",
   "license": "MIT",
