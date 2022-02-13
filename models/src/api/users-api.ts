@@ -1,4 +1,4 @@
-import { Api, ApiEndPoint } from './api';
+import { Api, ApiEndPoint } from './api.js';
 
 export interface UsersApi extends Api {
   byId: Api;

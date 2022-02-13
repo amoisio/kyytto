@@ -1,5 +1,5 @@
-import { IdentifierType } from './identifier';
-import { MatchType } from './stack-resource';
+import { IdentifierType } from './identifier.js';
+import { MatchType } from './stack-resource.js';
 
 export interface StackDto {
   name: string;

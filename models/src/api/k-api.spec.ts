@@ -1,6 +1,4 @@
 import { api } from '../api/k-api.js';
-import { Identifier } from '../models/identifier.js';
-import { Utilities } from '../utilities/util.js';
 
 describe('K Api', () => {
   let baseUrl = 'http://mydomain:9000';

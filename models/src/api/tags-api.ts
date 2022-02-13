@@ -1,4 +1,4 @@
-import { Api, ApiEndPoint } from './api';
+import { Api, ApiEndPoint } from './api.js';
 
 export interface TagsApi extends Api {
   byId: Api;

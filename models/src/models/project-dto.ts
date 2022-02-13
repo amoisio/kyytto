@@ -1,4 +1,4 @@
-import { ColorType } from './color';
+import { ColorType } from './color.js';
 
 export interface ProjectDto {
   name: string;

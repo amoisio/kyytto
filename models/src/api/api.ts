@@ -1,5 +1,5 @@
-import { Utilities } from '../utilities/util';
-import { ResourceReference } from '../models/resource';
+import { Utilities } from '../utilities/util.js';
+import { ResourceReference } from '../models/resource.js';
 
 export interface Api {
   path: string;

@@ -1,5 +1,5 @@
 import { Identifier } from './identifier.js';
-import { validate, v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 describe('Id.buildId', () => {
   test('builds a new Identifier object with a valid uuid', () => {
