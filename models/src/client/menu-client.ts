@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { MenuResource } from '../models/menu-resource.js';
 import { BaseEndPointClient } from './api-client.js';
-import { Api } from 'src/api/api.js';
+import { Api } from '../api/api.js';
 
 export interface MenuApiClient {
   get(): Promise<MenuResource>;
