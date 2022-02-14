@@ -12,6 +12,7 @@ import { UserBuilder } from '../resources/users/user.js';
 declare global {
   namespace Express {
     interface Request {
+      baseUrl: string,
       id: IdentifierType,
       bodyAs: <TDto>() => TDto,
       client: KClient,
