@@ -1,7 +1,9 @@
 {
-  "name": "client-vue3",
-  "version": "0.1.0",
-  "private": true,
+  "name": "k-client-vue3",
+  "version": "1.0.0",
+  "author": "Aleksi Moisio <aleksi.moisio30@gmail.com>",
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve --port 8080",
     "build": "vue-cli-service build",
