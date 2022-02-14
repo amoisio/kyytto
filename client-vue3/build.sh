@@ -1,2 +1,2 @@
 #!/bin/sh
-docker build -t k-client:1.0.0 .
+docker build -t k-client:0.0.1 .

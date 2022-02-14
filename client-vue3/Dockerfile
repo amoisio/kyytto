@@ -1,10 +1,7 @@
-FROM node:14-alpine
-ARG PORT
-RUN npm install -g http-server
-WORKDIR /app
-COPY ./dist ./dist
-COPY ./node_modules ./node_modules
-COPY package.json .
-ENV PORT=${PORT}
-EXPOSE ${PORT}
-CMD [ "http-server", "dist" ]
+FROM nginx:1.21.6-alpine
+WORKDIR /usr/share/nginx/html
+COPY ./init.sh /init.sh
+COPY ./dist .
+EXPOSE 80
+ENTRYPOINT [ "/init.sh" ]
+CMD [ "nginx", "-g", "daemon off;" ]
