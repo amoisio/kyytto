@@ -1,7 +1,7 @@
 #!/bin/sh
 ROOT=/usr/share/nginx/html
 
-echo "Replacing env vars";
+echo "Replacing env vars $VUE_APP_API_SERVER_HOST";
 for file in $ROOT/js/app.*.js
 do
   echo "Processing $file...";
