@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Resource, Utilities } from 'k-models';
-import { api } from '@/app/api';
 
 export class LocalStorageRepository<TResouce extends Resource> {
   constructor(private storageKey: string, private baseUrl: string) {}
@@ -53,7 +52,7 @@ export class LocalStorageRepository<TResouce extends Resource> {
   }
 
   private entityId(item: TResouce): string {
-    const id = api.resolveId(item.href);
+    const id = Utilities.resolveId(item.href);
     if (Utilities.isEmpty(id)){
       throw new Error(`Resolved empty identifier from ${item.href}.`);
     }

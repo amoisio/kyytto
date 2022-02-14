@@ -1,5 +1,5 @@
+import { CircularBuffer } from '@/lib/circular-buffer/circular-buffer';
 import { notify, NotificationsOptions } from "@kyvg/vue3-notification";
-import { CircularBuffer } from 'algorithms';
 
 export class NotificationService {
   private readonly _buffer: CircularBuffer<NotificationsOptions>;

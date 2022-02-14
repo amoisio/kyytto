@@ -1,6 +1,5 @@
 import { Stack } from './stack-models';
-import { KClient, StackDto, StackResource, Utilities } from 'k-models';
-import { ApiClient } from 'k-models/dist/client/base-client';
+import { ApiClient, KClient, StackDto, StackResource, Utilities } from 'k-models';
 import { ApiService } from '../api-service';
 
 export class ApiStackService extends ApiService<Stack, StackDto, StackResource> {

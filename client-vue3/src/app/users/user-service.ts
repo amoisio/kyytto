@@ -1,5 +1,4 @@
-import { KClient, StackDto, UserDto, UserResource, Utilities } from 'k-models';
-import { ApiClient } from 'k-models/dist/client/base-client';
+import { ApiClient, KClient, StackDto, UserDto, UserResource, Utilities } from 'k-models';
 import { ApiService, Service } from '../api-service';
 import { User } from './user-models';
 import { Stack } from '../stacks/stack-models';
