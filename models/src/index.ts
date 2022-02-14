@@ -20,5 +20,6 @@ export { Identifier, IdentifierType } from './models/identifier.js';
 export { Color, ColorType } from './models/color.js';
 export { Utilities } from './utilities/util.js';
 export { KClient } from './client/k-client.js';
+export { ApiClient } from './client/api-client.js';
 export { api } from './api/k-api.js';
 
