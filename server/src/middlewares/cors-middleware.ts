@@ -1,8 +1,12 @@
+import { Settings } from '../configuration/settings.js';
 import cors from 'cors';
-import { options } from '../options.js';
 
 const corsOptions = { 
-  origin: options.corsAllowOrigin, // 'Access-Control-Allow-Origin'
+  origin: async (origin, callback) => {
+    const settings = await Settings.openContext();
+    console.log(origin, settings);
+    callback(null, settings.cors);
+  }, // 'Access-Control-Allow-Origin'
   methods: ['GET','POST','PUT','DELETE'], // 'Access-Control-Allow-Methods'
   allowedHeaders: [
     'Access-Control-Allow-Headers',

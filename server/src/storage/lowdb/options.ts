@@ -1,9 +1,8 @@
-
 class Options {
   public readonly fileName: string;
 
   constructor() {
-    this.fileName = process.env['LOWDB_FILENAME'] || 'kyytto-lowdb.json';
+    this.fileName = process.env['FILENAME'] || 'k-data.json';
   }
 }
 
