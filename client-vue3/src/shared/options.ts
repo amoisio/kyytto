@@ -1,6 +1,6 @@
 class Options {
-  public readonly apiServerHost: string;
-  public readonly apiServerPort: number;
+  private readonly apiServerHost: string;
+  private readonly apiServerPort: number;
   public get apiServerBaseUrl(): string {
     const base = `${this.apiServerHost}`
     return (options.apiServerPort !== 80)
