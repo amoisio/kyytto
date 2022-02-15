@@ -4,6 +4,7 @@ import cors from 'cors';
 const corsOptions = { 
   origin: async (origin, callback) => {
     const settings = await Settings.openContext();
+    console.log(origin);
     console.log(settings.cors);
     callback(null, settings.cors);
   }, // 'Access-Control-Allow-Origin'
