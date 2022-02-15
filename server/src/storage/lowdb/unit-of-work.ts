@@ -4,10 +4,10 @@ import ProjectRepository from './project-repository.js';
 import TaskRepository from './task-repository.js';
 import { Low, JSONFile } from 'lowdb'
 import { DataDb } from './db-model.js';
+import { options } from './options.js';
 import TagRepository from './tag-repository.js';
 import StackRepository from './stack-repository.js';
 import UserRepository from './user-repository.js';
-import { options } from '../../options.js';
 
 export class LowDbUnitOfWork implements UnitOfWork {
   private readonly db: Low<DataDb>;
@@ -29,7 +29,7 @@ export class LowDbUnitOfWork implements UnitOfWork {
   public static async openContext(): Promise<UnitOfWork> {
     const __dirname = process.cwd();
     const __dataFolder = 'data';
-    const filePath = join(__dirname, __dataFolder, options.connectionString);
+    const filePath = join(__dirname, __dataFolder, options.fileName);
     const adapter = new JSONFile<DataDb>(filePath);
     const db = new Low<DataDb>(adapter);
     await db.read();

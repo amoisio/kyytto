@@ -1,5 +1,5 @@
 import * as mysql from 'mysql2/promise';
-import { options } from '../../options.js';
+import { options } from './options.js';
 import { Connection } from 'mysql2/promise';
 import ProjectRepository from './project-repository.js';
 import TaskRepository from './task-repository.js';
