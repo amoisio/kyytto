@@ -1,15 +1,18 @@
 class Options {
+  private readonly apiServerScheme: string;
   private readonly apiServerHost: string;
   private readonly apiServerPort: number;
   public get apiServerBaseUrl(): string {
     const base = `${this.apiServerHost}`
-    return (options.apiServerPort !== 80)
+    const path = (options.apiServerPort !== 80)
       ? `${base}:${options.apiServerPort}`
       : base;
+    return `${this.apiServerScheme}://${path}`;
   }
 
   constructor() {
-    this.apiServerHost = process.env.VUE_APP_API_SERVER_HOST || 'http://localhost';
+    this.apiServerScheme = process.env.VUE_APP_API_SERVER_SCHEME || 'http';
+    this.apiServerHost = process.env.VUE_APP_API_SERVER_HOST || 'localhost';
     this.apiServerPort = process.env.VUE_APP_API_SERVER_PORT || 8090;
   }
 }
