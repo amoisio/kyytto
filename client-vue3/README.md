@@ -1,12 +1,15 @@
 # client-vue3
 
-So, I decided to pivot 'Kyyttö' toward an application that I would use for tracking work on my personal side-projects.
+## CI/CD pipeline
 
-Requirements:
-- A simple Kanban table which includes todo items and in-progress items
-    - Later add a project based filter
-- A simple way to create new todo items
-- A project page for recording project ideas
-
-First task is to build a view where I can add, edit and delete project ideas.
-
+- Source code hosted in GitHub
+- Build is done in TeamCity
+  - npm install and build done on a TeamCity agent
+  - npm build is done with placeholder arguments from .env.production
+  - docker build stores actual values of arguments in environment settings
+  - container is pushed to DockerHub
+  - on start, the container runs init.sh which updates the placeholder arguments with proper value.
+    One of the values is the host address of the k-server api server. Init.sh performs hostname to ip resolution and 
+    replaces the hostname with the actual ip of the api server. This requires that the k-client-vue3 container and 
+    k-server container are in the same docker network.
+- Application is deployed with a docker-compose file 
